@@ -24,7 +24,11 @@ html, body {
   align-items: center;
   flex-direction: column;
   height: 100%;
+
   svg {
+    width: 96%;
+    height: 100%;
+    padding: 0 2%;
     text {
       text-transform: uppercase;
       fill: #666;
