@@ -29,9 +29,9 @@ const svg = d3.select('#chart')
       .append('svg')
       .attr('width', w)
       .attr('height', h)
-      .attr("preserveAspectRatio", "xMinYMin meet")
-      .attr("viewBox", "0 0 " + w + " " + h)
-      .classed("svg-content-responsive", true);
+      .attr('preserveAspectRatio', 'xMinYMin meet')
+      .attr('viewBox', '0 0 ' + w + ' ' + h)
+      .classed('svg-content-responsive', true);
 
 //Create bars
 svg.selectAll('rect')
