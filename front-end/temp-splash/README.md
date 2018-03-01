@@ -6,11 +6,11 @@ built with:
 - [d3](https://d3js.org/)
 
 key files:
-- `src/index.html` - the main index page.
-- `src/scripts/main.js` - the d3 visualization script.
-- `src/styles/main.scss` - the stylesheet.
+- `app/index.html` - the main index page.
+- `app/scripts/main.js` - the d3 visualization script.
+- `app/styles/main.scss` - the stylesheet.
 
-to serve this site locally:
+to work on this site locally:
 - run `npm install` from project directory
 - Run `gulp serve` to preview and watch for changes
 - Run `gulp serve:test` to run the tests in the browser. Right now there are no tests.
