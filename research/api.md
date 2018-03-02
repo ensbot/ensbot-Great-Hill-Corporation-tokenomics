@@ -12,7 +12,9 @@
 - http://www.designinghypermediaapis.com/
 
 ## videos
-- [Hypermedia APIs - John Moore](https://vimeo.com/20781278) -- talks about Hypermedia as the engine of application state (HATEOAS) and why many APIs aren't adhering to Uniform interface constraint of Fielding's spec. Particularly, independent evolution and decoupled implementation. He then goes into his api with XHTML media type. This video is from 2010 and I noticed some things that seem outdated. Other resources may be better.
+- [Hypermedia APIs - John Moore](https://vimeo.com/20781278) -- talks about Hypermedia as the engine of application state (HATEOAS) and why many APIs aren't adhering to Uniform interface constraint of Fielding's dissertation. Particularly, independent evolution and decoupled implementation. He then goes into his api with XHTML media type. This video is from 2010 and I noticed some things that seem outdated. Other resources may be better.
+- [Everything You Know About REST IS Wrong - Steve Klabnik](https://vimeo.com/30764565) - author of Restful Web APIs. Resources, Representations (presentation of resource e.g. json / xml), Hypermedia (interconnectedness between representation of resources). How RESTful is your REST api? Do we need REST, or just json rpc? Info on HATEOAS. Real REST is about hypermedia and browsing APIs like we browse the web (with connections). Ultimately, decides to call true REST APIs "Hypermedia APIs," while letting RESTish APIs remain "RESTful".
+
 
 ## related
 - [cors on nginx](https://enable-cors.org/server_nginx.html)
