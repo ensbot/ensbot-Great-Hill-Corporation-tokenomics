@@ -4,15 +4,28 @@
 
 ## Token Ecomonics
 
+### Standards
+- http://blockchainers.org/index.php/tag/erc-777/
+- http://blockchainers.org/index.php/2018/02/08/token-erc-comparison-for-fungible-tokens/
+
 ## Data-related
+
+- https://www.keystats.tech/  
+    **Notes:** Uses Etherscan. Shows at most 10,000 txs. Very nice charts and information per account.
+- https://www.tokendata.io/  
+    **Notes:** Thorough list of tokens. Price and sentiment activity. No activity reports.
+- BlockSeer is very interesting for Bitcoin.
+    **Notes:** Requires login. 
+
+## Dapps
+
+- https://dapphub.com/
+- https://medium.com/dapphub/dapp-tools-and-the-nix-package-manager-c4c692c87310
 
 ## Uncategorized
 
 - https://www.stateofthedapps.com/dapps/quickblocks
 - https://medium.com/iconominet/iconomi-financial-report-q3-2017-45dc25f30730
-- BlockSeer is very interesting for Bitcoin.
-- https://medium.com/dapphub/dapp-tools-and-the-nix-package-manager-c4c692c87310
-- https://dapphub.com/
 - https://openbounty.status.im/
 - https://medium.com/blockchannel/the-ethereum-developer-essential-reading-list-4fe5d788b294
 - https://coursetro.com/courses/20/Developing-Ethereum-Smart-Contracts-for-Beginners
@@ -27,9 +40,7 @@
 - http://cryptobible.io/first-blockchain-smartphone-will-come-preloaded-ethereum-client-status/
 - http://www.telco.in/#abouttelcoin?telco
 - https://www.reddit.com/r/ethereum/
-- https://www.keystats.tech/
 - https://medium.com/tokenclub/tokenclub-announces-november-token-basket-dd930e671fb
-- https://www.tokendata.io/
 - https://github.com/cubedro/eth-net-intelligence-api
 - https://zipperglobal.com/whitepaper.pdf
 - https://rufflet.cryptokitties.co/
@@ -66,8 +77,6 @@ https://venturebeat.com/2017/12/04/blockstack-raises-52-million-to-build-a-paral
 - https://github.com/decrypto-org/blockchain-papers
 - https://ethereum.stackexchange.com/questions/3249/how-to-prove-anything-as-mine-on-ethereum/3250#3250
 - https://medium.com/metamask/scaling-web3-with-signtypeddata-91d6efc8b290
-- http://blockchainers.org/index.php/2018/02/08/token-erc-comparison-for-fungible-tokens/
-- http://blockchainers.org/index.php/tag/erc-777/
 - https://ipld.io/
 - https://medium.com/@txhash/bridging-the-gap-between-web-2-0-and-blockchain-events-fc77d2c1dcdb
 - https://medium.com/@codetractio
