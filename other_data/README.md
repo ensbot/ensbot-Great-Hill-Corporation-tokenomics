@@ -30,7 +30,7 @@ These are the higher level types of data we can collect (there are probably more
 - History of first event account
 - History of Genisis accounts
 
-#### Gas accounting
+#### Gas/Ether accounting
 
 - Expenditures on gas per min/hour/day/week/month/10,000/100,000/1,000,000 (in Wei / Ether / US Dollars)
 - Contract generating largest all-time gas usage
@@ -40,6 +40,11 @@ These are the higher level types of data we can collect (there are probably more
 - Gas price history (Wei / Ether / US dollar)
 - gasUsed as percentage of gasAllowed (relative to gasPrice)
 - gasUsed as a percentage of gasLimit
+- Expentitures on gas per day in US dollars
+- Cost of mining rewards in US dollars
+- Total transaction volume in US dollars by min/hour/day/week/month/10,000/100,000/1,000,000
+- Percent of transaction with more than 21000 gas used (the default for a transfer)
+- Percent of transactions with non-default gas price
 
 #### Indiviual account data (i.e. tokenomics)
 
