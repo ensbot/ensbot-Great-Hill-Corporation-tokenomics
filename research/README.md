@@ -83,3 +83,7 @@
 - https://www.stateofthedapps.com/dapps/quickblocks
 - https://zipperglobal.com/whitepaper.pdf
 - paritytech/parity#7262 (comment)
+
+## New
+
+- https://github.com/ivica7/eth-chain-stats-collector
