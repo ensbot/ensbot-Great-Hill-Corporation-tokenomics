@@ -87,3 +87,4 @@
 ## New
 
 - https://github.com/ivica7/eth-chain-stats-collector
+- https://www.truset.com/tokens
