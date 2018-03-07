@@ -89,3 +89,4 @@
 - https://github.com/ivica7/eth-chain-stats-collector
 - https://www.truset.com/tokens
 - https://www.analyseether.com/
+- https://blog.ricmoo.com/solidity-abiv2-a-foray-into-the-experimental-a6afd3d47185
