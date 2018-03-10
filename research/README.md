@@ -91,3 +91,4 @@
 - https://www.analyseether.com/
 - https://blog.ricmoo.com/solidity-abiv2-a-foray-into-the-experimental-a6afd3d47185
 - https://media.consensys.net/alethio-lighting-up-the-blockchain-with-real-time-stats-a80bb30576db
+- https://github.com/WebOfTrustInfo/rebooting-the-web-of-trust-spring2018/blob/master/topics-and-advance-readings/DID-Method-erc725.md
