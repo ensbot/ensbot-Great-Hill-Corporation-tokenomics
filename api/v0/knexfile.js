@@ -1,9 +1,17 @@
-const databaseName = 'quickblocks_test';
+require('dotenv').config();
+const username = process.env.MYSQL_USER;
+const password = process.env.MYSQL_PW;
+const databaseName = 'tokenomics_test';
 
 module.exports = {
   development: {
     client: 'mysql',
-    connection: `mysql://localhost:5432/${databaseName}`,
+    connection: {
+      host: 'localhost',
+      user: username,
+      password: password,
+      database: databaseName
+    },
     migrations: {
       directory: __dirname + '/src/server/db/migrations'
     },
@@ -13,7 +21,12 @@ module.exports = {
   },
   test: {
     client: 'mysql',
-    connection: `mysql://localhost:5432/${databaseName}_testing`,
+    connection: {
+      host: 'localhost',
+      user: username,
+      password: password,
+      database: databaseName + '_testing'
+    },
     migrations: {
       directory: __dirname + '/src/server/db/migrations'
     },
