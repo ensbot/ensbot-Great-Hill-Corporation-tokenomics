@@ -10,7 +10,8 @@ module.exports = {
       host: 'localhost',
       user: username,
       password: password,
-      database: databaseName
+      database: databaseName,
+      charset : 'utf8mb4'
     },
     migrations: {
       directory: __dirname + '/src/server/db/migrations'
@@ -25,7 +26,8 @@ module.exports = {
       host: 'localhost',
       user: username,
       password: password,
-      database: databaseName + '_testing'
+      database: databaseName + '_testing',
+      charset : 'utf8mb4'
     },
     migrations: {
       directory: __dirname + '/src/server/db/migrations'
