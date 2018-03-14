@@ -11,7 +11,7 @@ module.exports = {
       user: username,
       password: password,
       database: databaseName,
-      charset : 'utf8mb4'
+      charset: 'utf8mb4'
     },
     migrations: {
       directory: __dirname + '/src/server/db/migrations'
@@ -27,7 +27,7 @@ module.exports = {
       user: username,
       password: password,
       database: databaseName + '_testing',
-      charset : 'utf8mb4'
+      charset: 'utf8mb4'
     },
     migrations: {
       directory: __dirname + '/src/server/db/migrations'
