@@ -49,4 +49,40 @@ describe('routes : transactions', () => {
     });
   });
 
+  describe('POST /api/v0/transactions', () => {
+    it('should respond with a success message along with a single transaction that was added', (done) => {
+      chai.request(server)
+      .post('/api/v0/transactions')
+      .send({
+        dateTime: "1980-10-3 12:10:11",
+        blockNumber: 40381503,
+        transactionIndex: 1,
+        from: "0x06012c8cf97bead5deae237070f9587f8e7a266d",
+        to: "0x06w32cncgf7bead5deac2370m0f5587d8e7a2123",
+        value: 1.1,
+        gasCost: 0.59135831,
+        isError: false,
+        isFinalized: false,
+        articulated: "execute('random stuff', 'other random', 301)"
+      })
+      .end((err, res) => {
+        // there should be no errors
+        should.not.exist(err);
+        // there should be a 201 status code
+        // (indicating that something was "created")
+        res.status.should.equal(201);
+        // the response should be JSON
+        res.type.should.equal('application/json');
+        // the JSON response body should have a
+        // key-value pair of {"status": "success"}
+        res.body.status.should.eql('success');
+        // the JSON response body should have a
+        // key-value pair of {"data": 1 user object}
+        res.body.data[0].should.include.keys('id', 'dateTime', 'blockNumber', 'transactionIndex', 'from', 'to', 'value', 'gasCost', 'isError', 'isFinalized', 'articulated', 'created_at',);
+        done();
+      });
+    });
+  });
+
+
 });
