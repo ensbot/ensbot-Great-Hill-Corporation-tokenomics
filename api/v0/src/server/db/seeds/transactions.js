@@ -15,7 +15,7 @@ exports.seed = function(knex, Promise) {
       })
     })
   }).then((res) => {
-    const dataToInsert = res.map((row) => {
+    const dataToInsert = res.slice(0, 10).map((row) => {
       return {
         dateTime: row.DATESH + ' ' + row.TIME.slice(0, -4),
         blockNumber: row.BLOCKNUMBER,
