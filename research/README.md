@@ -95,3 +95,4 @@
 - https://media.consensys.net/over-12-000-ether-are-lost-forever-due-to-typos-f6ccc35432f8
 - https://www.reddit.com/r/ethereum/comments/8425ef/icorating_a_deeplearning_system_for_scam_ico/
 - https://airtable.com/shreIXQjzluCxam37/tbl7qVDFKKiEcFFrc
+- https://insights.stackoverflow.com/survey/2018/?utm_source=Iterable&utm_medium=email&utm_campaign=dev-survey-2018-promotion (some interesting charts)
