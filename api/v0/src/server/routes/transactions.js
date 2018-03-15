@@ -12,19 +12,29 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  knex('transactions').insert({
-    dateTime: req.body.dateTime,
-    blockNumber: req.body.blockNumber,
-    transactionIndex: req.body.transactionIndex,
-    from: req.body.from,
-    to: req.body.to,
-    value: req.body.value,
-    gasCost: req.body.gasCost,
-    isError: req.body.isError,
-    isFinalized: req.body.isFinalized,
-    articulated: req.body.articulated
-  }).then((transaction) => {
-    res.status(201).json({status: 'success', data: transaction});
+  return knex.transaction((t) => {
+    const toInsert = req.body.map(obj => {
+      return {
+        dateTime: obj.dateTime,
+        blockNumber: obj.blockNumber,
+        transactionIndex: obj.transactionIndex,
+        from: obj.from,
+        to: obj.to,
+        value: obj.value,
+        gasCost: obj.gasCost,
+        isError: obj.isError,
+        isFinalized: obj.isFinalized,
+        articulated: obj.articulated
+      }
+    });
+    return Promise.all(
+      toInsert.map((obj) => {
+        return t.insert(obj).into('transactions');
+      })
+    );
+  })
+  .then((transactions) => {
+    res.status(201).json({status: 'success', data: transactions});
   }).catch((err) => {
     res.status(500).json({status: 'error', data: err});
   });
