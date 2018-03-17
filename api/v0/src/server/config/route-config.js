@@ -11,7 +11,7 @@
 
     // *** register routes *** //
     app.use('/', routes);
-    app.use('/auth', authRoutes);
+    app.use('/api/v0/auth', authRoutes);
     app.use('/api/v0/transactions', transactionRoutes);
   };
 

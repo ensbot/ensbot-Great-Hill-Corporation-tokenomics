@@ -52,7 +52,7 @@ describe('routes : transactions', () => {
 
   describe('POST /api/v0/transactions', () => {
     it('should respond with a success message and an id when a single transaction is added', (done) => {
-      chai.request(server).post('/auth/login').send({username: 'realuser', password: 'doingstuff'}).end((err, res) => {
+      chai.request(server).post('/api/v0/auth/login').send({username: 'realuser', password: 'doingstuff'}).end((err, res) => {
         should.not.exist(err);
         chai.request(server).post('/api/v0/transactions').set('authorization', 'Bearer ' + res.body.token).send([
           {
@@ -89,7 +89,7 @@ describe('routes : transactions', () => {
       });
     });
     it('should respond with a success message and an array of ids when multiple transactions are added', (done) => {
-      chai.request(server).post('/auth/login').send({username: 'realuser', password: 'doingstuff'}).end((err, res) => {
+      chai.request(server).post('/api/v0/auth/login').send({username: 'realuser', password: 'doingstuff'}).end((err, res) => {
         should.not.exist(err);
         chai.request(server).post('/api/v0/transactions').set('authorization', 'Bearer ' + res.body.token).send(Array(5).fill({
           dateTime: '1980-10-3 12:10:11',
@@ -123,7 +123,7 @@ describe('routes : transactions', () => {
       });
     });
     it('should reject all transactions when 1 is wrong', (done) => {
-      chai.request(server).post('/auth/login').send({username: 'realuser', password: 'doingstuff'}).end((err, res) => {
+      chai.request(server).post('/api/v0/auth/login').send({username: 'realuser', password: 'doingstuff'}).end((err, res) => {
         chai.request(server).post('/api/v0/transactions')
           .set('authorization', 'Bearer ' + res.body.token)
           .send(Array(5).fill({
