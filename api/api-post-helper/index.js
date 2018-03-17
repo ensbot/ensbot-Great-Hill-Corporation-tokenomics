@@ -1,5 +1,5 @@
+require('dotenv').config();
 const request = require('request-promise-native');
-
 const reqBody = [
   {
     dateTime: '1980-10-3 12:10:11',
@@ -26,15 +26,27 @@ const reqBody = [
   }
 ];
 
-const config = {
+const login = {
+  method: 'POST',
+  uri: 'http://localhost:3000/api/v0/auth/login',
+  body: {
+    username: 'realuser',
+    password: 'doingstuff'
+  },
+  json: true
+};
+
+let config = {
   method: 'POST',
   uri: 'http://localhost:3000/api/v0/transactions',
   body: reqBody,
   json: true
 };
 
-request.post(config).then((res) => {
-  console.log(res);
+request.post(login).then((loginRes) => {
+  return request.post(config).auth(null, null, true, loginRes.token).then((res) => {
+    console.log(res);
+  });
 }).catch((err) => {
   console.log(err);
 });

@@ -20,10 +20,10 @@ describe('routes : auth', () => {
     return knex.migrate.rollback();
   });
 
-  describe('POST /auth/register', () => {
+  describe('POST /api/v0/auth/register', () => {
     it('should register a new user', (done) => {
       chai.request(server)
-      .post('/auth/register')
+      .post('/api/v0/auth/register')
       .send({
         username: 'ed',
         password: 'whatever'
@@ -40,10 +40,10 @@ describe('routes : auth', () => {
     });
   });
 
-  describe('POST /auth/login', () => {
+  describe('POST /api/v0/auth/login', () => {
     it('should login a user', (done) => {
       chai.request(server)
-      .post('/auth/login')
+      .post('/api/v0/auth/login')
       .send({
         username: 'realuser',
         password: 'doingstuff'
