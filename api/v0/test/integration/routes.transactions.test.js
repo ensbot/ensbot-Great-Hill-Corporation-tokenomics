@@ -50,23 +50,38 @@ describe('routes : transactions', () => {
     });
   });
 
+  const exampleObj =
+    {
+      dateTime: '1980-10-3 12:10:11',
+      blockNumber: 40381503,
+      transactionIndex: 1,
+      from: '0x06012c8cf97bead5deae237070f9587f8e7a266d',
+      to: '0x04w32cncgf7bead5deac2370m0f5587d8e7a2123',
+      value: 1.1,
+      gasCost: 0.59135831,
+      isError: false,
+      isFinalized: false,
+      articulated: 'execute("random stuff", "other random", 301)'
+    }
+
   describe('POST /api/v0/transactions', () => {
+    it('should fail if user not logged in', (done) => {
+      chai.request(server).post('/api/v0/transactions')
+      .send([exampleObj])
+      .end((err, res) => {
+        should.exist(err);
+        res.status.should.equal(400);
+        res.type.should.equal('application/json');
+        res.body.status.should.eql('Not logged in');
+        done();
+      })
+    });
+
     it('should respond with a success message and an id when a single transaction is added', (done) => {
       chai.request(server).post('/api/v0/auth/login').send({username: 'realuser', password: 'doingstuff'}).end((err, res) => {
         should.not.exist(err);
         chai.request(server).post('/api/v0/transactions').set('authorization', 'Bearer ' + res.body.token).send([
-          {
-            dateTime: '1980-10-3 12:10:11',
-            blockNumber: 40381503,
-            transactionIndex: 1,
-            from: '0x06012c8cf97bead5deae237070f9587f8e7a266d',
-            to: '0x04w32cncgf7bead5deac2370m0f5587d8e7a2123',
-            value: 1.1,
-            gasCost: 0.59135831,
-            isError: false,
-            isFinalized: false,
-            articulated: 'execute("random stuff", "other random", 301)'
-          }
+          exampleObj
         ]).end((err, res) => {
 
           // there should be no errors
@@ -91,18 +106,7 @@ describe('routes : transactions', () => {
     it('should respond with a success message and an array of ids when multiple transactions are added', (done) => {
       chai.request(server).post('/api/v0/auth/login').send({username: 'realuser', password: 'doingstuff'}).end((err, res) => {
         should.not.exist(err);
-        chai.request(server).post('/api/v0/transactions').set('authorization', 'Bearer ' + res.body.token).send(Array(5).fill({
-          dateTime: '1980-10-3 12:10:11',
-          blockNumber: 40381503,
-          transactionIndex: 1,
-          from: '0x06012c8cf97bead5deae237070f9587f8e7a266d',
-          to: '0x04w32cncgf7bead5deac2370m0f5587d8e7a2123',
-          value: 1.1,
-          gasCost: 0.59135831,
-          isError: false,
-          isFinalized: false,
-          articulated: 'execute("random stuff", "other random", 301)'
-        })).end((err, res) => {
+        chai.request(server).post('/api/v0/transactions').set('authorization', 'Bearer ' + res.body.token).send(Array(5).fill(exampleObj)).end((err, res) => {
           // there should be no errors
           should.not.exist(err);
           // there should be a 201 status code
@@ -126,18 +130,7 @@ describe('routes : transactions', () => {
       chai.request(server).post('/api/v0/auth/login').send({username: 'realuser', password: 'doingstuff'}).end((err, res) => {
         chai.request(server).post('/api/v0/transactions')
           .set('authorization', 'Bearer ' + res.body.token)
-          .send(Array(5).fill({
-          dateTime: '1980-10-3 12:10:11',
-          blockNumber: 40381503,
-          transactionIndex: 1,
-          from: '0x06012c8cf97bead5deae237070f9587f8e7a266d',
-          to: '0x04w32cncgf7bead5deac2370m0f5587d8e7a2123',
-          value: 1.1,
-          gasCost: 0.59135831,
-          isError: false,
-          isFinalized: false,
-          articulated: 'execute("random stuff", "other random", 301)'
-        }).concat({notRightAtAll: 'this is not a valid field', blockNumber: 'q'})).end((err, res) => {
+          .send(Array(5).fill(exampleObj).concat({notRightAtAll: 'this is not a valid field', blockNumber: 'q'})).end((err, res) => {
           // there should be an error
           should.exist(err);
           chai.request(server).get('/api/v0/transactions').end((err, res) => {
