@@ -1,2 +1,2 @@
-# tokenomics
-Repo for the http://tokenomics.io website
+# tokenomics deploy branch
+Deploys to  http://tokenomics.io website
