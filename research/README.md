@@ -94,3 +94,6 @@
 - https://github.com/WebOfTrustInfo/rebooting-the-web-of-trust-spring2018/blob/master/topics-and-advance-readings/DID-Method-erc725.md
 - https://media.consensys.net/over-12-000-ether-are-lost-forever-due-to-typos-f6ccc35432f8
 - https://www.reddit.com/r/ethereum/comments/8425ef/icorating_a_deeplearning_system_for_scam_ico/
+- https://airtable.com/shreIXQjzluCxam37/tbl7qVDFKKiEcFFrc
+- https://insights.stackoverflow.com/survey/2018/?utm_source=Iterable&utm_medium=email&utm_campaign=dev-survey-2018-promotion (some interesting charts)
+- https://www.quora.com/How-do-you-calculate-server-costs-per-user-for-a-social-networking-type-platform-where-storage-for-each-user-would-max-out-at-2gb-a-month-500mb-a-day
