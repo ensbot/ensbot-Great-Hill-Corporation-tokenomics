@@ -100,3 +100,5 @@
 - https://github.com/ipfs/go-ipld-eth-import/issues/1
 - https://github.com/MetaMask/mustekala/issues/2
 - https://thenextweb.com/hardfork/2018/03/21/coinbase-smart-contract-bug-allowed-crediting/?amp=1&__twitter_impression=true
+
+- https://medium.com/@analyseether/description-of-the-analyse-ether-database-fa88bdd41535
