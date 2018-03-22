@@ -1,8 +1,29 @@
 exports.up = (knex, Promise) => {
   return knex.schema
+    // .createTable('exchange', (table) => {
+    //   table.string('name', 25).notNullable();
+    //   table.string('nicename', 25).notNullable();
+    // })
+    .createTable('price', (table) => {
+      table.datetime('date_time').notNullable();
+      // NOTE:
+      //  Purposely not cascading deletions of block_number price in this table.
+      // table.integer('block_number').unsigned().notNullable();
+      table.string('currency_from', 10).notNullable();
+      table.string('currency_to', 10).notNullable();
+      table.enum('exchange_name', ['coinbase', 'poloniex', 'bittrex']).notNullable();
+      // choosing arbitrary decimal precision
+      table.decimal('exchange_rate', 21, 18).unsigned().notNullable();
+    })
+    .createTable('block', (table) => {
+      table.integer('block_number').unsigned().primary().notNullable();
+      table.datetime('date_time').notNullable();
+      table.timestamp('created_at').defaultTo(knex.fn.now());
+    })
+    // create an address table so that addresses are only stored once
     .createTable('address', (table) => {
       table.increments('id');
-      table.bigInteger('address').notNullable();
+      table.binary('address').notNullable();
       table.boolean('is_monitored').notNullable().defaultTo(false);
       table.boolean('known_contract').notNullable().defaultTo(false);
       table.string('nickname');
@@ -10,10 +31,8 @@ exports.up = (knex, Promise) => {
     .createTable('transaction', (table) => {
       table.charset('utf8mb4');
       table.collate('utf8mb4_bin');
-      table.increments();
-      table.datetime('date_time').notNullable();
-      table.integer('block_number').unsigned().notNullable(); // max val: 4294967295
-      table.integer('transaction_index').unsigned().notNullable();
+      table.integer('block_number').unsigned().references('block_number').inTable('block').notNullable().onDelete('CASCADE'); // max val: 4294967295
+      table.integer('tx_index').unsigned().notNullable();
       table.integer('trace_id').unsigned().notNullable();
       table.integer('from', 42).unsigned().references('id').inTable('address').notNullable();
       table.integer('to', 42).unsigned().references('id').inTable('address').notNullable();
@@ -22,30 +41,52 @@ exports.up = (knex, Promise) => {
       table.boolean('is_error').notNullable().defaultTo(false);
       table.boolean('is_finalized').notNullable().defaultTo(false);
       table.timestamp('created_at').defaultTo(knex.fn.now());
-      //table.primary(['block_number', 'transaction_index', 'trace_id']);
+      table.primary(['block_number', 'tx_index', 'trace_id']);
+    })
+    .createTable('address_transaction', (table) => {
+      table.integer('address_id').unsigned().references('id').inTable('address').notNullable().onDelete('CASCADE');
+      table.integer('block_number').unsigned().notNullable();
+      table.integer('tx_index').unsigned().notNullable();
+      table.integer('trace_id').unsigned().notNullable();
+      table.foreign(['block_number', 'tx_index', 'trace_id']).references(['block_number', 'tx_index', 'trace_id']).inTable('transaction').onDelete('CASCADE');
+      table.primary(['address_id', 'block_number', 'tx_index', 'trace_id']);
     })
     .createTable('abi_spec', (table) => {
-      table.increments();
-      table.integer('contract_address_id').unsigned().references('id').inTable('address').notNullable();
+      table.integer('abi_address_id').unsigned().references('id').inTable('address').notNullable().onDelete('CASCADE');
       table.string('fn_name').notNullable();
       table.string('arg_name').notNullable();
+      table.string('arg_type').notNullable();
       table.integer('arg_index').unsigned().notNullable();
+      table.primary(['abi_address_id', 'fn_name', 'arg_index']);
     })
     .createTable('input_data', (table) => {
-      table.increments();
-      //table.integer('block_number').unsigned().references('block_number').inTable('transaction').notNullable();
-      //table.integer('transaction_index').unsigned().references('transaction_index').inTable('transaction').notNullable();
-      //table.integer('trace_id').unsigned().references('trace_index').inTable('transaction').notNullable();
-      table.integer('transaction_id').unsigned().references('id').inTable('transaction').notNullable();
-      table.integer('abi_id').unsigned().references('id').inTable('abi_spec').notNullable();
+      table.integer('block_number').unsigned().notNullable();
+      table.integer('tx_index').unsigned().notNullable();
+      table.integer('trace_id').unsigned().notNullable();
+      table.integer('abi_address_id').unsigned();
+      table.string('fn_name').notNullable();
+      table.integer('arg_index').unsigned().notNullable();
       table.text('arg_value');
+      table.foreign(['block_number', 'tx_index', 'trace_id']).references(['block_number', 'tx_index', 'trace_id']).inTable('transaction').onDelete('CASCADE');
+      // it is ok to use this next set of 3 as a compound foreign key.
+      // in the event of input data that we do not know, we will set the fields as:
+      //    abi_address_id: ${tx 'to' address}
+      //    fn_name: 'unknown'
+      //    arg_index: null
+      //    data: garbled
+      // what if the input data comes in but it's not a function call?
+      table.foreign(['abi_address_id', 'fn_name', 'arg_index']).references(['abi_address_id', 'fn_name', 'arg_index']).inTable('abi_spec').onDelete('CASCADE');
+      table.primary(['block_number', 'tx_index', 'trace_id', 'abi_address_id', 'fn_name', 'arg_index']);
     });
 };
 
 exports.down = (knex, Promise) => {
   return knex.schema
-    .dropTable('address')
-    .dropTable('transactions')
+    .dropTable('input_data')
     .dropTable('abi_spec')
-    .dropTable('input_data');
+    .dropTable('address_transaction')
+    .dropTable('transaction')
+    .dropTable('address')
+    .dropTable('block')
+    .dropTable('price');
 };
