@@ -15,7 +15,7 @@
 - https://www.tokendata.io/  
     **Notes:** Thorough list of tokens. Price and sentiment activity. No activity reports.
 - BlockSeer is very interesting for Bitcoin.
-    **Notes:** Requires login. 
+    **Notes:** Requires login.
 
 ## Dapps
 
@@ -102,3 +102,5 @@
 - https://thenextweb.com/hardfork/2018/03/21/coinbase-smart-contract-bug-allowed-crediting/?amp=1&__twitter_impression=true
 
 - https://medium.com/@analyseether/description-of-the-analyse-ether-database-fa88bdd41535
+
+- https://crypterium.io/ (wtf)
