@@ -15,7 +15,7 @@
 - https://www.tokendata.io/  
     **Notes:** Thorough list of tokens. Price and sentiment activity. No activity reports.
 - BlockSeer is very interesting for Bitcoin.
-    **Notes:** Requires login. 
+    **Notes:** Requires login.
 
 ## Dapps
 
@@ -93,3 +93,14 @@
 - https://media.consensys.net/alethio-lighting-up-the-blockchain-with-real-time-stats-a80bb30576db
 - https://github.com/WebOfTrustInfo/rebooting-the-web-of-trust-spring2018/blob/master/topics-and-advance-readings/DID-Method-erc725.md
 - https://media.consensys.net/over-12-000-ether-are-lost-forever-due-to-typos-f6ccc35432f8
+- https://www.reddit.com/r/ethereum/comments/8425ef/icorating_a_deeplearning_system_for_scam_ico/
+- https://airtable.com/shreIXQjzluCxam37/tbl7qVDFKKiEcFFrc
+- https://insights.stackoverflow.com/survey/2018/?utm_source=Iterable&utm_medium=email&utm_campaign=dev-survey-2018-promotion (some interesting charts)
+- https://www.quora.com/How-do-you-calculate-server-costs-per-user-for-a-social-networking-type-platform-where-storage-for-each-user-would-max-out-at-2gb-a-month-500mb-a-day
+- https://github.com/ipfs/go-ipld-eth-import/issues/1
+- https://github.com/MetaMask/mustekala/issues/2
+- https://thenextweb.com/hardfork/2018/03/21/coinbase-smart-contract-bug-allowed-crediting/?amp=1&__twitter_impression=true
+- https://www.integrity-research.com/launch-digital-asset-research/
+- https://medium.com/@analyseether/description-of-the-analyse-ether-database-fa88bdd41535
+
+- https://crypterium.io/ (wtf)

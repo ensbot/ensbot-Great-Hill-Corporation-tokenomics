@@ -8,7 +8,7 @@ special.addr <- list(
   'Contract: Unicorn Token' = '0x89205a3a3b2a69de6dbf7f01ed13b2108b2c43e7'
 )
 
-etherTip.base <- read_tsv('../../other_data/etherTip_data.txt') %>% as_tibble()
+etherTip.base <- read_tsv('../../monitors/etherTip_data.txt') %>% as_tibble()
 colnames(etherTip.base) <- etherTip.base %>% colnames() %>% tolower()
 
 

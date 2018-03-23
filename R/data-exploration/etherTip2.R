@@ -96,3 +96,6 @@ etherTip.fns %>%
   mutate(cumsum.eth = cumsum(eth)) %>%
   ggplot(aes(x=blocknumber, y = cumsum.eth)) +
   geom_line()
+
+
+etherTip.fns %>% View()
