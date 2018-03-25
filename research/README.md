@@ -104,3 +104,4 @@
 - https://medium.com/@analyseether/description-of-the-analyse-ether-database-fa88bdd41535
 
 - https://crypterium.io/ (wtf)
+- https://medium.com/truebit/truebit-the-marketplace-for-verifiable-computation-f51d1726798f
