@@ -2,77 +2,120 @@
 
 These are the higher level types of data we can collect (there are probably more--feel free to add):
 
-#### Block / Transaction level
 
+#### Block / Transaction level
 - Number of blocks/transactions/traces/logs per min/hour/day/week/month/10,000/100,000/1,000,000
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) whole chain
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) by monitor group
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) by monitored address
 - Number of transactions/traces/logs per block
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) whole chain
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) for block `n`
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) by monitor group
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) by monitored address
 - Number of traces/logs per transaction
-- Percentage of value transfers to contract executions to contract creations to suicides
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) whole chain
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) for block `n`
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) by monitor group
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) by monitored address
+- Percentage of value transfers as contract executions vs. contract creations vs. suicides
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) whole chain
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) for block `n`
+  - ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) for monitored addresses -- mostly doable, but need to get specific about surfacing suicide value
 - Average 'input' data size per min/hour/day/week/month/10,000/100,000/1,000,000
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) all tx input data
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) monitored address tx input data
 - Average value of transactions over time (including and excluding zero value transactions)
-- Analysis of Eth bloom filters (how full, how many false positives?)
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) for all tx
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) for monitored address tx
+- ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) Analysis of Eth bloom filters (how full, how many false positives?)
 
 #### Account level
-
 - New account creations per min/hour/day/week/month/10,000/100,000/1,000,000
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) scoped to whole chain
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) scoped to activity on monitored address(es)
 - Total number of accounts (by regular vs. contract)
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) scoped to whole chain
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) scoped to monitored address(es)
 - Percentages of regular accounts to smart contract accounts
+  - Do we know whether account is externally owned account or contract account?
 - Most active regular vs. smart contract
+  - Do we know whether account is externally owned account or contract account?
 - Largest holdings regular vs. smart contract
+  - Do we know whether account is externally owned account or contract account?
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) scoped to whole chain
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) scoped to monitored address(es)
 - Distribution by number of external transactions involved in
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) any address
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) monitored address
 - Distribution by number of internal transactions initiated
-- Most active creator of smart contracts
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) any address
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) monitored address
+- ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) Most active creator of smart contracts
 - Size of contract storage per address
+  - ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) doable but out of scope?
 - Size of contract code per address
-- Activity density (most active over day/week/month/year)
-- Activity span (longest distance between first and most recent transaction)
-- Average life span (average of first vs. most recent transaction)
-- History of first event account
-- History of Genisis accounts
+  - ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) doable but out of scope?
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Activity density (most active over day/week/month/year)
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Activity span (longest distance between first and most recent transaction)
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Average life span (average of first vs. most recent transaction)
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) History of first event account
+- History of Genesis accounts
+  - this is the account that created the smart contract, right?
 
 #### Gas/Ether accounting
-
-- Expenditures on gas per min/hour/day/week/month/10,000/100,000/1,000,000 (in Wei / Ether / US Dollars)
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Expenditures on gas per min/hour/day/week/month/10,000/100,000/1,000,000 (in Wei / Ether / US Dollars)
 - Contract generating largest all-time gas usage
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) between all addresses
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) between monitored addresses
 - Contract with highest per transaction gas cost
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) between all addresses
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) between monitored addresses
 - Highest spending on gas by a single non-contract account (and by a smart contract)
-- Highest costing individual function call
+- ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) between all addresses
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) between monitored addresses
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Highest costing individual function call
 - Gas price history (Wei / Ether / US dollar)
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) for all blocks / tx
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) for monitored address blocks / tx
 - gasUsed as percentage of gasAllowed (relative to gasPrice)
-- gasUsed as a percentage of gasLimit
-- Expentitures on gas per day in US dollars
-- Cost of mining rewards in US dollars
+  - By gasAllowed, do you mean gasLimit (bullet below)
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) gasUsed as a percentage of gasLimit
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Expenditures on gas per day in US dollars
 - Total transaction volume in US dollars by min/hour/day/week/month/10,000/100,000/1,000,000
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) any address
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) monitored address
 - Percent of transaction with more than 21000 gas used (the default for a transfer)
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) all tx
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) monitored address tx
 - Percent of transactions with non-default gas price
+  - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) all tx
+  - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) monitored address tx
 
-#### Indiviual account data (i.e. tokenomics)
-
-- Individual history of transactions per account (or group of accounts)
-- Gas analysis for individual smart contracts (gas used per function, etc)
-- Per block accounting / reconciliation with node
-- Extraction of articulated transactions (count by function call)
-- Comparison between two (or more) different ERC20 tokens
-- Cap tables for ERC20 tokens
-- Analysis of ERC721 tokens
-- Asset inventories for ERC721 tokens
+#### Individual account data (i.e. tokenomics)
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Individual history of transactions per account (or group of accounts)
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Gas analysis for individual smart contracts (gas used per function, etc)
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Per block accounting / reconciliation with node
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Extraction of articulated transactions (count by function call)
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Comparison between two (or more) different ERC20 tokens **(monitored ERC20 tokens only)**
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Cap tables for ERC20 tokens
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Analysis of ERC721 tokens
+- ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Asset inventories for ERC721 tokens
 
 #### Relationship data
-
 - Number of totally isolated account pairs?
 - Can we identify cliques of accounts?
-- Can we identify types of contracts by thier relationships with other accounts alone?
+- Can we identify types of contracts by their relationships with other accounts alone?
 - Are there recognizable smart contract structures?
 
 #### Mining data
-
-- Unique miners overal
+- Cost of mining rewards in US dollars
+- Unique miners overall
 - Most frequent winner
 - Number of unique new miners per week
 - Can we find cliques between miners?
 
 #### Quickblocks specific
-
 - Performance analysis
 - Usage of adaptive hierarchical blooms filters (size savings, false positives, etc)
 
