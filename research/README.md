@@ -102,5 +102,6 @@
 - https://thenextweb.com/hardfork/2018/03/21/coinbase-smart-contract-bug-allowed-crediting/?amp=1&__twitter_impression=true
 - https://www.integrity-research.com/launch-digital-asset-research/
 - https://medium.com/@analyseether/description-of-the-analyse-ether-database-fa88bdd41535
-
 - https://crypterium.io/ (wtf)
+- https://medium.com/truebit/truebit-the-marketplace-for-verifiable-computation-f51d1726798f
+- https://ethereum.stackexchange.com/q/3536/1529
