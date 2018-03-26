@@ -2,6 +2,12 @@
 
 These are the higher level types of data we can collect (there are probably more--feel free to add):
 
+| color | assessment |
+| --- | --- |
+| ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) | in scope and possible |
+| ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) | out of scope (but possible) |
+| ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) | doable but a little unclear |
+
 
 #### Block / Transaction level
 - Number of blocks/transactions/traces/logs per min/hour/day/week/month/10,000/100,000/1,000,000
