@@ -106,3 +106,4 @@
 - https://medium.com/truebit/truebit-the-marketplace-for-verifiable-computation-f51d1726798f
 - https://ethereum.stackexchange.com/q/3536/1529
 - https://blog.neufund.org/how-not-to-lose-millions-of-dollars-in-your-ico-end-to-end-testing-for-dapps-f10b8becef7e
+- https://github.com/hiddentao/ethereum-blocks
