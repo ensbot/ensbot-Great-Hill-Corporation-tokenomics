@@ -99,9 +99,10 @@
 - https://www.quora.com/How-do-you-calculate-server-costs-per-user-for-a-social-networking-type-platform-where-storage-for-each-user-would-max-out-at-2gb-a-month-500mb-a-day
 - https://github.com/ipfs/go-ipld-eth-import/issues/1
 - https://github.com/MetaMask/mustekala/issues/2
-- https://thenextweb.com/hardfork/2018/03/21/coinbase-smart-contract-bug-allowed-crediting/?amp=1&__twitter_impression=true
+- https://thenextweb.com/hardfork/2018/03/21/coinbase-smart-contract-bug-allowed-crediting/?amp=1&__twitter_impression=true __
 - https://www.integrity-research.com/launch-digital-asset-research/
 - https://medium.com/@analyseether/description-of-the-analyse-ether-database-fa88bdd41535
 - https://crypterium.io/ (wtf)
 - https://medium.com/truebit/truebit-the-marketplace-for-verifiable-computation-f51d1726798f
 - https://ethereum.stackexchange.com/q/3536/1529
+- https://blog.neufund.org/how-not-to-lose-millions-of-dollars-in-your-ico-end-to-end-testing-for-dapps-f10b8becef7e
