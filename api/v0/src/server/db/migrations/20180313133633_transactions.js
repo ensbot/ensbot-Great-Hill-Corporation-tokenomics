@@ -27,7 +27,20 @@ exports.up = (knex, Promise) => {
       table.binary('address').notNullable();
       table.boolean('is_monitored').notNullable().defaultTo(false);
       table.boolean('known_contract').notNullable().defaultTo(false);
-      table.string('nickname');
+    })
+    .createTable('user', (table) => {
+      table.increments('user_id');
+      table.string('user_name', 40);
+    })
+    .createTable('monitor_view', (table) => {
+      // `user_id` nullable because some views might be shared between users
+      table.integer('user_id').unsigned().references('user_id').inTable('user')
+        .onDelete('CASCADE'); // delete user monitors if the user is deleted.
+      table.integer('monitor_view_id').unsigned().notNullable();
+      table.integer('address_id').unsigned().references('id').inTable('address').notNullable()
+        .onDelete('RESTRICT'); // prevent deletion of an address when it's used in a monitor.
+      table.string('nickname', 50);
+      table.primary(['user_id', 'address_id', 'monitor_view_id']);
     })
     .createTable('transaction', (table) => {
       table.charset('utf8mb4');
@@ -39,7 +52,8 @@ exports.up = (knex, Promise) => {
       table.integer('from', 42).unsigned().references('id').inTable('address').notNullable();
       table.integer('to', 42).unsigned().references('id').inTable('address').notNullable();
       table.bigInteger('value_wei').unsigned().notNullable().defaultTo(0); // max val: 	2^64-1
-      table.decimal('gas_cost', 21, 18).unsigned().notNullable(); // expects that gasCost will never be more specific than XXX.XXXXXXXXXXXXXXXXXX
+      table.decimal('gas_used', 21, 18).unsigned().notNullable(); // expects that gasCost will never be more specific than XXX.XXXXXXXXXXXXXXXXXX
+      table.decimal('gas_price', 21, 18).unsigned().notNullable();
       table.boolean('is_error').notNullable().defaultTo(false);
       table.timestamp('created_at').defaultTo(knex.fn.now());
       table.primary(['block_number', 'tx_index', 'trace_id']);
@@ -92,7 +106,9 @@ exports.down = (knex, Promise) => {
     .dropTable('abi_spec')
     .dropTable('address_transaction')
     .dropTable('transaction')
+    .dropTable('view')
     .dropTable('address')
     .dropTable('block')
+    .dropTable('user')
     .dropTable('price');
 };
