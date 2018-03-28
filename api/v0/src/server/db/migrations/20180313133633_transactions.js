@@ -17,7 +17,7 @@ exports.up = (knex, Promise) => {
     })
     .createTable('block', (table) => {
       table.integer('block_number').unsigned().primary().notNullable(); // max val: 4294967295
-      table.datetime('date_time').notNullable();
+      table.integer('timestamp', 11).notNullable();
       table.boolean('is_finalized').notNullable().defaultTo(false);
       table.timestamp('created_at').defaultTo(knex.fn.now());
     })
