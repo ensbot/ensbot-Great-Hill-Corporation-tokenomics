@@ -3,6 +3,21 @@ const router = express.Router();
 const knex = require('../db/connection');
 const authHelpers = require('../auth/_helpers');
 
+router.get('/monitor/:monitorAddress', (req, res, next) => {
+  knex('transaction').select('*')
+    .join('monitor_transaction', function() {
+      this.on('transaction.block_number', '=', 'monitor_transaction.block_number')
+      .andOn('transaction.tx_index', '=', 'monitor_transaction.tx_index')
+      .andOn('transaction.trace_id', '=', 'monitor_transaction.trace_id')
+    })
+    .whereRaw(`monitor_transaction.address = UNHEX('${req.params.monitorAddress.substring(2)}')`)
+    .then((transactions) => {
+      res.status(200).json({status: 'success', data: transactions});
+    }).catch((err) => {
+      res.status(500).json({status: 'error', data: err});
+    });
+})
+
 router.get('/', (req, res, next) => {
   knex('transaction').select('*').then((transactions) => {
     res.status(200).json({status: 'success', data: transactions});

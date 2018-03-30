@@ -54,7 +54,7 @@
   ],
   "safeContextKeyword": "target",
   "validateLineBreaks": "LF",
-  "validateQuoteMarks": "'",
+  "validateQuoteMarks": {"mark": "'", "escape": true},
   "validateIndentation": 2,
   "excludeFiles": [
     "node_modules/**",

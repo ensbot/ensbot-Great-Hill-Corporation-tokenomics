@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "node ./src/server/server",
-    "test": "./node_modules/mocha/bin/_mocha"
+    "test": "./node_modules/mocha/bin/_mocha -t 15000"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
