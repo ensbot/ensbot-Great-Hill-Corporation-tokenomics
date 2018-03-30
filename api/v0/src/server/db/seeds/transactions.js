@@ -48,7 +48,12 @@ exports.seed = function(knex, Promise) {
     const txInsertions = res.map((tx) => {
       return `(${tx.blocknumber}, ${tx.transactionindex}, ${tx.traceid}, UNHEX('${tx.to.substring(2)}'), UNHEX('${tx.from.substring(2)}'), ${tx.value}, ${tx.gasused}, ${tx.gasprice}, ${tx.is_error}, UNHEX('${tx.encoding.substring(2)}'), '${JSON.stringify(tx.articulated).replace(/'/gi, "\\'").replace(/\\"/gi, "\\\\\"")}')`
     }).join(',');
-    //console.log(txInsertions);
+    const monitorTxInsertions = res.filter((tx) => {
+      //return tx.monitor_address != tx.to && monitor_address != tx.from;
+      return true;
+    }).map((tx) => {
+      return `(UNHEX('${tx.monitor_address.substring(2)}'), ${tx.blocknumber}, ${tx.transactionindex}, ${tx.traceid})`;
+    });
     const query = {
       blockInsertion: knex.raw(`
         INSERT INTO block (block_number, timestamp)
@@ -64,13 +69,22 @@ exports.seed = function(knex, Promise) {
         INSERT INTO transaction (block_number, tx_index, trace_id, from_address, to_address, value_wei, gas_used, gas_price, is_error, abi_encoding, input_articulated)
          VALUES ${txInsertions}
          ON DUPLICATE KEY UPDATE block_number=block_number;
+      `),
+      monitorTxInsertion: knex.raw(`
+        INSERT INTO monitor_transaction (address, block_number, tx_index, trace_id)
+         VALUES ${monitorTxInsertions}
+         ON DUPLICATE KEY UPDATE block_number=block_number;
       `)
     }
     return Promise.all([query.blockInsertion,
                         query.addressInsertion,
-                        query.txInsertion]);
+                        query.txInsertion]).then((res) => {
+                          console.dir(res, {depth: null});  
+                          return Promise.all([query.monitorTxInsertion]);
+                        });
 }).then((res) => {
     console.dir(res, {depth: null});
+
 }).catch(e => {
     return console.log(e)
   });
