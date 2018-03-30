@@ -39,30 +39,38 @@ exports.seed = function(knex, Promise) {
     }, {blockNumbers: [], blockTimestamps: [], addresses: []});
     reduceObj.blockNumbers = [...new Set(reduceObj.blockNumbers)].filter(blockNum => blockNum > 0);
     reduceObj.addresses = [...new Set(reduceObj.addresses)];
-    let insertBlocks = reduceObj.blockNumbers.map((blockNo) => {
+    const blockInsertions = reduceObj.blockNumbers.map((blockNo) => {
       return `(${blockNo}, ${reduceObj.blockTimestamps[blockNo]})`;
     }).join(',');
-    return Promise.all([knex.raw(`
-      INSERT INTO block (block_number, timestamp) VALUES
-        ${insertBlocks};`)]);
-
-    // console.log(reduceObj);
-
-    // const dataToInsert = res.slice(0, 10).map((row) => {
-    //   return {
-    //     dateTime: row.DATESH + ' ' + row.TIME.slice(0, -4),
-    //     blockNumber: row.BLOCKNUMBER,
-    //     transactionIndex: row.TRANSACTIONINDEX,
-    //     from: row.FROM,
-    //     to: row.TO,
-    //     value: row.ETHER,
-    //     gasCost: row.GASCOST,
-    //     articulated: row.ARTICULATED
-    //   }
-    // });
-    // return Promise.all([// Inserts seed entries
-    //   knex('transactions').insert(dataToInsert)])
-
+    const addressInsertions = reduceObj.addresses.map((address) => {
+      return `(UNHEX("${address.substring(2)}"))`;
+    }).join(',');
+    const txInsertions = res.map((tx) => {
+      return `(${tx.blocknumber}, ${tx.transactionindex}, ${tx.traceid}, UNHEX('${tx.to.substring(2)}'), UNHEX('${tx.from.substring(2)}'), ${tx.value}, ${tx.gasused}, ${tx.gasprice}, ${tx.is_error}, UNHEX('${tx.encoding.substring(2)}'), '${JSON.stringify(tx.articulated).replace(/'/gi, "\\'").replace(/\\"/gi, "\\\\\"")}')`
+    }).join(',');
+    //console.log(txInsertions);
+    const query = {
+      blockInsertion: knex.raw(`
+        INSERT INTO block (block_number, timestamp)
+           VALUES ${blockInsertions}
+          ON DUPLICATE KEY UPDATE block_number=block_number;
+          `),
+      addressInsertion: knex.raw(`
+        INSERT INTO address (address)
+         VALUES ${addressInsertions}
+         ON DUPLICATE KEY UPDATE address=address;
+         `),
+      txInsertion: knex.raw(`
+        INSERT INTO transaction (block_number, tx_index, trace_id, from_address, to_address, value_wei, gas_used, gas_price, is_error, abi_encoding, input_articulated)
+         VALUES ${txInsertions}
+         ON DUPLICATE KEY UPDATE block_number=block_number;
+      `)
+    }
+    return Promise.all([query.blockInsertion,
+                        query.addressInsertion,
+                        query.txInsertion]);
+}).then((res) => {
+    console.dir(res, {depth: null});
 }).catch(e => {
     return console.log(e)
   });

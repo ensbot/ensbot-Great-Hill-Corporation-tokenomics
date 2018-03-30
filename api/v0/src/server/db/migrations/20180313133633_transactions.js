@@ -17,14 +17,14 @@ exports.up = (knex, Promise) => {
     })
     .createTable('block', (table) => {
       table.integer('block_number').unsigned().primary().notNullable(); // max val: 4294967295
-      table.integer('timestamp', 11).notNullable();
+      table.integer('timestamp', 11).unsigned().notNullable();
       table.boolean('is_finalized').notNullable().defaultTo(false);
       table.timestamp('created_at').defaultTo(knex.fn.now());
     })
     // create an address table so that addresses are only stored once
     .createTable('address', (table) => {
-      table.increments('id');
-      table.binary('address').notNullable();
+      //table.increments('id');
+      table.binary('address', 20).primary().notNullable();
       table.boolean('is_monitored').notNullable().defaultTo(false);
       table.boolean('known_contract').notNullable().defaultTo(false);
     })
@@ -37,13 +37,13 @@ exports.up = (knex, Promise) => {
       table.integer('user_id').unsigned().references('user_id').inTable('user')
         .onDelete('CASCADE'); // delete user monitors if the user is deleted.
       table.integer('monitor_view_id').unsigned().notNullable();
-      table.integer('address_id').unsigned().references('id').inTable('address').notNullable()
+      table.binary('address', 20).references('address').inTable('address').notNullable()
         .onDelete('RESTRICT'); // prevent deletion of an address when it's used in a monitor.
       table.string('nickname', 50);
-      table.primary(['user_id', 'address_id', 'monitor_view_id']);
+      table.primary(['user_id', 'address', 'monitor_view_id']);
     })
     .createTable('abi_spec', (table) => {
-      //table.integer('abi_address_id').unsigned().references('id').inTable('address').notNullable()
+      //table.integer('abi_address').unsigned().references('id').inTable('address').notNullable()
       //  .onDelete('RESTRICT'); // prevent address deletion if we have its ABI spec
       table.binary('abi_encoding', 20).primary().notNullable();
       table.specificType('fn_definition', 'JSON').notNullable();
@@ -55,26 +55,28 @@ exports.up = (knex, Promise) => {
         .onDelete('CASCADE'); // delete the transaction if the block gets deleted.
       table.integer('tx_index').unsigned().notNullable();
       table.integer('trace_id').unsigned().notNullable();
-      table.integer('from', 42).unsigned().references('id').inTable('address').notNullable();
-      table.integer('to', 42).unsigned().references('id').inTable('address').notNullable();
-      table.bigInteger('value_wei').unsigned().notNullable().defaultTo(0); // max val: 	2^64-1
-      table.decimal('gas_used', 21, 18).unsigned().notNullable(); // expects that gasCost will never be more specific than XXX.XXXXXXXXXXXXXXXXXX
-      table.decimal('gas_price', 21, 18).unsigned().notNullable();
+      table.binary('from_address', 20).references('address').inTable('address').notNullable();
+      table.binary('to_address', 20).references('address').inTable('address').notNullable();
+      table.decimal('value_wei', 38, 0).unsigned().notNullable().defaultTo(0);
+      table.bigInteger('gas_used').unsigned().notNullable();
+      table.bigInteger('gas_price').unsigned().notNullable();
       table.boolean('is_error').notNullable().defaultTo(false);
-      table.binary('abi_encoding', 20).references('abi_encoding').inTable('abi_spec').notNullable();
+      table.binary('abi_encoding', 20)
+        //.references('abi_encoding').inTable('abi_spec')
+        .notNullable();
       table.specificType('input_articulated', 'JSON');
       table.timestamp('created_at').defaultTo(knex.fn.now());
       table.primary(['block_number', 'tx_index', 'trace_id']);
     })
     .createTable('monitor_transaction', (table) => {
-      table.integer('address_id').unsigned().references('id').inTable('address').notNullable()
+      table.binary('address', 20).references('address').inTable('address').notNullable()
         .onDelete('RESTRICT'); // Prevent address deletion if we have a transaction for it
       table.integer('block_number').unsigned().notNullable();
       table.integer('tx_index').unsigned().notNullable();
       table.integer('trace_id').unsigned().notNullable();
       table.foreign(['block_number', 'tx_index', 'trace_id']).references(['block_number', 'tx_index', 'trace_id']).inTable('transaction')
         .onDelete('CASCADE'); // Delete the address-transaction mapping if the block or tx gets deleted.
-      table.primary(['address_id', 'block_number', 'tx_index', 'trace_id']);
+      table.primary(['address', 'block_number', 'tx_index', 'trace_id']);
     });
 };
 
