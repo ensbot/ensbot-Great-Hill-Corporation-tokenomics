@@ -59,9 +59,9 @@ These are the higher level types of data we can collect (there are probably more
   - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) monitored address
 - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) Most active creator of smart contracts
 - Size of contract storage per address
-  - ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) doable but out of scope?
+  - ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) doable but out of scope? (data in Contracts.csv?)
 - Size of contract code per address
-  - ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) doable but out of scope?
+  - ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) doable but out of scope? (data in Contracts.csv?)
 - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Activity density (most active over day/week/month/year)
 - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Activity span (longest distance between first and most recent transaction)
 - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) Average life span (average of first vs. most recent transaction)
