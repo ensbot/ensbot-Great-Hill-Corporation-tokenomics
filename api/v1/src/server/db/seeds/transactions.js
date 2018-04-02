@@ -1,8 +1,16 @@
+require('dotenv').config();
 const fs = require('fs');
 const csv = require('csv');
 const util = require('util');
 const csvParse = util.promisify(csv.parse);
 const readFile = util.promisify(fs.readFile);
+
+const config = {
+  seedLength: {
+    development: 5000,
+    testing: 10
+  }
+}
 
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
@@ -29,7 +37,7 @@ exports.seed = function(knex, Promise) {
       });
     })
   }).then((res) => {
-    res = res.slice(0, 10);
+    res = res.slice(0, config.seedLength[process.env.NODE_ENV]);
     let reduceObj = res.reduce((acc, cur) => {
       cur.blocknumber != ''
         ? acc.blockNumbers.push(cur.blocknumber)
