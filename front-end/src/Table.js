@@ -44,7 +44,7 @@ class Table extends Component {
 
 
   componentDidMount = () => {
-    fetch(`/api/v0/transactions/monitor/${this.props.monitorAddress}`).then(res => res.json()).then((res) => {
+    fetch(`/api/v1/transactions/monitor/${this.props.monitorAddress}`).then(res => res.json()).then((res) => {
       this.setState({myData: res.data});
       console.log(res.data);
     }).catch((err) => {

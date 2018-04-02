@@ -11,8 +11,8 @@
 
     // *** register routes *** //
     app.use('/', routes);
-    app.use('/api/v0/auth', authRoutes);
-    app.use('/api/v0/transactions', transactionRoutes);
+    app.use('/api/v1/auth', authRoutes);
+    app.use('/api/v1/transactions', transactionRoutes);
   };
 
 })(module.exports);

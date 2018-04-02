@@ -12,7 +12,7 @@ class Chart extends Component {
 }
 
 componentDidMount = () => {
-  fetch('/api/v0/transactions')
+  fetch('/api/v1/transactions')
     .then(res => res.json())
     .then((res) => {
       console.log(res);
