@@ -44,24 +44,13 @@ class Table extends Component {
 
 
   componentDidMount = () => {
-    fetch(`/api/v1/transactions/monitor/${this.props.monitorAddress}`).then(res => res.json()).then((res) => {
-      this.setState({myData: res.data});
-      console.log(res.data);
-    }).catch((err) => {
-      console.log(err);
-    })
-  }
 
-  switchEthUnit = () => {
-    const newUnit = this.state.ethUnit === 'wei' ? 'eth' : 'wei';
-    return this.setState({ethUnit: newUnit});
   }
 
   render() {
     return (
       <div>
-        <button onClick={this.switchEthUnit}>Eth/Wei</button>
-        <ReactTable data={this.state.myData} columns={this.columns}/>
+        <ReactTable data={this.props.myData} columns={this.columns}/>
       </div>
     );
   }
