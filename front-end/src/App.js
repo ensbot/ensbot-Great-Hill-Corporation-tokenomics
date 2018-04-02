@@ -5,7 +5,6 @@ import {
   Link
 } from 'react-router-dom';
 
-import logo from './logo.svg';
 import Chart from './Chart';
 import Table from './Table';
 import 'bootstrap/dist/css/bootstrap.css';
