@@ -1,7 +1,7 @@
 require('dotenv').config();
 const username = process.env.MYSQL_USER;
 const password = process.env.MYSQL_PW;
-const databaseName = 'tokenomics_test';
+const databaseName = 'tokenomics_local';
 
 module.exports = {
   production: {

@@ -8,13 +8,14 @@ import {
 import logo from './logo.svg';
 import Chart from './Chart';
 import Table from './Table';
+import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
 const Links = () => {
   return (
     <nav>
-      <Link to="/">Home</Link>
-      <Link to={{pathname: '/tipjar'}}>Tip Jar</Link>
+      <Link to="/"><button>Home</button></Link>
+      <Link to={{pathname: '/tipjar'}}><button>Tip Jar</button></Link>
     </nav>
   )
 }

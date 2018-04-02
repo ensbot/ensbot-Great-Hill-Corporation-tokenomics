@@ -7,6 +7,11 @@ class Table extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      myData: [],
+      ethUnit: 'wei',
+    };
+
     this.columns = [
       {
         Header: 'Block Number',
@@ -24,22 +29,19 @@ class Table extends Component {
         Header: 'To',
         accessor: 'to_address',
       }, {
-        Header: 'Value (Wei)',
+        Header: 'Value (wei)',
         accessor: 'value_wei',
       }, {
         id: 'gasCost',
-        Header: 'Gas Cost (Wei)',
+        Header: 'Gas Cost (wei)',
         accessor: d => d.gas_price * d.gas_used,
       }, {
         Header: 'Articulated Input',
         accessor: 'input_articulated'
       }
-    ];
-
-    this.state = {
-      myData: []
-    };
+    ]
   }
+
 
   componentDidMount = () => {
     fetch(`/api/v0/transactions/monitor/${this.props.monitorAddress}`).then(res => res.json()).then((res) => {
@@ -50,9 +52,15 @@ class Table extends Component {
     })
   }
 
+  switchEthUnit = () => {
+    const newUnit = this.state.ethUnit === 'wei' ? 'eth' : 'wei';
+    return this.setState({ethUnit: newUnit});
+  }
+
   render() {
     return (
       <div>
+        <button onClick={this.switchEthUnit}>Eth/Wei</button>
         <ReactTable data={this.state.myData} columns={this.columns}/>
       </div>
     );
