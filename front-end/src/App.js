@@ -5,7 +5,7 @@ import {
   Link
 } from 'react-router-dom';
 
-import ChartAndTable from './ChartAndTable';
+import ChartAndTable2 from './ChartAndTable2';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
@@ -26,7 +26,7 @@ class App extends Component {
           <div>
             <Links />
             <Route exact path="/" />
-            <Route path="/tipjar" render={() => <ChartAndTable monitorAddress='0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359'/>} />
+            <Route path="/tipjar" render={() => <ChartAndTable2 monitorAddress='0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359'/>} />
           </div>
         </Router>
         {/* <header className="App-header">

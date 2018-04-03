@@ -61,7 +61,8 @@ class SimpleBrushChart extends Component {
           focus.select(".area").attr("d", area);
           focus.select(".axis--x").call(xAxis);
           svg.select(".zoom").call(zoom.transform, d3.zoomIdentity.scale(width / (s[1] - s[0])).translate(-s[0], 0));
-        }
+          console.log(`~${x.domain().reduce((a,b) => {return Math.abs(a-b)/(1000*60*60*24*30)})} months`);
+          }
 
         const zoomed = () => {
           if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush")
@@ -71,7 +72,7 @@ class SimpleBrushChart extends Component {
           focus.select(".area").attr("d", area);
           focus.select(".axis--x").call(xAxis);
           context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
-        }
+          }
 
       const x = d3.scaleTime().range([0, width]),
         x2 = d3.scaleTime().range([0, width]),
