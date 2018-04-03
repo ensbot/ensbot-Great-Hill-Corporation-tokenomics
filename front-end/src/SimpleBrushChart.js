@@ -1,35 +1,35 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
-import * as moment from 'moment';
 import './App.css';
 
-class Chart extends Component {
+class SimpleBrushChart extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {myData: props.myData};
+    this.state = {};
   }
 
   componentDidUpdate = () => {
     if (this.props.myData.length) {
 
-      const parseDate = d3.timeParse("%Y %b");
+      const parseDate = d3.timeParse("%Y %W"),
+      formatDate = d3.timeFormat("%Y %W");
 
-      const myData = Object.entries(
+      const data = Object.entries(
         this.props.myData
         // .filter((data, index) => {
         //   if(index < 5) console.log(data.is_error);
         //   return !data.is_error;
         // })
         .map((datum) => {
-          datum.monthYear = moment.unix(datum.block_timestamp).format('YYYY MMM');
+          datum.monthYear = formatDate(new Date(datum.block_timestamp * 1000));
           return datum;
         })
         .reduce((acc, cur) => {
           acc[cur.monthYear] = (acc[cur.monthYear] || 0) +1;
           return acc;
         }, {}))
-        .map((datum) => {
+        .map((datum) => {// XXX:
           return {
             date: parseDate(datum[0]),
             price: +datum[1]
@@ -52,6 +52,26 @@ class Chart extends Component {
         width = +svg.attr("width") - margin.left - margin.right,
         height = +svg.attr("height") - margin.top - margin.bottom,
         height2 = +svg.attr("height") - margin2.top - margin2.bottom;
+
+        const brushed = () => {
+          if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom")
+            return; // ignore brush-by-zoom
+          let s = d3.event.selection || x2.range();
+          x.domain(s.map(x2.invert, x2));
+          focus.select(".area").attr("d", area);
+          focus.select(".axis--x").call(xAxis);
+          svg.select(".zoom").call(zoom.transform, d3.zoomIdentity.scale(width / (s[1] - s[0])).translate(-s[0], 0));
+        }
+
+        const zoomed = () => {
+          if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush")
+            return; // ignore zoom-by-brush
+          let t = d3.event.transform;
+          x.domain(t.rescaleX(x2).domain());
+          focus.select(".area").attr("d", area);
+          focus.select(".axis--x").call(xAxis);
+          context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
+        }
 
       const x = d3.scaleTime().range([0, width]),
         x2 = d3.scaleTime().range([0, width]),
@@ -81,13 +101,13 @@ class Chart extends Component {
         [width, height]
       ]).on("zoom", zoomed);
 
-      const area = d3.area().curve(d3.curveMonotoneX).x(function(d) {
+      const area = d3.area().curve(d3.curveMonotoneX).x((d) => {
         return x(d.date);
       }).y0(height).y1(function(d) {
         return y(d.price);
       });
 
-      const area2 = d3.area().curve(d3.curveMonotoneX).x(function(d) {
+      const area2 = d3.area().curve(d3.curveMonotoneX).x((d) => {
         return x2(d.date);
       }).y0(height2).y1(function(d) {
         return y2(d.price);
@@ -95,11 +115,10 @@ class Chart extends Component {
 
       svg.append("defs").append("clipPath").attr("id", "clip").append("rect").attr("width", width).attr("height", height);
 
-      const focus = svg.append("g").attr("class", "focus").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      let focus = svg.append("g").attr("class", "focus").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      const context = svg.append("g").attr("class", "context").attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+      let context = svg.append("g").attr("class", "context").attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
-      let data = myData;
 
       x.domain(d3.extent(data, function(d) {
         return d.date;
@@ -126,26 +145,6 @@ class Chart extends Component {
       context.append("g").attr("class", "brush").call(brush).call(brush.move, x.range());
 
       svg.append("rect").attr("class", "zoom").attr("width", width).attr("height", height).attr("transform", "translate(" + margin.left + "," + margin.top + ")").call(zoom);
-
-      function brushed() {
-        if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom")
-          return; // ignore brush-by-zoom
-        const s = d3.event.selection || x2.range();
-        x.domain(s.map(x2.invert, x2));
-        focus.select(".area").attr("d", area);
-        focus.select(".axis--x").call(xAxis);
-        svg.select(".zoom").call(zoom.transform, d3.zoomIdentity.scale(width / (s[1] - s[0])).translate(-s[0], 0));
-      }
-
-      function zoomed() {
-        if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush")
-          return; // ignore zoom-by-brush
-        const t = d3.event.transform;
-        x.domain(t.rescaleX(x2).domain());
-        focus.select(".area").attr("d", area);
-        focus.select(".axis--x").call(xAxis);
-        context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
-      }
     }
   }
 
@@ -158,4 +157,4 @@ class Chart extends Component {
   }
 }
 
-export default Chart;
+export default SimpleBrushChart;
