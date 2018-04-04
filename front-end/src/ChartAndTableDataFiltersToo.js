@@ -1,18 +1,24 @@
 import React, {Component} from 'react';
 import Table from './Table';
 import SimpleBrushChart from './SimpleBrushChart';
-// import ReactTable from 'react-table';
-// import 'react-table/react-table.css';
 
-class ChartAndTable extends Component {
+class ChartAndTableDataFiltersToo extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       myData: [],
       isLoaded: false,
-      error: null
+      error: null,
+      dataBounds: [new Date('1970'), new Date(Date.now())]
     };
+  }
+
+  filterData = (data) => {
+    return this.state.dataBounds === [0,0] ? data : data.filter((row) => {
+      let date = new Date(row.block_timestamp * 1000);
+      return date >= this.state.dataBounds[0] && date <= this.state.dataBounds[1];
+    });
   }
 
 
@@ -33,14 +39,18 @@ class ChartAndTable extends Component {
         });
   }
 
+  handleZoomChange = (bounds) => {
+    this.setState({dataBounds: bounds});
+  }
+
   render() {
     return (
       <div>
-        <SimpleBrushChart myData={this.state.myData} onZoomChange={() => {return false}}/>
-        <Table myData={this.state.myData}/>
+        <SimpleBrushChart myData={this.state.myData} onZoomChange={this.handleZoomChange}/>
+        <Table myData={this.filterData(this.state.myData)}/>
       </div>
     );
   }
 }
 
-export default ChartAndTable;
+export default ChartAndTableDataFiltersToo;

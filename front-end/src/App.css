@@ -37,3 +37,7 @@
   fill: none;
   pointer-events: all;
 }
+
+nav .btn {
+  margin: 15px;
+}

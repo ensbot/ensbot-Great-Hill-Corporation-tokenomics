@@ -14,6 +14,7 @@ const selectCols = [
   't.value_wei',
   't.gas_used',
   't.gas_price',
+  't.is_error',
   't.input_articulated'
 ]
 

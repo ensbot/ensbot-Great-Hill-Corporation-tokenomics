@@ -1,12 +1,23 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
-import './App.css';
 
 class SimpleBrushChart extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.updateCycle = 0;
+
+    this.state = {
+    };
+  }
+
+  shouldComponentUpdate = (nextProps, nextState) => {
+    if(this.updateCycle === 0) {
+      this.updateCycle = 1;
+      return true;
+    } else {
+      return false;
+    }
   }
 
   componentDidUpdate = () => {
@@ -61,7 +72,9 @@ class SimpleBrushChart extends Component {
           focus.select(".area").attr("d", area);
           focus.select(".axis--x").call(xAxis);
           svg.select(".zoom").call(zoom.transform, d3.zoomIdentity.scale(width / (s[1] - s[0])).translate(-s[0], 0));
-          console.log(`~${x.domain().reduce((a,b) => {return Math.abs(a-b)/(1000*60*60*24*30)})} months`);
+          //console.log(`~${x.domain().reduce((a,b) => {return Math.abs(a-b)/(1000*60*60*24*30)})} months`);
+          //console.log(x.domain());
+          //if(this.props.dataBounds !== x.domain()) this.props.onZoomChange(x.domain());
           }
 
         const zoomed = () => {
@@ -72,6 +85,7 @@ class SimpleBrushChart extends Component {
           focus.select(".area").attr("d", area);
           focus.select(".axis--x").call(xAxis);
           context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
+          if(this.props.dataBounds !== x.domain()) this.props.onZoomChange(x.domain());
           }
 
       const x = d3.scaleTime().range([0, width]),

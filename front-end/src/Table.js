@@ -36,6 +36,9 @@ class Table extends Component {
         Header: 'Gas Cost (wei)',
         accessor: d => d.gas_price * d.gas_used,
       }, {
+        Header: 'Error',
+        accessor: 'is_error',
+      }, {
         Header: 'Articulated Input',
         accessor: 'input_articulated'
       }

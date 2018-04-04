@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
-import './App.css';
 import Table from './Table';
-import SimpleBrushChart from './SimpleBrushChart';
-// import ReactTable from 'react-table';
-// import 'react-table/react-table.css';
+import ComplexBrushChart from './ComplexBrushChart';
 
 class ChartAndTable2 extends Component {
   constructor(props) {
@@ -37,7 +34,7 @@ class ChartAndTable2 extends Component {
   render() {
     return (
       <div>
-        <SimpleBrushChart myData={this.state.myData}/>
+        <ComplexBrushChart myData={this.state.myData}/>
         <Table myData={this.state.myData}/>
       </div>
     );
