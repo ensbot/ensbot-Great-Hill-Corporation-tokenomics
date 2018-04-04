@@ -42,6 +42,23 @@ class Table extends Component {
         Header: 'Articulated Input',
         accessor: 'input_articulated'
       }
+    ];
+
+    this.columnsSlim = [
+      {
+        id: 'block_timestamp',
+        Header: 'Block Timestamp',
+        accessor: d => new Date(d.block_timestamp*1000).toLocaleString('en-US', {timeZone:'UTC'})
+      }, {
+        Header: 'From',
+        accessor: 'from_address',
+      }, {
+        Header: 'To',
+        accessor: 'to_address',
+      }, {
+        Header: 'Value (wei)',
+        accessor: 'value_wei',
+      }
     ]
   }
 
@@ -53,7 +70,7 @@ class Table extends Component {
   render() {
     return (
       <div>
-        <ReactTable data={this.props.myData} columns={this.columns}/>
+        <ReactTable data={this.props.myData} columns={this.columnsSlim}/>
       </div>
     );
   }
