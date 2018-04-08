@@ -17,6 +17,7 @@ const config = {
 
 exports.seed = function(knex, Promise) {
   return knex('transaction').del().then(() => {
+    // STEP 1: READ IN FLAT FILE
     const readFlatFileAndParse = (filePath) => {
       return readFile(config.flatFilePath).then((res) => {
         return csvParse(res, {
@@ -43,7 +44,34 @@ exports.seed = function(knex, Promise) {
     };
     return readFlatFileAndParse(config.flatFilePath);
   }).then((res) => {
-
+    // At this point, the res object looks like the following:
+    // [
+    //   {
+    //     monitor_address: '0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359',
+    //     blocknumber: '1079183',
+    //     transactionindex: '2',
+    //     traceid: '1',
+    //     from: '0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359',
+    //     to: '0x89205a3a3b2a69de6dbf7f01ed13b2108b2c43e7',
+    //     timestamp: '1456769111',
+    //     value: '0',
+    //     gasused: '27463',
+    //     gasprice: '50000000000',
+    //     is_trace: '1',
+    //     is_error: '0',
+    //     encoding: '0x79c65068',
+    //     articulated: ['mintToken', '0x120a270bbc009644e35f0bb6ab13f95b8199c4ad', '1']
+    //   }, {
+    //     monitor_address: '0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359',
+    //     blocknumber: '1097821',
+    //     transactionindex: '4',
+    //     traceid: '0',
+    //     from: '0xd1220a0cf47c7b9be7a2e6ba89f429762e7b9adb',
+    //     to: '0x15c817923774384362de9a3942287088087bf427',
+    //     ...
+    //   }
+    // ]
+    
     let query = {
       blockInsertions: null,
       addressInsertions: null,
@@ -75,7 +103,7 @@ exports.seed = function(knex, Promise) {
         ON DUPLICATE KEY UPDATE block_number=block_number;
         `);
 
-    const addressInsertions = reduceObj.addresses.map((address) => {
+    const addressInsertions = reduced.addresses.map((address) => {
       return `(UNHEX("${address.substring(2)}"))`;
     }).join(',');
 
