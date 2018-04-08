@@ -27,11 +27,8 @@ class SimpleBrushChart extends Component {
       formatDate = d3.timeFormat("%Y %W");
 
       const data = Object.entries(
+
         this.props.myData
-        // .filter((data, index) => {
-        //   if(index < 5) console.log(data.is_error);
-        //   return !data.is_error;
-        // })
         .map((datum) => {
           datum.monthYear = formatDate(new Date(datum.block_timestamp * 1000));
           return datum;
@@ -43,9 +40,12 @@ class SimpleBrushChart extends Component {
         .map((datum) => {// XXX:
           return {
             date: parseDate(datum[0]),
+            // price is count
             price: +datum[1]
           }
         });
+
+        console.log(data);
 
       const svg = d3.select("svg"),
         margin = {

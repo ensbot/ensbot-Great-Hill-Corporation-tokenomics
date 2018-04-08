@@ -36,7 +36,7 @@ class ComplexBrushChart extends Component {
         console.log(data);
 
         var width = 1160,
-            size = 400,
+            size = 250,
             padding = 100;
 
         var x = d3.scaleLinear()

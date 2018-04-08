@@ -70,7 +70,7 @@ class Table extends Component {
   render() {
     return (
       <div>
-        <ReactTable data={this.props.myData} columns={this.columnsSlim}/>
+        <ReactTable data={this.props.myData} columns={this.columns}/>
       </div>
     );
   }

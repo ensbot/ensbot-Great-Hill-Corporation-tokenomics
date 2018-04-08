@@ -6,6 +6,9 @@ const csvParse = util.promisify(csv.parse);
 const readFile = util.promisify(fs.readFile);
 
 const config = {
+  flatFilePath: '../../monitors/etherTip_data_edited.txt',
+  // how many lines from our flat file should we seed?
+  // we want our tests to be fast, so let's only load 10 lines.
   seedLength: {
     development: 5000,
     testing: 10
@@ -13,51 +16,75 @@ const config = {
 }
 
 exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
   return knex('transaction').del().then(() => {
-    return readFile('../../monitors/etherTip_data_edited.txt').then((res) => {
-      return csvParse(res, {
-        delimiter: '\t',
-        relax: true,
-        columns: true
-      })
-    }).then((json) => {
-      let articulated = json.map((row) => {
-        return csvParse(row.articulated, {
-          delimiter: '|',
+    const readFlatFileAndParse = (filePath) => {
+      return readFile(config.flatFilePath).then((res) => {
+        return csvParse(res, {
+          delimiter: '\t',
           relax: true,
-          quote: false
+          columns: true
+        })
+      }).then((rows) => {
+        rows = rows.slice(0, config.seedLength[process.env.NODE_ENV]);
+        let rowsWithParsedArticulation = rows.map((row) => {
+          return csvParse(row.articulated, {
+            delimiter: '|',
+            relax: true,
+            quote: false
+          });
+        });
+        return Promise.all(rowsWithParsedArticulation).then((articulatedData) => {
+          return rows.map((row, index) => {
+            row.articulated = articulatedData[index][0];
+            return row;
+          });
         });
       });
-      return Promise.all(articulated).then((articulated) => {
-        return json.map((a, index) => {
-          a.articulated = articulated[index][0];
-          return a;
-        })
-      });
-    })
+    };
+    return readFlatFileAndParse(config.flatFilePath);
   }).then((res) => {
-    res = res.slice(0, config.seedLength[process.env.NODE_ENV]);
-    let reduceObj = res.reduce((acc, cur) => {
-      cur.blocknumber != ''
-        ? acc.blockNumbers.push(cur.blocknumber)
-        : null;
-      acc.blockTimestamps[cur.blocknumber] = cur.timestamp;
+
+    let query = {
+      blockInsertions: null,
+      addressInsertions: null,
+      txInsertions: null,
+      monitorTxInsertions: null
+    };
+
+    let reduced = res.reduce((acc, cur) => {
+      acc.blockNumbers.push(cur.blocknumber);
       acc.addresses.push(cur.to, cur.from, cur.monitor_address);
+      acc.blockTimestamps[cur.blocknumber] = cur.timestamp;
       return acc;
     }, {
       blockNumbers: [],
       blockTimestamps: [],
       addresses: []
     });
-    reduceObj.blockNumbers = [...new Set(reduceObj.blockNumbers)].filter(blockNum => blockNum > 0);
-    reduceObj.addresses = [...new Set(reduceObj.addresses)];
-    const blockInsertions = reduceObj.blockNumbers.map((blockNo) => {
-      return `(${blockNo}, ${reduceObj.blockTimestamps[blockNo]})`;
+    // unique block numbers and addresses
+    reduced.blockNumbers = [...new Set(reduced.blockNumbers)].filter(blockNum => blockNum > 0);
+    reduced.addresses = [...new Set(reduced.addresses)];
+
+    const blockInsertions = reduced.blockNumbers.map((blockNo) => {
+      return `(${blockNo}, ${reduced.blockTimestamps[blockNo]})`;
     }).join(',');
+
+    query.blockInsertions = knex.raw(`
+      INSERT INTO block (block_number, timestamp)
+         VALUES ${blockInsertions}
+        ON DUPLICATE KEY UPDATE block_number=block_number;
+        `);
+
     const addressInsertions = reduceObj.addresses.map((address) => {
       return `(UNHEX("${address.substring(2)}"))`;
     }).join(',');
+
+    query.addressInsertions = knex.raw(`
+      INSERT INTO address (address)
+       VALUES ${addressInsertions}
+       ON DUPLICATE KEY UPDATE address=address;
+       `);
+
     const txInsertions = res.map((tx) => {
       return `(
         ${tx.blocknumber},
@@ -73,36 +100,31 @@ exports.seed = function(knex, Promise) {
         '${JSON.stringify(tx.articulated).replace(/\'/gi, '\\\'').replace(/\\"/gi, '\\\\\"')}'
       )`
     }).join(',');
-    const monitorTxInsertions = res.filter((tx) => {
-      //return tx.monitor_address != tx.to && monitor_address != tx.from;
-      return true;
-    }).map((tx) => {
-      return `(UNHEX('${tx.monitor_address.substring(2)}'), ${tx.blocknumber}, ${tx.transactionindex}, ${tx.traceid})`;
-    });
-    const query = {
-      blockInsertion: knex.raw(`
-        INSERT INTO block (block_number, timestamp)
-           VALUES ${blockInsertions}
-          ON DUPLICATE KEY UPDATE block_number=block_number;
-          `),
-      addressInsertion: knex.raw(`
-        INSERT INTO address (address)
-         VALUES ${addressInsertions}
-         ON DUPLICATE KEY UPDATE address=address;
-         `),
-      txInsertion: knex.raw(`
+
+    query.txInsertions = knex.raw(`
         INSERT INTO transaction (block_number, tx_index, trace_id, from_address, to_address, value_wei, gas_used, gas_price, is_error, abi_encoding, input_articulated)
          VALUES ${txInsertions}
          ON DUPLICATE KEY UPDATE block_number=block_number;
-      `),
-      monitorTxInsertion: knex.raw(`
-        INSERT INTO monitor_transaction (address, block_number, tx_index, trace_id)
-         VALUES ${monitorTxInsertions}
-         ON DUPLICATE KEY UPDATE block_number=block_number;
-      `)
-    }
-    return Promise.all([query.blockInsertion, query.addressInsertion, query.txInsertion]).then((res) => {
-      return Promise.all([query.monitorTxInsertion]);
+      `);
+
+    const monitorTxInsertions = res
+    // .filter((tx) => { // uncomment if you want to save space but make querying a disaster
+    //   return tx.monitor_address != tx.to && monitor_address != tx.from;
+    // })
+      .map((tx) => {
+      return `(UNHEX('${tx.monitor_address.substring(2)}'), ${tx.blocknumber}, ${tx.transactionindex}, ${tx.traceid})`;
+    });
+
+    query.monitorTxInsertions = knex.raw(`
+      INSERT INTO monitor_transaction (address, block_number, tx_index, trace_id)
+       VALUES ${monitorTxInsertions}
+       ON DUPLICATE KEY UPDATE block_number=block_number;
+    `);
+
+    return Promise.all([query.blockInsertions, query.addressInsertions, query.txInsertions]).then((res) => {
+      return Promise.all([
+        // Do this later because it requires the presence of foreign key values introduced above.
+        query.monitorTxInsertions]);
     });
   }).catch(e => {
     return console.log(e)
