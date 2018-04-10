@@ -1,5 +1,9 @@
+const fs = require('fs');
+const util = require('util');
+const writeFile = util.promisify(fs.writeFile);
+
 exports.up = (knex, Promise) => {
-  return knex.schema
+  let knexCreateTables = knex.schema
   // .createTable('exchange', (table) => {
   //   table.string('name', 25).notNullable();
   //   table.string('nicename', 25).notNullable();
@@ -64,6 +68,15 @@ exports.up = (knex, Promise) => {
       // Delete the address-transaction mapping if the block or tx gets deleted.
       .onDelete('CASCADE');
     table.primary(['monitor_address', 'block_number', 'tx_index', 'trace_id']);
+  });
+  const createTableSqlCode = knexCreateTables.toSQL().map((knexCode) => {
+    return knexCode.sql;
+  }).join(';\n').concat(';\n');
+  return writeFile('./src/server/db/migrations/20180313133633_transactions.sql', createTableSqlCode).then(() => {
+    return knexCreateTables;
+  })
+  .catch((err) => {
+    console.log(err);
   });
 };
 
