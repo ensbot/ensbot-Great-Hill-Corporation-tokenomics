@@ -17,7 +17,7 @@ const config = {
   // we want our tests to be fast, so let's only load 10 lines.
   seedLength: {
     development: 5000,
-    testing: 10
+    test: 10
   }
 }
 
