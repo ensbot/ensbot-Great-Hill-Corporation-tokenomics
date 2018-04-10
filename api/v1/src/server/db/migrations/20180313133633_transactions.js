@@ -39,7 +39,7 @@ exports.up = (knex, Promise) => {
   }).createTable('abi_spec', (table) => {
     //table.integer('abi_address').unsigned().references('id').inTable('address').notNullable()
     //  .onDelete('RESTRICT'); // prevent address deletion if we have its ABI spec
-    table.binary('abi_encoding', 20).primary().notNullable();
+    table.binary('abi_encoding', 10).primary().notNullable();
     table.specificType('fn_definition', 'JSON').notNullable();
   }).createTable('transaction', (table) => {
     table.charset('utf8mb4');
@@ -53,7 +53,7 @@ exports.up = (knex, Promise) => {
     table.bigInteger('gas_used').unsigned().notNullable();
     table.bigInteger('gas_price').unsigned().notNullable();
     table.boolean('is_error').notNullable().defaultTo(false);
-    table.string('abi_encoding', 20)
+    table.string('abi_encoding', 10)
     //.references('abi_encoding').inTable('abi_spec')
       .notNullable();
     table.specificType('input_articulated', 'JSON');
