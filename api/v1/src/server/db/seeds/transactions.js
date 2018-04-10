@@ -79,76 +79,83 @@ exports.seed = function(knex, Promise) {
       }
     ]
     */
+    const seedDb = (res) => {
+      // 2. Make unique lists of block numbers.
+      let reduced = res.reduce((acc, cur) => {
+        acc.blockNumbers.push(cur.blocknumber);
+        acc.blockTimestamps[cur.blocknumber] = cur.timestamp;
+        return acc;
+      }, {
+        blockNumbers: [],
+        blockTimestamps: []
+      });
+      // unique block numbers and addresses:
+      reduced.blockNumbers = [...new Set(reduced.blockNumbers)].filter(blockNum => blockNum > 0);
 
-    // 2. Make unique lists of block numbers.
-    let reduced = res.reduce((acc, cur) => {
-      acc.blockNumbers.push(cur.blocknumber);
-      acc.blockTimestamps[cur.blocknumber] = cur.timestamp;
-      return acc;
-    }, {
-      blockNumbers: [],
-      blockTimestamps: []
-    });
-    // unique block numbers and addresses:
-    reduced.blockNumbers = [...new Set(reduced.blockNumbers)].filter(blockNum => blockNum > 0);
+      // 3. Wrangle the data into SQL insertion queries.
+      let query = {
+        blockInsertions: undefined,
+        txInsertions: undefined,
+        monitorTxInsertions: undefined
+      };
 
-    // 3. Wrangle the data into SQL insertion queries.
-    let query = {
-      blockInsertions: undefined,
-      txInsertions: undefined,
-      monitorTxInsertions: undefined
-    };
+      const blockInsertions = reduced.blockNumbers.map((blockNo) => {
+        return `(${blockNo}, ${reduced.blockTimestamps[blockNo]})`;
+      }).join(',');
 
-    const blockInsertions = reduced.blockNumbers.map((blockNo) => {
-      return `(${blockNo}, ${reduced.blockTimestamps[blockNo]})`;
-    }).join(',');
+      query.blockInsertions = knex.raw(`
+        INSERT INTO block (block_number, timestamp)
+           VALUES ${blockInsertions}
+          ON DUPLICATE KEY UPDATE block_number=block_number;
+          `);
 
-    query.blockInsertions = knex.raw(`
-      INSERT INTO block (block_number, timestamp)
-         VALUES ${blockInsertions}
-        ON DUPLICATE KEY UPDATE block_number=block_number;
+      const txInsertions = res.map((tx) => {
+        return `(
+          ${tx.blocknumber},
+          ${tx.transactionindex},
+          ${tx.traceid},
+          '${tx.to}',
+          '${tx.from}',
+          ${tx.value},
+          ${tx.gasused},
+          ${tx.gasprice},
+          ${tx.is_error},
+          '${tx.encoding}',
+          '${JSON.stringify(tx.articulated).replace(/\'/gi, '\\\'').replace(/\\"/gi, '\\\\\"')}'
+        )`
+      }).join(',');
+
+      query.txInsertions = knex.raw(`
+          INSERT INTO transaction (block_number, tx_index, trace_id, from_address, to_address, value_wei, gas_used, gas_price, is_error, abi_encoding, input_articulated)
+           VALUES ${txInsertions}
+           ON DUPLICATE KEY UPDATE block_number=block_number;
         `);
 
-    const txInsertions = res.map((tx) => {
-      return `(
-        ${tx.blocknumber},
-        ${tx.transactionindex},
-        ${tx.traceid},
-        '${tx.to}',
-        '${tx.from}',
-        ${tx.value},
-        ${tx.gasused},
-        ${tx.gasprice},
-        ${tx.is_error},
-        '${tx.encoding}',
-        '${JSON.stringify(tx.articulated).replace(/\'/gi, '\\\'').replace(/\\"/gi, '\\\\\"')}'
-      )`
-    }).join(',');
+      const monitorTxInsertions = res.map((tx) => {
+        return `('${tx.monitor_address}', ${tx.blocknumber}, ${tx.transactionindex}, ${tx.traceid})`;
+      });
 
-    query.txInsertions = knex.raw(`
-        INSERT INTO transaction (block_number, tx_index, trace_id, from_address, to_address, value_wei, gas_used, gas_price, is_error, abi_encoding, input_articulated)
-         VALUES ${txInsertions}
+      query.monitorTxInsertions = knex.raw(`
+        INSERT INTO monitor_transaction (monitor_address, block_number, tx_index, trace_id)
+         VALUES ${monitorTxInsertions}
          ON DUPLICATE KEY UPDATE block_number=block_number;
       `);
 
-    const monitorTxInsertions = res
-      .map((tx) => {
-      return `('${tx.monitor_address}', ${tx.blocknumber}, ${tx.transactionindex}, ${tx.traceid})`;
-    });
+      // 4. Run the SQL.
+      return Promise.all([query.blockInsertions, query.txInsertions]).then((res) => {
+        return Promise.all([// Do this later because it requires the presence of foreign key values introduced above.
+          query.monitorTxInsertions]);
+      });
+    }
 
-    query.monitorTxInsertions = knex.raw(`
-      INSERT INTO monitor_transaction (monitor_address, block_number, tx_index, trace_id)
-       VALUES ${monitorTxInsertions}
-       ON DUPLICATE KEY UPDATE block_number=block_number;
-    `);
-
-    // 4. Run the SQL.
-    return Promise.all([query.blockInsertions, query.txInsertions]).then((res) => {
-      return Promise.all([
-        // Do this later because it requires the presence of foreign key values introduced above.
-        query.monitorTxInsertions]);
+    return seedDb(res).then(() => {
+      const fakeRes = res.slice(0,40).map((tx) => {
+        tx.monitor_address = '0x99ea4db9ee77acd40b119bd1dc4e33e1c070b80d';
+        return tx;
+      });
+      return seedDb(fakeRes);
     });
-  }).catch(e => {
-    return console.log(e)
-  });
+}).catch(e => {
+  return console.log(e)
+});
 };
