@@ -4,13 +4,13 @@ const knex = require('../db/connection');
 const authHelpers = require('../auth/_helpers');
 
 const selectCols = [
-  knex.raw('LOWER(CONCAT("0x",HEX(mt.address))) AS monitor_address'),
+  'mt.monitor_address AS monitor_address',
   'b.timestamp AS block_timestamp',
   't.block_number AS block_number',
   't.tx_index AS tx_index',
   't.trace_id AS trace_id',
-  knex.raw('LOWER(CONCAT("0x",HEX(from_address))) AS from_address'),
-  knex.raw('LOWER(CONCAT("0x",HEX(to_address))) AS to_address'),
+  't.from_address AS from_address',
+  't.to_address AS to_address',
   't.value_wei',
   't.gas_used',
   't.gas_price',
@@ -26,7 +26,23 @@ router.get('/monitor/:monitorAddress', (req, res, next) => {
       .andOn('t.trace_id', '=', 'mt.trace_id')
     })
     .join('block AS b', 't.block_number', 'b.block_number')
-    .whereRaw(`mt.address = UNHEX('${req.params.monitorAddress.substring(2)}')`)
+    .whereRaw(`mt.monitor_address = '${req.params.monitorAddress}'`)
+    .then((transactions) => {
+      res.status(200).json({status: 'success', data: transactions});
+    }).catch((err) => {
+      res.status(500).json({status: 'error', data: err});
+    });
+})
+
+router.get('/summaries/byWeek/:monitorAddress', (req, res, next) => {
+  knex('transaction AS t').select(selectCols)
+    .join('monitor_transaction AS mt', function() {
+      this.on('t.block_number', '=', 'mt.block_number')
+      .andOn('t.tx_index', '=', 'mt.tx_index')
+      .andOn('t.trace_id', '=', 'mt.trace_id')
+    })
+    .join('block AS b', 't.block_number', 'b.block_number')
+    .whereRaw(`mt.monitor_address = '${req.params.monitorAddress}'`)
     .then((transactions) => {
       res.status(200).json({status: 'success', data: transactions});
     }).catch((err) => {
