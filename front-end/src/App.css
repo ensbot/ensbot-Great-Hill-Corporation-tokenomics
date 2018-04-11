@@ -41,3 +41,17 @@
 nav .btn {
   margin: 15px;
 }
+
+.monitor-selectors {
+  background: linear-gradient(#d48fc7, #6c8cd6);
+}
+
+.monitor-selectors li {
+  list-style-type: none;
+  display: inline-block;
+  background-color: #EEE;
+  padding: .5em .9em;
+  margin: .5em;
+  border-radius: 3px;
+  font-size: 11px;
+}

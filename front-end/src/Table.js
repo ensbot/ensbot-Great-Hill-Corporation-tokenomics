@@ -14,6 +14,10 @@ class Table extends Component {
 
     this.columns = [
       {
+        Header: 'Monitor Address',
+        accessor: 'monitor_address'
+      },
+      {
         Header: 'Block Number',
         accessor: 'block_number'
       }, {
@@ -34,7 +38,7 @@ class Table extends Component {
       }, {
         id: 'gasCost',
         Header: 'Gas Cost (wei)',
-        accessor: d => d.gas_price * d.gas_used,
+        accessor: row => row.gas_price * row.gas_used,
       }, {
         Header: 'Error',
         accessor: 'is_error',

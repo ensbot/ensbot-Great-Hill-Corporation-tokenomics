@@ -16,8 +16,8 @@ class ChartAndTable extends Component {
   }
 
 
-  componentDidMount = () => {
-    fetch(`/api/v1/transactions/monitor/${this.props.monitorAddress}`)
+  fetchMonitorTx = () => {
+    fetch(`/api/v1/transactions/monitor/${this.props.match.params.monitorAddress}`)
       .then(res => res.json())
       .then(
         (res) => {
@@ -31,6 +31,16 @@ class ChartAndTable extends Component {
             error,
           })
         });
+      };
+
+  componentDidMount = () => {
+    this.fetchMonitorTx();
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if(this.props.match.params.monitorAddress !== prevProps.match.params.monitorAddress) {
+      this.fetchMonitorTx();
+    }
   }
 
   render() {

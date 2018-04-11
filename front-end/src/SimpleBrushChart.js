@@ -12,21 +12,29 @@ class SimpleBrushChart extends Component {
   }
 
   shouldComponentUpdate = (nextProps, nextState) => {
-    if(this.updateCycle === 0) {
+    let shouldIt;
+    if(this.props.myData[0] === undefined) {
+      console.log('first load');
       this.updateCycle = 1;
-      return true;
+      shouldIt = true;
     } else {
-      return false;
+    if(this.props.myData[0].monitor_address != nextProps.myData[0].monitor_address) {
+      console.log('addresses don\'t match... rerendering');
+      shouldIt = true;
+    } else {
+      shouldIt = false;
     }
+  }
+  console.log(shouldIt);
+  return shouldIt;
   }
 
   componentDidUpdate = () => {
     if (this.props.myData.length) {
-
       const parseDate = d3.timeParse("%Y %W"),
       formatDate = d3.timeFormat("%Y %W");
 
-      const data = Object.entries(
+      let data = Object.entries(
 
         this.props.myData
         .map((datum) => {
@@ -64,6 +72,8 @@ class SimpleBrushChart extends Component {
         height = +svg.attr("height") - margin.top - margin.bottom,
         height2 = +svg.attr("height") - margin2.top - margin2.bottom;
 
+        svg.selectAll("*").remove();
+
         const brushed = () => {
           if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom")
             return; // ignore brush-by-zoom
@@ -74,7 +84,6 @@ class SimpleBrushChart extends Component {
           svg.select(".zoom").call(zoom.transform, d3.zoomIdentity.scale(width / (s[1] - s[0])).translate(-s[0], 0));
           //console.log(`~${x.domain().reduce((a,b) => {return Math.abs(a-b)/(1000*60*60*24*30)})} months`);
           //console.log(x.domain());
-          //if(this.props.dataBounds !== x.domain()) this.props.onZoomChange(x.domain());
           }
 
         const zoomed = () => {
@@ -85,7 +94,7 @@ class SimpleBrushChart extends Component {
           focus.select(".area").attr("d", area);
           focus.select(".axis--x").call(xAxis);
           context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
-          if(this.props.dataBounds !== x.domain()) this.props.onZoomChange(x.domain());
+          //if(this.props.dataBounds !== x.domain()) this.props.onZoomChange(x.domain());
           }
 
       const x = d3.scaleTime().range([0, width]),
