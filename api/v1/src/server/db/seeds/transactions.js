@@ -149,7 +149,7 @@ exports.seed = function(knex, Promise) {
     }
 
     return seedDb(res).then(() => {
-      const fakeRes = res.slice(0, 40).map((tx) => {
+      const fakeRes = res.slice(0, 400).map((tx) => {
         tx.monitor_address = '0x99ea4db9ee77acd40b119bd1dc4e33e1c070b80d';
         return tx;
       });
