@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
 
-class SimpleBrushChart extends Component {
+class BarChart extends Component {
   constructor(props) {
     super(props);
 
@@ -80,7 +80,7 @@ class SimpleBrushChart extends Component {
             return; // ignore brush-by-zoom
           let s = d3.event.selection || x2.range();
           x.domain(s.map(x2.invert, x2));
-          focus.select(".area").attr("d", area);
+          //focus.select(".bar").attr("d", bar);
           focus.select(".axis--x").call(xAxis);
           svg.select(".zoom").call(zoom.transform, d3.zoomIdentity.scale(width / (s[1] - s[0])).translate(-s[0], 0));
           //console.log(`~${x.domain().reduce((a,b) => {return Math.abs(a-b)/(1000*60*60*24*30)})} months`);
@@ -92,7 +92,7 @@ class SimpleBrushChart extends Component {
             return; // ignore zoom-by-brush
           let t = d3.event.transform;
           x.domain(t.rescaleX(x2).domain());
-          focus.select(".area").attr("d", area);
+          //focus.select(".bar").attr("d", bar);
           focus.select(".axis--x").call(xAxis);
           context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
           //if(this.props.dataBounds !== x.domain()) this.props.onZoomChange(x.domain());
@@ -126,18 +126,6 @@ class SimpleBrushChart extends Component {
         [width, height]
       ]).on("zoom", zoomed);
 
-      const area = d3.area().curve(d3.curveMonotoneX).x((d) => {
-        return x(d.date);
-      }).y0(height).y1(function(d) {
-        return y(d.price);
-      });
-
-      const area2 = d3.area().curve(d3.curveMonotoneX).x((d) => {
-        return x2(d.date);
-      }).y0(height2).y1(function(d) {
-        return y2(d.price);
-      });
-
       svg.append("defs").append("clipPath").attr("id", "clip").append("rect").attr("width", width).attr("height", height);
 
       let focus = svg.append("g").attr("class", "focus").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -157,13 +145,42 @@ class SimpleBrushChart extends Component {
       x2.domain(x.domain());
       y2.domain(y.domain());
 
-      focus.append("path").datum(data).attr("class", "area").attr("d", area);
+      focus
+        .data(data)
+        .enter()
+        .append('rect')
+        .attr('x', (d,i) => {
+          return x(d.date)
+        })
+        .attr('y', (d,i) => {
+          return y(d.price)
+        })
+        .attr("width", 7)
+        .attr("height", (d) => {
+          return y(d.date)
+        })
+        .attr('fill', (d) => {
+          return "rgb(0,0,0)";
+        });
+
+        context
+          .data(data)
+          .enter()
+          .append('rect')
+          .attr('x', (d) => {
+            return x2(d.date)
+          })
+          .attr('y', (d) => {
+            return y2(d.price)
+          });
+
+      // focus.append("path").datum(data).attr("class", "area").attr("d", area);
 
       focus.append("g").attr("class", "axis axis--x").attr("transform", "translate(0," + height + ")").call(xAxis);
 
       focus.append("g").attr("class", "axis axis--y").call(yAxis);
 
-      context.append("path").datum(data).attr("class", "area").attr("d", area2);
+      // context.append("path").datum(data).attr("class", "area").attr("d", area2);
 
       context.append("g").attr("class", "axis axis--x").attr("transform", "translate(0," + height2 + ")").call(xAxis2);
 
@@ -174,10 +191,53 @@ class SimpleBrushChart extends Component {
   }
 
   anim = () => {
-    let data = this.formatDataForChart(this.props.myData);
-    console.log(data);
-    d3.select("svg")
-      .selectAll('*')
+    // let svg = d3.select("svg"),
+    // margin = {
+    //   top: 20,
+    //   right: 20,
+    //   bottom: 110,
+    //   left: 40
+    // },
+    // margin2 = {
+    //   top: 430,
+    //   right: 20,
+    //   bottom: 30,
+    //   left: 40
+    // },
+    // width = +svg.attr("width") - margin.left - margin.right,
+    // height = +svg.attr("height") - margin.top - margin.bottom,
+    // height2 = +svg.attr("height") - margin2.top - margin2.bottom;
+    // let data = this.formatDataForChart(this.props.myData)
+    //   .map((datum) => {
+    //     datum.price = datum.price + 3000;
+    //     return datum;
+    //   });
+    //
+    //   const x = d3.scaleTime().range([0, width]),
+    //     x2 = d3.scaleTime().range([0, width]),
+    //     y = d3.scaleLinear().range([height, 0]),
+    //     y2 = d3.scaleLinear().range([height2, 0]);
+    //
+    //
+    //   const area = d3.area().curve(d3.curveMonotoneX).x((d) => {
+    //     return x(d.date);
+    //   }).y0(height).y1(function(d) {
+    //     return y(d.price);
+    //   });
+    //
+    //   console.log(area);
+    //
+    //   const area2 = d3.area().curve(d3.curveMonotoneX).x((d) => {
+    //     return x2(d.date);
+    //   }).y0(height2).y1(function(d) {
+    //     return y2(d.price);
+    //   });
+    //
+    //   svg
+    //   .selectAll('path')
+    //   .transition()
+    //   .attr('d', area(data));
+
   }
 
   render() {
@@ -190,4 +250,4 @@ class SimpleBrushChart extends Component {
   }
 }
 
-export default SimpleBrushChart;
+export default BarChart;

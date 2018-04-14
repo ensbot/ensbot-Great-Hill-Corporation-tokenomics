@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import Table from './Table';
 import SimpleBrushChart from './SimpleBrushChart';
+import StackedChart from './StackedChart';
+import BarChart from './BarChart';
+
 // import ReactTable from 'react-table';
 // import 'react-table/react-table.css';
 
@@ -21,8 +24,12 @@ class ChartAndTable extends Component {
       .then(res => res.json())
       .then(
         (res) => {
+          let myData = res.data.map((datum) => {
+            datum.input_articulated = JSON.parse(datum.input_articulated);
+            return datum;
+          });
           this.setState({
-            myData: res.data,
+            myData: myData,
             isLoaded: true,
         })},
         (error) => {
@@ -46,7 +53,7 @@ class ChartAndTable extends Component {
   render() {
     return (
       <div>
-        <SimpleBrushChart myData={this.state.myData} onZoomChange={() => {return false}}/>
+        <StackedChart myData={this.state.myData} onZoomChange={() => {return false}}/>
         <Table myData={this.state.myData}/>
       </div>
     );
