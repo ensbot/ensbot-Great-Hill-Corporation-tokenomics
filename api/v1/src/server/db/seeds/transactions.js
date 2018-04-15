@@ -126,7 +126,7 @@ exports.seed = function(knex, Promise) {
       }).join(',');
 
       query.txInsertions = knex.raw(`
-          INSERT INTO transaction (block_number, tx_index, trace_id, fromAddress, toAddress, valueWei, gasUsed, gasPrice, isError, encoding, articulated)
+          INSERT INTO transaction (block_number, tx_index, traceID, fromAddress, toAddress, valueWei, gasUsed, gasPrice, isError, encoding, articulated)
            VALUES ${txInsertions}
            ON DUPLICATE KEY UPDATE block_number=block_number;
         `);
@@ -136,7 +136,7 @@ exports.seed = function(knex, Promise) {
       });
 
       query.monitorTxInsertions = knex.raw(`
-        INSERT INTO monitor_transaction (monitorAddress, block_number, tx_index, trace_id)
+        INSERT INTO monitor_transaction (monitorAddress, block_number, tx_index, traceID)
          VALUES ${monitorTxInsertions}
          ON DUPLICATE KEY UPDATE block_number=block_number;
       `);

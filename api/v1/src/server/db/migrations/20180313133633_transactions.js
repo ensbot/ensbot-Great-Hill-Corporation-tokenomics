@@ -45,7 +45,7 @@ exports.up = (knex, Promise) => {
     table.collate('utf8mb4_bin');
     table.integer('block_number').unsigned().references('block_number').inTable('block').notNullable().onDelete('CASCADE'); // delete the transaction if the block gets deleted.
     table.integer('tx_index').unsigned().notNullable();
-    table.integer('trace_id').unsigned().notNullable();
+    table.integer('traceID').unsigned().notNullable();
     table.string('fromAddress', 42).notNullable();
     table.string('toAddress', 42).notNullable();
     table.decimal('valueWei', 38, 0).unsigned().notNullable();
@@ -56,16 +56,16 @@ exports.up = (knex, Promise) => {
     //.references('encoding').inTable('abi_spec')
       .notNullable();
     table.specificType('articulated', 'JSON');
-    table.primary(['block_number', 'tx_index', 'trace_id']);
+    table.primary(['block_number', 'tx_index', 'traceID']);
   }).createTable('monitor_transaction', (table) => {
     table.string('monitorAddress', 42).notNullable();
     table.integer('block_number').unsigned().notNullable();
     table.integer('tx_index').unsigned().notNullable();
-    table.integer('trace_id').unsigned().notNullable();
-    table.foreign(['block_number', 'tx_index', 'trace_id']).references(['block_number', 'tx_index', 'trace_id']).inTable('transaction')
+    table.integer('traceID').unsigned().notNullable();
+    table.foreign(['block_number', 'tx_index', 'traceID']).references(['block_number', 'tx_index', 'traceID']).inTable('transaction')
       // Delete the address-transaction mapping if the block or tx gets deleted.
       .onDelete('CASCADE');
-    table.primary(['monitorAddress', 'block_number', 'tx_index', 'trace_id']);
+    table.primary(['monitorAddress', 'block_number', 'tx_index', 'traceID']);
   });
   const createTableSqlCode = knexCreateTables.toSQL().map((knexCode) => {
     return knexCode.sql;

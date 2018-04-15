@@ -8,7 +8,7 @@ const selectCols = [
   'b.timestamp AS block_timestamp',
   't.block_number AS block_number',
   't.tx_index AS tx_index',
-  't.trace_id AS trace_id',
+  't.traceID AS traceID',
   't.fromAddress AS fromAddress',
   't.toAddress AS toAddress',
   't.valueWei',
@@ -23,7 +23,7 @@ router.get('/monitor/:monitorAddress', (req, res, next) => {
     .join('monitor_transaction AS mt', function() {
       this.on('t.block_number', '=', 'mt.block_number')
       .andOn('t.tx_index', '=', 'mt.tx_index')
-      .andOn('t.trace_id', '=', 'mt.trace_id')
+      .andOn('t.traceID', '=', 'mt.traceID')
     })
     .join('block AS b', 't.block_number', 'b.block_number')
     .whereRaw(`mt.monitorAddress = '${req.params.monitorAddress}'`)
@@ -39,7 +39,7 @@ router.get('/summaries/byWeek/:monitorAddress', (req, res, next) => {
     .join('monitor_transaction AS mt', function() {
       this.on('t.block_number', '=', 'mt.block_number')
       .andOn('t.tx_index', '=', 'mt.tx_index')
-      .andOn('t.trace_id', '=', 'mt.trace_id')
+      .andOn('t.traceID', '=', 'mt.traceID')
     })
     .join('block AS b', 't.block_number', 'b.block_number')
     .whereRaw(`mt.monitorAddress = '${req.params.monitorAddress}'`)

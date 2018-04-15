@@ -25,7 +25,7 @@ class Table extends Component {
         accessor: 'tx_index'
       }, {
         Header: 'Trace ID',
-        accessor: 'trace_id'
+        accessor: 'traceID'
       }, {
         Header: 'From',
         accessor: 'fromAddress',

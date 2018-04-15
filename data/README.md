@@ -18,7 +18,7 @@ iterate through each transaction row (`tx`):
 
   - if it's a duplicate, it will have no effect.
 
-- insert rows into **monitor_transaction**: `tx.block_number`, `tx.tx_index`, `tx.trace_id`, and monitor's `address_id`
+- insert rows into **monitor_transaction**: `tx.block_number`, `tx.tx_index`, `tx.traceID`, and monitor's `address_id`
 
   - duplicates have no effect.
 
