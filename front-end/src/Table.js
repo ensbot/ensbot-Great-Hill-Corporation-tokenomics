@@ -34,17 +34,17 @@ class Table extends Component {
         accessor: 'toAddress',
       }, {
         Header: 'Value (wei)',
-        accessor: 'value_wei',
+        accessor: 'valueWei',
       }, {
         id: 'gasCost',
         Header: 'Gas Cost (wei)',
         accessor: row => row.gasPrice * row.gasUsed,
       }, {
         Header: 'Error',
-        accessor: 'is_error',
+        accessor: 'isError',
       }, {
         Header: 'Articulated Input',
-        accessor: 'input_articulated'
+        accessor: 'articulated'
       }
     ];
 
@@ -61,7 +61,7 @@ class Table extends Component {
         accessor: 'toAddress',
       }, {
         Header: 'Value (wei)',
-        accessor: 'value_wei',
+        accessor: 'valueWei',
       }
     ]
   }

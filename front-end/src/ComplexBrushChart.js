@@ -27,10 +27,10 @@ class ComplexBrushChart extends Component {
             //date: datum.block_timestamp,
             gasCost: datum.gasUsed * datum.gasPrice,
             //contract: specialAddresses[datum.toAddress] === undefined ? 'unknown' : specialAddresses[datum.toAddress],
-            colorBy: JSON.parse(datum.input_articulated).length > 1 ? JSON.parse(datum.input_articulated)[0] : 'unknown',
-            //transferValue: datum.input_articulated[0] === 'transfer' ? data.input_articulated[2] : 0,
-            value: datum.value_wei,
-            isError: datum.is_error
+            colorBy: JSON.parse(datum.articulated).length > 1 ? JSON.parse(datum.articulated)[0] : 'unknown',
+            //transferValue: datum.articulated[0] === 'transfer' ? data.articulated[2] : 0,
+            value: datum.valueWei,
+            isError: datum.isError
           }
         });
         console.log(data);

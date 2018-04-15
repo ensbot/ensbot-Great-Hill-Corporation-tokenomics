@@ -22,7 +22,6 @@ exports.up = (knex, Promise) => {
     table.integer('block_number').unsigned().primary().notNullable(); // max val: 4294967295
     table.integer('timestamp', 11).unsigned().notNullable();
     table.boolean('isFinalized').notNullable().defaultTo(false);
-    table.timestamp('created_at').defaultTo(knex.fn.now());
   })
 .createTable('user', (table) => {
     table.increments('userID');
@@ -49,15 +48,14 @@ exports.up = (knex, Promise) => {
     table.integer('trace_id').unsigned().notNullable();
     table.string('fromAddress', 42).notNullable();
     table.string('toAddress', 42).notNullable();
-    table.decimal('value_wei', 38, 0).unsigned().notNullable();
+    table.decimal('valueWei', 38, 0).unsigned().notNullable();
     table.bigInteger('gasUsed').unsigned().notNullable();
     table.bigInteger('gasPrice').unsigned().notNullable();
-    table.boolean('is_error').notNullable().defaultTo(false);
+    table.boolean('isError').notNullable().defaultTo(false);
     table.string('encoding', 10)
     //.references('encoding').inTable('abi_spec')
       .notNullable();
-    table.specificType('input_articulated', 'JSON');
-    table.timestamp('created_at').defaultTo(knex.fn.now());
+    table.specificType('articulated', 'JSON');
     table.primary(['block_number', 'tx_index', 'trace_id']);
   }).createTable('monitor_transaction', (table) => {
     table.string('monitorAddress', 42).notNullable();

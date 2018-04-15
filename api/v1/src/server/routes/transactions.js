@@ -11,11 +11,11 @@ const selectCols = [
   't.trace_id AS trace_id',
   't.fromAddress AS fromAddress',
   't.toAddress AS toAddress',
-  't.value_wei',
+  't.valueWei',
   't.gasUsed',
   't.gasPrice',
-  't.is_error',
-  't.input_articulated'
+  't.isError',
+  't.articulated'
 ]
 
 router.get('/monitor/:monitorAddress', (req, res, next) => {

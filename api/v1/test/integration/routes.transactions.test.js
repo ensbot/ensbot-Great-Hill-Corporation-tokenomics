@@ -43,7 +43,7 @@ describe('routes : transactions', () => {
         res.body.data.length.should.eql(5);
         // the first object in the data array should
         // have the right keys
-        res.body.data[0].should.include.keys('encoding', 'block_number', 'tx_index', 'trace_id', 'fromAddress', 'toAddress', 'value_wei', 'gasPrice', 'gasUsed', 'is_error', 'input_articulated', 'created_at',);
+        res.body.data[0].should.include.keys('encoding', 'block_number', 'tx_index', 'trace_id', 'fromAddress', 'toAddress', 'valueWei', 'gasPrice', 'gasUsed', 'isError', 'articulated',);
         done();
       });
     });
@@ -64,7 +64,7 @@ describe('routes : transactions', () => {
         res.body.data.length.should.eql(5);
         // the first object in the data array should
         // have the right keys
-        res.body.data[0].should.include.keys('block_timestamp', 'block_number', 'tx_index', 'trace_id', 'fromAddress', 'toAddress', 'value_wei', 'gasPrice', 'gasUsed', 'is_error', 'input_articulated', 'monitorAddress',);
+        res.body.data[0].should.include.keys('block_timestamp', 'block_number', 'tx_index', 'trace_id', 'fromAddress', 'toAddress', 'valueWei', 'gasPrice', 'gasUsed', 'isError', 'articulated', 'monitorAddress',);
         done();
       });
     });
@@ -168,7 +168,7 @@ describe('routes : transactions', () => {
   //           res.body.data.length.should.eql(10);
   //           // the first object in the data array should
   //           // have the right keys
-  //           res.body.data[0].should.include.keys('id', 'dateTime', 'blockNumber', 'transactionIndex', 'from', 'to', 'value', 'gasCost', 'isError', 'isFinalized', 'articulated', 'created_at',);
+  //           res.body.data[0].should.include.keys('id', 'dateTime', 'blockNumber', 'transactionIndex', 'from', 'to', 'value', 'gasCost', 'isError', 'isFinalized', 'articulated',);
   //           done();
   //         });
   //       });
