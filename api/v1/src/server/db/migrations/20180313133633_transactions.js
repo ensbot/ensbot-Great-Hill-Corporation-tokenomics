@@ -13,11 +13,11 @@ exports.up = (knex, Promise) => {
     // NOTE:
     //  Purposely not cascading deletions of block_number price in this table.
     // table.integer('block_number').unsigned().notNullable();
-    table.string('currency_from', 10).notNullable();
-    table.string('currency_to', 10).notNullable();
-    table.enum('exchange_name', ['coinbase', 'poloniex', 'bittrex']).notNullable();
+    table.string('currencyFrom', 10).notNullable();
+    table.string('currencyTo', 10).notNullable();
+    table.enum('exchangeName', ['coinbase', 'poloniex', 'bittrex']).notNullable();
     // choosing arbitrary decimal precision
-    table.decimal('exchange_rate', 21, 18).unsigned().notNullable();
+    table.decimal('exchangeRate', 21, 18).unsigned().notNullable();
   }).createTable('block', (table) => {
     table.integer('block_number').unsigned().primary().notNullable(); // max val: 4294967295
     table.integer('timestamp', 11).unsigned().notNullable();
