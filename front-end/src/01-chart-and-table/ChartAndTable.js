@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import Table from './Table';
 import SimpleBrushChart from './SimpleBrushChart';
-import StackedChart from './StackedChart';
-import BarChart from './BarChart';
 
 // import ReactTable from 'react-table';
 // import 'react-table/react-table.css';
@@ -53,7 +51,7 @@ class ChartAndTable extends Component {
   render() {
     return (
       <div>
-        <StackedChart myData={this.state.myData} onZoomChange={() => {return false}}/>
+        <SimpleBrushChart myData={this.state.myData} onZoomChange={() => {return false}}/>
         <Table myData={this.state.myData}/>
       </div>
     );
