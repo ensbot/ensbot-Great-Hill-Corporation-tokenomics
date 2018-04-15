@@ -16,7 +16,7 @@ class ChartAndTableDataFiltersToo extends Component {
 
   filterData = (data) => {
     return this.state.dataBounds === [0,0] ? data : data.filter((row) => {
-      let date = new Date(row.block_timestamp * 1000);
+      let date = new Date(row.block_timeStamp * 1000);
       return date >= this.state.dataBounds[0] && date <= this.state.dataBounds[1];
     });
   }

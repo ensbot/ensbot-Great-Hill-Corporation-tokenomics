@@ -55,12 +55,12 @@ exports.seed = function(knex, Promise) {
     [
       {
         monitorAddress: '0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359',
-        blocknumber: '1079183',
+        blockNumber: '1079183',
         transactionindex: '2',
         traceid: '1',
         from: '0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359',
         to: '0x89205a3a3b2a69de6dbf7f01ed13b2108b2c43e7',
-        timestamp: '1456769111',
+        timeStamp: '1456769111',
         value: '0',
         gasused: '27463',
         gasprice: '50000000000',
@@ -70,7 +70,7 @@ exports.seed = function(knex, Promise) {
         articulated: ['mintToken', '0x120a270bbc009644e35f0bb6ab13f95b8199c4ad', '1']
       }, {
         monitorAddress: '0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359',
-        blocknumber: '1097821',
+        blockNumber: '1097821',
         transactionindex: '4',
         traceid: '0',
         from: '0xd1220a0cf47c7b9be7a2e6ba89f429762e7b9adb',
@@ -82,8 +82,8 @@ exports.seed = function(knex, Promise) {
     const seedDb = (res) => {
       // 2. Make unique lists of block numbers.
       let reduced = res.reduce((acc, cur) => {
-        acc.blockNumbers.push(cur.blocknumber);
-        acc.blockTimestamps[cur.blocknumber] = cur.timestamp;
+        acc.blockNumbers.push(cur.blockNumber);
+        acc.blockTimestamps[cur.blockNumber] = cur.timeStamp;
         return acc;
       }, {
         blockNumbers: [],
@@ -104,14 +104,14 @@ exports.seed = function(knex, Promise) {
       }).join(',');
 
       query.blockInsertions = knex.raw(`
-        INSERT INTO block (block_number, timestamp)
+        INSERT INTO block (blockNumber, timeStamp)
            VALUES ${blockInsertions}
-          ON DUPLICATE KEY UPDATE block_number=block_number;
+          ON DUPLICATE KEY UPDATE blockNumber=blockNumber;
           `);
 
       const txInsertions = res.map((tx) => {
         return `(
-          ${tx.blocknumber},
+          ${tx.blockNumber},
           ${tx.transactionindex},
           ${tx.traceid},
           '${tx.to}',
@@ -126,19 +126,19 @@ exports.seed = function(knex, Promise) {
       }).join(',');
 
       query.txInsertions = knex.raw(`
-          INSERT INTO transaction (block_number, tx_index, traceID, fromAddress, toAddress, valueWei, gasUsed, gasPrice, isError, encoding, articulated)
+          INSERT INTO transaction (blockNumber, transID, traceID, fromAddress, toAddress, valueWei, gasUsed, gasPrice, isError, encoding, articulated)
            VALUES ${txInsertions}
-           ON DUPLICATE KEY UPDATE block_number=block_number;
+           ON DUPLICATE KEY UPDATE blockNumber=blockNumber;
         `);
 
       const monitorTxInsertions = res.map((tx) => {
-        return `('${tx.monitorAddress}', ${tx.blocknumber}, ${tx.transactionindex}, ${tx.traceid})`;
+        return `('${tx.monitorAddress}', ${tx.blockNumber}, ${tx.transactionindex}, ${tx.traceid})`;
       });
 
       query.monitorTxInsertions = knex.raw(`
-        INSERT INTO monitor_transaction (monitorAddress, block_number, tx_index, traceID)
+        INSERT INTO monitor_transaction (monitorAddress, blockNumber, transID, traceID)
          VALUES ${monitorTxInsertions}
-         ON DUPLICATE KEY UPDATE block_number=block_number;
+         ON DUPLICATE KEY UPDATE blockNumber=blockNumber;
       `);
 
       // 4. Run the SQL.

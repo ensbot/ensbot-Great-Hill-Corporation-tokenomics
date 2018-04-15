@@ -24,7 +24,7 @@ class ComplexBrushChart extends Component {
         this.props.myData
         .map((datum) => {
           return {
-            //date: datum.block_timestamp,
+            //date: datum.block_timeStamp,
             gasCost: datum.gasUsed * datum.gasPrice,
             //contract: specialAddresses[datum.toAddress] === undefined ? 'unknown' : specialAddresses[datum.toAddress],
             colorBy: JSON.parse(datum.articulated).length > 1 ? JSON.parse(datum.articulated)[0] : 'unknown',

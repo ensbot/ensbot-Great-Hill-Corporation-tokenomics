@@ -4,7 +4,7 @@ Here is the workflow that I imagine right now:
 
 iterate through each transaction row (`tx`):
 
-- insert into **block**: `tx.block_number`, `tx.date_time`.
+- insert into **block**: `tx.blockNumber`, `tx.date_time`.
 
   - if it's a duplicate, it will have no effect.
 
@@ -18,7 +18,7 @@ iterate through each transaction row (`tx`):
 
   - if it's a duplicate, it will have no effect.
 
-- insert rows into **monitor_transaction**: `tx.block_number`, `tx.tx_index`, `tx.traceID`, and monitor's `address_id`
+- insert rows into **monitor_transaction**: `tx.blockNumber`, `tx.transID`, `tx.traceID`, and monitor's `address_id`
 
   - duplicates have no effect.
 

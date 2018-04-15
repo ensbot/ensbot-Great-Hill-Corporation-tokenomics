@@ -5,9 +5,9 @@ const authHelpers = require('../auth/_helpers');
 
 const selectCols = [
   'mt.monitorAddress AS monitorAddress',
-  'b.timestamp AS block_timestamp',
-  't.block_number AS block_number',
-  't.tx_index AS tx_index',
+  'b.timeStamp AS block_timeStamp',
+  't.blockNumber AS blockNumber',
+  't.transID AS transID',
   't.traceID AS traceID',
   't.fromAddress AS fromAddress',
   't.toAddress AS toAddress',
@@ -21,11 +21,11 @@ const selectCols = [
 router.get('/monitor/:monitorAddress', (req, res, next) => {
   knex('transaction AS t').select(selectCols)
     .join('monitor_transaction AS mt', function() {
-      this.on('t.block_number', '=', 'mt.block_number')
-      .andOn('t.tx_index', '=', 'mt.tx_index')
+      this.on('t.blockNumber', '=', 'mt.blockNumber')
+      .andOn('t.transID', '=', 'mt.transID')
       .andOn('t.traceID', '=', 'mt.traceID')
     })
-    .join('block AS b', 't.block_number', 'b.block_number')
+    .join('block AS b', 't.blockNumber', 'b.blockNumber')
     .whereRaw(`mt.monitorAddress = '${req.params.monitorAddress}'`)
     .then((transactions) => {
       res.status(200).json({status: 'success', data: transactions});
@@ -37,11 +37,11 @@ router.get('/monitor/:monitorAddress', (req, res, next) => {
 router.get('/summaries/byWeek/:monitorAddress', (req, res, next) => {
   knex('transaction AS t').select(selectCols)
     .join('monitor_transaction AS mt', function() {
-      this.on('t.block_number', '=', 'mt.block_number')
-      .andOn('t.tx_index', '=', 'mt.tx_index')
+      this.on('t.blockNumber', '=', 'mt.blockNumber')
+      .andOn('t.transID', '=', 'mt.transID')
       .andOn('t.traceID', '=', 'mt.traceID')
     })
-    .join('block AS b', 't.block_number', 'b.block_number')
+    .join('block AS b', 't.blockNumber', 'b.blockNumber')
     .whereRaw(`mt.monitorAddress = '${req.params.monitorAddress}'`)
     .then((transactions) => {
       res.status(200).json({status: 'success', data: transactions});

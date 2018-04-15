@@ -38,7 +38,7 @@ class SimpleBrushChart extends Component {
 
         this.props.myData
         .map((datum) => {
-          datum.monthYear = formatDate(new Date(datum.block_timestamp * 1000));
+          datum.monthYear = formatDate(new Date(datum.block_timeStamp * 1000));
           return datum;
         })
         .reduce((acc, cur) => {
