@@ -47,11 +47,11 @@ exports.up = (knex, Promise) => {
     table.integer('block_number').unsigned().references('block_number').inTable('block').notNullable().onDelete('CASCADE'); // delete the transaction if the block gets deleted.
     table.integer('tx_index').unsigned().notNullable();
     table.integer('trace_id').unsigned().notNullable();
-    table.string('from_address', 42).notNullable();
-    table.string('to_address', 42).notNullable();
+    table.string('fromAddress', 42).notNullable();
+    table.string('toAddress', 42).notNullable();
     table.decimal('value_wei', 38, 0).unsigned().notNullable();
-    table.bigInteger('gas_used').unsigned().notNullable();
-    table.bigInteger('gas_price').unsigned().notNullable();
+    table.bigInteger('gasUsed').unsigned().notNullable();
+    table.bigInteger('gasPrice').unsigned().notNullable();
     table.boolean('is_error').notNullable().defaultTo(false);
     table.string('encoding', 10)
     //.references('encoding').inTable('abi_spec')

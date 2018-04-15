@@ -28,17 +28,17 @@ class Table extends Component {
         accessor: 'trace_id'
       }, {
         Header: 'From',
-        accessor: 'from_address',
+        accessor: 'fromAddress',
       }, {
         Header: 'To',
-        accessor: 'to_address',
+        accessor: 'toAddress',
       }, {
         Header: 'Value (wei)',
         accessor: 'value_wei',
       }, {
         id: 'gasCost',
         Header: 'Gas Cost (wei)',
-        accessor: row => row.gas_price * row.gas_used,
+        accessor: row => row.gasPrice * row.gasUsed,
       }, {
         Header: 'Error',
         accessor: 'is_error',
@@ -55,10 +55,10 @@ class Table extends Component {
         accessor: d => new Date(d.block_timestamp*1000).toLocaleString('en-US', {timeZone:'UTC'})
       }, {
         Header: 'From',
-        accessor: 'from_address',
+        accessor: 'fromAddress',
       }, {
         Header: 'To',
-        accessor: 'to_address',
+        accessor: 'toAddress',
       }, {
         Header: 'Value (wei)',
         accessor: 'value_wei',

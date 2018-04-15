@@ -42,7 +42,7 @@ describe('routes : ui', () => {
         res.body.data.monitorAddresses.length.should.eql(2);
         // the first object in the data array should
         // have the right keys
-        //res.body.data[0].should.include.keys('encoding', 'block_number', 'tx_index', 'trace_id', 'from_address', 'to_address', 'value_wei', 'gas_price', 'gas_used', 'is_error', 'input_articulated', 'created_at',);
+        //res.body.data[0].should.include.keys('encoding', 'block_number', 'tx_index', 'trace_id', 'fromAddress', 'toAddress', 'value_wei', 'gasPrice', 'gasUsed', 'is_error', 'input_articulated', 'created_at',);
         done();
       });
     });

@@ -25,8 +25,8 @@ class ComplexBrushChart extends Component {
         .map((datum) => {
           return {
             //date: datum.block_timestamp,
-            gasCost: datum.gas_used * datum.gas_price,
-            //contract: specialAddresses[datum.to_address] === undefined ? 'unknown' : specialAddresses[datum.to_address],
+            gasCost: datum.gasUsed * datum.gasPrice,
+            //contract: specialAddresses[datum.toAddress] === undefined ? 'unknown' : specialAddresses[datum.toAddress],
             colorBy: JSON.parse(datum.input_articulated).length > 1 ? JSON.parse(datum.input_articulated)[0] : 'unknown',
             //transferValue: datum.input_articulated[0] === 'transfer' ? data.input_articulated[2] : 0,
             value: datum.value_wei,

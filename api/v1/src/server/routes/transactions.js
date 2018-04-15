@@ -9,11 +9,11 @@ const selectCols = [
   't.block_number AS block_number',
   't.tx_index AS tx_index',
   't.trace_id AS trace_id',
-  't.from_address AS from_address',
-  't.to_address AS to_address',
+  't.fromAddress AS fromAddress',
+  't.toAddress AS toAddress',
   't.value_wei',
-  't.gas_used',
-  't.gas_price',
+  't.gasUsed',
+  't.gasPrice',
   't.is_error',
   't.input_articulated'
 ]
