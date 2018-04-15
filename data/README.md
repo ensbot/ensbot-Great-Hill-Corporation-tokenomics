@@ -22,6 +22,6 @@ iterate through each transaction row (`tx`):
 
   - duplicates have no effect.
 
-  - right now, rows with explicit address in `tx.to`/`tx.from` are included in this table. Logically, this is easiest. 
+  - right now, rows with explicit address in `tx.to`/`tx.from` are included in this table. Logically, this is easiest.
 
 However, storage considerations may suggest that we eliminate obvious monitor tx from this table, the effect of which would be renaming this table to **hidden_monitor_transaction**

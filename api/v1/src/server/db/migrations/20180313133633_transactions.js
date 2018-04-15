@@ -21,7 +21,7 @@ exports.up = (knex, Promise) => {
   }).createTable('block', (table) => {
     table.integer('block_number').unsigned().primary().notNullable(); // max val: 4294967295
     table.integer('timestamp', 11).unsigned().notNullable();
-    table.boolean('is_finalized').notNullable().defaultTo(false);
+    table.boolean('isFinalized').notNullable().defaultTo(false);
     table.timestamp('created_at').defaultTo(knex.fn.now());
   })
 .createTable('user', (table) => {
@@ -40,7 +40,7 @@ exports.up = (knex, Promise) => {
     //table.integer('abiAddress').unsigned().references('id').inTable('address').notNullable()
     //  .onDelete('RESTRICT'); // prevent address deletion if we have its ABI spec
     table.binary('encoding', 10).primary().notNullable();
-    table.specificType('fn_definition', 'JSON').notNullable();
+    table.specificType('fnDefinition', 'JSON').notNullable();
   }).createTable('transaction', (table) => {
     table.charset('utf8mb4');
     table.collate('utf8mb4_bin');
