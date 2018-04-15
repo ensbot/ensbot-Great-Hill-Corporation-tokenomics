@@ -104,42 +104,28 @@ class StackedChart extends Component {
       const xAxis = d3.axisBottom(x),
         yAxis = d3.axisLeft(y);
 
-
-
-      // const area = d3.area().curve(d3.curveMonotoneX).x((d) => {
-      //   return x(d.date);
-      // }).y0(height).y1(function(d) {
-      //   return y(d.price);
-      // });
-      //
-      // const area2 = d3.area().curve(d3.curveMonotoneX).x((d) => {
-      //   return x2(d.date);
-      // }).y0(height2).y1(function(d) {
-      //   return y2(d.price);
-      // });
-
       svg.append("defs").append("clipPath").attr("id", "clip").append("rect").attr("width", width).attr("height", height);
 
       let focus = svg.append("g").attr("class", "focus").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+      let allDates = [...new Set([].concat.apply([], data.map(fnObj => fnObj.values)).map(obj => obj.date))]
+        .sort((a,b) => {return a - b}),
+        dateSoFarStore = [];
+
+       allDates.map((date) => {
+         return dateSoFarStore[date.valueOf()] = 0;
+       });
 
       x.domain(d3.extent([].concat.apply([], data.map(fnObj => fnObj.values)), (d) => {
         return d.date;
       }));
       y.domain([
         0,
-        d3.max(data, function(fnObj) {
-          return 100;
-        })
+        Math.max(...Object.values([].concat.apply([], data.map(obj => obj.values)).map((obj) => {obj.date = obj.date.valueOf(); return obj}).reduce((acc, cur) => {acc[cur.date] = acc[cur.date] === undefined ? cur.price : acc[cur.date] + cur.price; return acc}, {})))
       ]);
 
-// stacked curve =
-//   on that point, get values of prev
-//   sum them for y0
-//   then add this one for y1
-//   store y1 for next iteration
-
       let drawCurve = (fnObj, prevData) => {
-
         let newData = [];
 
         fnObj.values.map((d, i) => {
@@ -166,25 +152,31 @@ class StackedChart extends Component {
 
         return focus
           .append("path")
-            .style("id", `${fnObj.name} Area`)
+            .attr("id", `${fnObj.name}`)
             .attr("class", "area")
             .attr("d", fnAreaCurve(curveMapping))
             .attr("fill", d => `rgb(0, 0, ${100+Math.floor(Math.random()*100)})`)
             .attr("stroke", "black")
-            .attr("stroke-width", 1);
+            .attr("stroke-width", 1)
+            .on("mouseover", function(d) {
+               //Update the tooltip position and value
+               d3.select("#tooltip")
+                 .select("#fnName")
+                 .text(this.id);
+
+               //Show the tooltip
+               d3.select("#tooltip").classed("hidden", false);
+
+              })
+              .on("mouseout", function() {
+
+               //Hide the tooltip
+               d3.select("#tooltip").classed("hidden", true);
+
+             });
         }
 
 
-    let allDates = [...new Set([].concat.apply([], data.map(fnObj => fnObj.values)).map(obj => obj.date))]
-      .sort((a,b) => {return a - b});
-    let dateSoFarStore = [];
-
-     allDates.map((date) => {
-       return dateSoFarStore[date.valueOf()] = 0;
-     });
-
-     console.log(allDates);
-     console.log(dateSoFarStore);
 
      data.map((fnObj) => {
        drawCurve(fnObj, dateSoFarStore);
@@ -255,7 +247,10 @@ class StackedChart extends Component {
   render() {
     return (
       <div>
-        <button onClick={this.anim}>yeah</button>
+        <div id="tooltip" className="hidden">
+          <p>That's...</p>
+          <p><span id="fnName"></span> input data</p>
+        </div>
         <svg width="960" height="500"></svg>
       </div>
     );
