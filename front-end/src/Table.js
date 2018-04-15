@@ -15,7 +15,7 @@ class Table extends Component {
     this.columns = [
       {
         Header: 'Monitor Address',
-        accessor: 'monitor_address'
+        accessor: 'monitorAddress'
       },
       {
         Header: 'Block Number',

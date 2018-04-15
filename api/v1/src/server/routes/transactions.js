@@ -4,7 +4,7 @@ const knex = require('../db/connection');
 const authHelpers = require('../auth/_helpers');
 
 const selectCols = [
-  'mt.monitor_address AS monitor_address',
+  'mt.monitorAddress AS monitorAddress',
   'b.timestamp AS block_timestamp',
   't.block_number AS block_number',
   't.tx_index AS tx_index',
@@ -26,7 +26,7 @@ router.get('/monitor/:monitorAddress', (req, res, next) => {
       .andOn('t.trace_id', '=', 'mt.trace_id')
     })
     .join('block AS b', 't.block_number', 'b.block_number')
-    .whereRaw(`mt.monitor_address = '${req.params.monitorAddress}'`)
+    .whereRaw(`mt.monitorAddress = '${req.params.monitorAddress}'`)
     .then((transactions) => {
       res.status(200).json({status: 'success', data: transactions});
     }).catch((err) => {
@@ -42,7 +42,7 @@ router.get('/summaries/byWeek/:monitorAddress', (req, res, next) => {
       .andOn('t.trace_id', '=', 'mt.trace_id')
     })
     .join('block AS b', 't.block_number', 'b.block_number')
-    .whereRaw(`mt.monitor_address = '${req.params.monitorAddress}'`)
+    .whereRaw(`mt.monitorAddress = '${req.params.monitorAddress}'`)
     .then((transactions) => {
       res.status(200).json({status: 'success', data: transactions});
     }).catch((err) => {

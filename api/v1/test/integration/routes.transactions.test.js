@@ -48,7 +48,7 @@ describe('routes : transactions', () => {
       });
     });
 
-    it('should be queryable on monitor_address', (done) => {
+    it('should be queryable on monitorAddress', (done) => {
       chai.request(server).get('/api/v1/transactions/monitor/0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359').end((err, res) => {
         // there should be no errors
         should.not.exist(err);
@@ -64,7 +64,7 @@ describe('routes : transactions', () => {
         res.body.data.length.should.eql(5);
         // the first object in the data array should
         // have the right keys
-        res.body.data[0].should.include.keys('block_timestamp', 'block_number', 'tx_index', 'trace_id', 'from_address', 'to_address', 'value_wei', 'gas_price', 'gas_used', 'is_error', 'input_articulated', 'monitor_address',);
+        res.body.data[0].should.include.keys('block_timestamp', 'block_number', 'tx_index', 'trace_id', 'from_address', 'to_address', 'value_wei', 'gas_price', 'gas_used', 'is_error', 'input_articulated', 'monitorAddress',);
         done();
       });
     });

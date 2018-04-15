@@ -54,7 +54,7 @@ exports.seed = function(knex, Promise) {
     /*
     [
       {
-        monitor_address: '0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359',
+        monitorAddress: '0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359',
         blocknumber: '1079183',
         transactionindex: '2',
         traceid: '1',
@@ -69,7 +69,7 @@ exports.seed = function(knex, Promise) {
         encoding: '0x79c65068',
         articulated: ['mintToken', '0x120a270bbc009644e35f0bb6ab13f95b8199c4ad', '1']
       }, {
-        monitor_address: '0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359',
+        monitorAddress: '0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359',
         blocknumber: '1097821',
         transactionindex: '4',
         traceid: '0',
@@ -132,11 +132,11 @@ exports.seed = function(knex, Promise) {
         `);
 
       const monitorTxInsertions = res.map((tx) => {
-        return `('${tx.monitor_address}', ${tx.blocknumber}, ${tx.transactionindex}, ${tx.traceid})`;
+        return `('${tx.monitorAddress}', ${tx.blocknumber}, ${tx.transactionindex}, ${tx.traceid})`;
       });
 
       query.monitorTxInsertions = knex.raw(`
-        INSERT INTO monitor_transaction (monitor_address, block_number, tx_index, trace_id)
+        INSERT INTO monitor_transaction (monitorAddress, block_number, tx_index, trace_id)
          VALUES ${monitorTxInsertions}
          ON DUPLICATE KEY UPDATE block_number=block_number;
       `);
@@ -150,7 +150,7 @@ exports.seed = function(knex, Promise) {
 
     return seedDb(res).then(() => {
       const fakeRes = res.slice(0, 400).map((tx) => {
-        tx.monitor_address = '0x99ea4db9ee77acd40b119bd1dc4e33e1c070b80d';
+        tx.monitorAddress = '0x99ea4db9ee77acd40b119bd1dc4e33e1c070b80d';
         return tx;
       });
       return seedDb(fakeRes);

@@ -25,17 +25,17 @@ exports.up = (knex, Promise) => {
     table.timestamp('created_at').defaultTo(knex.fn.now());
   })
 .createTable('user', (table) => {
-    table.increments('user_id');
-    table.string('user_name', 40);
+    table.increments('userID');
+    table.string('userName', 40);
   }).createTable('monitor_group', (table) => {
-    // `user_id` nullable because some views might be shared between users
-    table.integer('user_id').unsigned().references('user_id').inTable('user')
-      // delete user's monitor_group if the user is deleted.
+    // `userID` nullable because some views might be shared between users
+    table.integer('userID').unsigned().references('userID').inTable('user')
+      // delete user's monitorGroup if the user is deleted.
       .onDelete('CASCADE');
-    table.integer('monitor_group_id').unsigned().notNullable();
-    table.string('monitor_address', 42);
+    table.integer('monitorGroupID').unsigned().notNullable();
+    table.string('monitorAddress', 42);
     table.string('nickname', 50);
-    table.primary(['user_id', 'monitor_address', 'monitor_group_id']);
+    table.primary(['userID', 'monitorAddress', 'monitorGroupID']);
   }).createTable('abi_spec', (table) => {
     //table.integer('abi_address').unsigned().references('id').inTable('address').notNullable()
     //  .onDelete('RESTRICT'); // prevent address deletion if we have its ABI spec
@@ -60,14 +60,14 @@ exports.up = (knex, Promise) => {
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.primary(['block_number', 'tx_index', 'trace_id']);
   }).createTable('monitor_transaction', (table) => {
-    table.string('monitor_address', 42).notNullable();
+    table.string('monitorAddress', 42).notNullable();
     table.integer('block_number').unsigned().notNullable();
     table.integer('tx_index').unsigned().notNullable();
     table.integer('trace_id').unsigned().notNullable();
     table.foreign(['block_number', 'tx_index', 'trace_id']).references(['block_number', 'tx_index', 'trace_id']).inTable('transaction')
       // Delete the address-transaction mapping if the block or tx gets deleted.
       .onDelete('CASCADE');
-    table.primary(['monitor_address', 'block_number', 'tx_index', 'trace_id']);
+    table.primary(['monitorAddress', 'block_number', 'tx_index', 'trace_id']);
   });
   const createTableSqlCode = knexCreateTables.toSQL().map((knexCode) => {
     return knexCode.sql;

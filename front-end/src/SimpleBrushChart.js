@@ -18,7 +18,7 @@ class SimpleBrushChart extends Component {
       this.updateCycle = 1;
       shouldIt = true;
     } else {
-    if(this.props.myData[0].monitor_address != nextProps.myData[0].monitor_address) {
+    if(this.props.myData[0].monitorAddress != nextProps.myData[0].monitorAddress) {
       console.log('addresses don\'t match... rerendering');
       shouldIt = true;
     } else {
