@@ -43,7 +43,7 @@ describe('routes : transactions', () => {
         res.body.data.length.should.eql(5);
         // the first object in the data array should
         // have the right keys
-        res.body.data[0].should.include.keys('abi_encoding', 'block_number', 'tx_index', 'trace_id', 'from_address', 'to_address', 'value_wei', 'gas_price', 'gas_used', 'is_error', 'input_articulated', 'created_at',);
+        res.body.data[0].should.include.keys('encoding', 'block_number', 'tx_index', 'trace_id', 'from_address', 'to_address', 'value_wei', 'gas_price', 'gas_used', 'is_error', 'input_articulated', 'created_at',);
         done();
       });
     });

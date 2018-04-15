@@ -126,7 +126,7 @@ exports.seed = function(knex, Promise) {
       }).join(',');
 
       query.txInsertions = knex.raw(`
-          INSERT INTO transaction (block_number, tx_index, trace_id, from_address, to_address, value_wei, gas_used, gas_price, is_error, abi_encoding, input_articulated)
+          INSERT INTO transaction (block_number, tx_index, trace_id, from_address, to_address, value_wei, gas_used, gas_price, is_error, encoding, input_articulated)
            VALUES ${txInsertions}
            ON DUPLICATE KEY UPDATE block_number=block_number;
         `);
