@@ -54,3 +54,22 @@ nav .btn {
   border-radius: 3px;
   font-size: 11px;
 }
+
+.monitor-selectors .dropdown {
+  text-align: left;
+  padding: 30px;
+}
+
+.tooltip {
+  background-color: #EEE;
+  border-radius: 5px;
+  padding: 4px;
+}
+
+.bar-rect {
+  fill: #000;
+}
+
+.bar-rect:hover {
+  fill: #dcbe00;
+}

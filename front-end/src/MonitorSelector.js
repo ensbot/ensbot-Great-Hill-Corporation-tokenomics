@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {
   Link
 } from 'react-router-dom';
+import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 class MonitorSelector extends Component {
   constructor(props) {
     super(props);
@@ -9,10 +10,16 @@ class MonitorSelector extends Component {
     this.state = {
       myData: [],
       isLoaded: false,
-      error: null
+      error: null,
+      dropdownOpen: false
     };
   }
 
+  toggle = () => {
+      this.setState({
+        dropdownOpen: !this.state.dropdownOpen
+      });
+    }
 
   componentDidMount = () => {
     fetch(`/api/v1/ui`)
@@ -34,11 +41,16 @@ class MonitorSelector extends Component {
   render() {
     return (
       <div className='monitor-selectors'>
-        <ul>
+        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+          <DropdownToggle caret>
+          Monitored Addresses
+        </DropdownToggle>
+          <DropdownMenu>
         {this.state.myData.map((monitorAddress, i) => {
-          return <li key={i}><Link to={{pathname: '/monitor/' + monitorAddress}}>{monitorAddress}</Link></li>
+          return <DropdownItem key={i} tag="a" href={'/monitor/' + monitorAddress}>{monitorAddress}</DropdownItem>
         })}
-      </ul>
+      </DropdownMenu>
+      </Dropdown>
       </div>
     );
   }
