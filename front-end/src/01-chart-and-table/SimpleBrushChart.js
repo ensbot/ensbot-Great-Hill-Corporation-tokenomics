@@ -29,31 +29,32 @@ class SimpleBrushChart extends Component {
   return shouldIt;
   }
 
+  formatDataForChart = (data) => {
+    const parseDate = d3.timeParse("%Y %W"),
+    formatDate = d3.timeFormat("%Y %W");
+    return Object.entries(
+      data
+      .map((datum) => {
+        datum.monthYear = formatDate(new Date(datum.block_timestamp * 1000));
+        return datum;
+      })
+      .reduce((acc, cur) => {
+        acc[cur.monthYear] = (acc[cur.monthYear] || 0) +1;
+        return acc;
+      }, {}))
+      .map((datum) => {// XXX:
+        return {
+          date: parseDate(datum[0]),
+          // price is count
+          price: +datum[1]
+        }
+      });
+  }
+
   componentDidUpdate = () => {
     if (this.props.myData.length) {
-      const parseDate = d3.timeParse("%Y %W"),
-      formatDate = d3.timeFormat("%Y %W");
 
-      let data = Object.entries(
-
-        this.props.myData
-        .map((datum) => {
-          datum.monthYear = formatDate(new Date(datum.block_timeStamp * 1000));
-          return datum;
-        })
-        .reduce((acc, cur) => {
-          acc[cur.monthYear] = (acc[cur.monthYear] || 0) +1;
-          return acc;
-        }, {}))
-        .map((datum) => {// XXX:
-          return {
-            date: parseDate(datum[0]),
-            // price is count
-            price: +datum[1]
-          }
-        });
-
-        console.log(data);
+      let data = this.formatDataForChart(this.props.myData);
 
       const svg = d3.select("svg"),
         margin = {
@@ -172,9 +173,17 @@ class SimpleBrushChart extends Component {
     }
   }
 
+  anim = () => {
+    let data = this.formatDataForChart(this.props.myData);
+    console.log(data);
+    d3.select("svg")
+      .selectAll('*')
+  }
+
   render() {
     return (
       <div>
+        <button onClick={this.anim}>yeah</button>
         <svg width="960" height="500"></svg>
       </div>
     );

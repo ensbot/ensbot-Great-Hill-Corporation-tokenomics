@@ -27,9 +27,8 @@
   to { transform: rotate(360deg); }
 }
 
-.area {
+.area:hover {
   fill: steelblue;
-  clip-path: url(#clip);
 }
 
 .zoom {

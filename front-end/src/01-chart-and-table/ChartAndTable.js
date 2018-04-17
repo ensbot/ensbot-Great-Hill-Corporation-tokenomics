@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Table from './Table';
 import SimpleBrushChart from './SimpleBrushChart';
+
 // import ReactTable from 'react-table';
 // import 'react-table/react-table.css';
 
@@ -21,8 +22,12 @@ class ChartAndTable extends Component {
       .then(res => res.json())
       .then(
         (res) => {
+          let myData = res.data.map((datum) => {
+            datum.input_articulated = JSON.parse(datum.input_articulated);
+            return datum;
+          });
           this.setState({
-            myData: res.data,
+            myData: myData,
             isLoaded: true,
         })},
         (error) => {
