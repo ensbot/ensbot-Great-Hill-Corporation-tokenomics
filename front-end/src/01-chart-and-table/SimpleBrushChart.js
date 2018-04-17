@@ -30,12 +30,13 @@ class SimpleBrushChart extends Component {
   }
 
   formatDataForChart = (data) => {
+    console.log(data);
     const parseDate = d3.timeParse("%Y %W"),
     formatDate = d3.timeFormat("%Y %W");
     return Object.entries(
       data
       .map((datum) => {
-        datum.monthYear = formatDate(new Date(datum.block_timestamp * 1000));
+        datum.monthYear = formatDate(new Date(datum.blockTimeStamp * 1000));
         return datum;
       })
       .reduce((acc, cur) => {
@@ -55,6 +56,8 @@ class SimpleBrushChart extends Component {
     if (this.props.myData.length) {
 
       let data = this.formatDataForChart(this.props.myData);
+
+      console.log(data);
 
       const svg = d3.select("svg"),
         margin = {
@@ -173,17 +176,16 @@ class SimpleBrushChart extends Component {
     }
   }
 
-  anim = () => {
-    let data = this.formatDataForChart(this.props.myData);
-    console.log(data);
-    d3.select("svg")
-      .selectAll('*')
-  }
+  // anim = () => {
+  //   let data = this.formatDataForChart(this.props.myData);
+  //   console.log(data);
+  //   d3.select("svg")
+  //     .selectAll('*')
+  // }
 
   render() {
     return (
       <div>
-        <button onClick={this.anim}>yeah</button>
         <svg width="960" height="500"></svg>
       </div>
     );

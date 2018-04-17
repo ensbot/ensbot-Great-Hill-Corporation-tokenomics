@@ -23,7 +23,7 @@ class ChartAndTable extends Component {
       .then(
         (res) => {
           let myData = res.data.map((datum) => {
-            datum.input_articulated = JSON.parse(datum.input_articulated);
+            //datum.input_articulated = JSON.parse(datum.input_articulated);
             return datum;
           });
           this.setState({

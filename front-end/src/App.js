@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 
 import MonitorSelector from './MonitorSelector';
-import ChartAndTable from './02-stacked-area/ChartAndTable';
+import ChartAndTable from './01-chart-and-table/ChartAndTable';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 

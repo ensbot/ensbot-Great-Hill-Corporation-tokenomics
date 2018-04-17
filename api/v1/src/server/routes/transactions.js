@@ -5,7 +5,7 @@ const authHelpers = require('../auth/_helpers');
 
 const selectCols = [
   'mt.monitorAddress AS monitorAddress',
-  'b.timeStamp AS block_timeStamp',
+  'b.timeStamp AS blockTimeStamp',
   't.blockNumber AS blockNumber',
   't.transID AS transID',
   't.traceID AS traceID',
