@@ -15,53 +15,53 @@ class Table extends Component {
     this.columns = [
       {
         Header: 'Monitor Address',
-        accessor: 'monitor_address'
+        accessor: 'monitorAddress'
       },
       {
         Header: 'Block Number',
-        accessor: 'block_number'
+        accessor: 'blockNumber'
       }, {
         Header: 'Transaction Index',
-        accessor: 'tx_index'
+        accessor: 'transID'
       }, {
         Header: 'Trace ID',
-        accessor: 'trace_id'
+        accessor: 'traceID'
       }, {
         Header: 'From',
-        accessor: 'from_address',
+        accessor: 'fromAddress',
       }, {
         Header: 'To',
-        accessor: 'to_address',
+        accessor: 'toAddress',
       }, {
         Header: 'Value (wei)',
-        accessor: 'value_wei',
+        accessor: 'valueWei',
       }, {
         id: 'gasCost',
         Header: 'Gas Cost (wei)',
-        accessor: row => row.gas_price * row.gas_used,
+        accessor: row => row.gasPrice * row.gasUsed,
       }, {
         Header: 'Error',
-        accessor: 'is_error',
+        accessor: 'isError',
       }, {
         Header: 'Articulated Input',
-        accessor: 'input_articulated'
+        accessor: 'articulated'
       }
     ];
 
     this.columnsSlim = [
       {
-        id: 'block_timestamp',
+        id: 'block_timeStamp',
         Header: 'Block Timestamp',
-        accessor: d => new Date(d.block_timestamp*1000).toLocaleString('en-US', {timeZone:'UTC'})
+        accessor: d => new Date(d.block_timeStamp*1000).toLocaleString('en-US', {timeZone:'UTC'})
       }, {
         Header: 'From',
-        accessor: 'from_address',
+        accessor: 'fromAddress',
       }, {
         Header: 'To',
-        accessor: 'to_address',
+        accessor: 'toAddress',
       }, {
         Header: 'Value (wei)',
-        accessor: 'value_wei',
+        accessor: 'valueWei',
       }
     ]
   }

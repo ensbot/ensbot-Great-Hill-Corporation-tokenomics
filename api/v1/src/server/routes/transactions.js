@@ -4,29 +4,29 @@ const knex = require('../db/connection');
 const authHelpers = require('../auth/_helpers');
 
 const selectCols = [
-  'mt.monitor_address AS monitor_address',
-  'b.timestamp AS block_timestamp',
-  't.block_number AS block_number',
-  't.tx_index AS tx_index',
-  't.trace_id AS trace_id',
-  't.from_address AS from_address',
-  't.to_address AS to_address',
-  't.value_wei',
-  't.gas_used',
-  't.gas_price',
-  't.is_error',
-  't.input_articulated'
+  'mt.monitorAddress AS monitorAddress',
+  'b.timeStamp AS block_timeStamp',
+  't.blockNumber AS blockNumber',
+  't.transID AS transID',
+  't.traceID AS traceID',
+  't.fromAddress AS fromAddress',
+  't.toAddress AS toAddress',
+  't.valueWei',
+  't.gasUsed',
+  't.gasPrice',
+  't.isError',
+  't.articulated'
 ]
 
 router.get('/monitor/:monitorAddress', (req, res, next) => {
   knex('transaction AS t').select(selectCols)
     .join('monitor_transaction AS mt', function() {
-      this.on('t.block_number', '=', 'mt.block_number')
-      .andOn('t.tx_index', '=', 'mt.tx_index')
-      .andOn('t.trace_id', '=', 'mt.trace_id')
+      this.on('t.blockNumber', '=', 'mt.blockNumber')
+      .andOn('t.transID', '=', 'mt.transID')
+      .andOn('t.traceID', '=', 'mt.traceID')
     })
-    .join('block AS b', 't.block_number', 'b.block_number')
-    .whereRaw(`mt.monitor_address = '${req.params.monitorAddress}'`)
+    .join('block AS b', 't.blockNumber', 'b.blockNumber')
+    .whereRaw(`mt.monitorAddress = '${req.params.monitorAddress}'`)
     .then((transactions) => {
       res.status(200).json({status: 'success', data: transactions});
     }).catch((err) => {
@@ -37,12 +37,12 @@ router.get('/monitor/:monitorAddress', (req, res, next) => {
 router.get('/summaries/byWeek/:monitorAddress', (req, res, next) => {
   knex('transaction AS t').select(selectCols)
     .join('monitor_transaction AS mt', function() {
-      this.on('t.block_number', '=', 'mt.block_number')
-      .andOn('t.tx_index', '=', 'mt.tx_index')
-      .andOn('t.trace_id', '=', 'mt.trace_id')
+      this.on('t.blockNumber', '=', 'mt.blockNumber')
+      .andOn('t.transID', '=', 'mt.transID')
+      .andOn('t.traceID', '=', 'mt.traceID')
     })
-    .join('block AS b', 't.block_number', 'b.block_number')
-    .whereRaw(`mt.monitor_address = '${req.params.monitorAddress}'`)
+    .join('block AS b', 't.blockNumber', 'b.blockNumber')
+    .whereRaw(`mt.monitorAddress = '${req.params.monitorAddress}'`)
     .then((transactions) => {
       res.status(200).json({status: 'success', data: transactions});
     }).catch((err) => {

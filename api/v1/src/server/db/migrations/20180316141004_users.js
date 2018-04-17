@@ -4,7 +4,6 @@ exports.up = (knex, Promise) => {
     table.string('username').unique().notNullable();
     table.string('password').notNullable();
     table.boolean('admin').notNullable().defaultTo(false);
-    table.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'));
   });
 };
 
