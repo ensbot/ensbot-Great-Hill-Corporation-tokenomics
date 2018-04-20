@@ -18,3 +18,19 @@
 
 ## related
 - [cors on nginx](https://enable-cors.org/server_nginx.html)
+
+
+
+- Reverse proxy steps at bottom: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04
+- Postman & route defs: https://scotch.io/tutorials/build-a-restful-api-using-node-and-express-4
+- Load testing with siege: https://www.codementor.io/codeforgeek/node-js-mysql-8b5nh45r9
+- Persist program with `systemd`: https://blog.codeship.com/running-node-js-linux-systemd/
+  - alternatives: https://stackoverflow.com/questions/4018154/how-do-i-run-a-node-js-app-as-a-background-service
+- Logging with morgan and winston: [here](http://tostring.it/2014/06/23/advanced-logging-with-nodejs/) and [stackoverflow](https://stackoverflow.com/questions/27906551/node-js-logging-use-morgan-and-winston)
+
+Partially helpful node-express-mysql articles:
+- https://jinalshahblog.wordpress.com/2016/10/06/rest-api-using-node-js-and-mysql/
+- https://www.terlici.com/2015/08/13/mysql-node-express.html
+
+[mysqljs repo](https://github.com/mysqljs/mysql)
+[express api documentation](http://expressjs.com/en/api.html)
