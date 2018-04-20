@@ -43,7 +43,7 @@ class Table extends Component {
         accessor: 'isError',
       }, {
         Header: 'Articulated Input',
-        accessor: 'inputArticulated'
+        accessor: 'articulated'
       }
     ];
 
