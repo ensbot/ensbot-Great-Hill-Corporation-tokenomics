@@ -54,13 +54,13 @@ class Table extends Component {
         accessor: d => new Date(d.block_timestamp*1000).toLocaleString('en-US', {timeZone:'UTC'})
       }, {
         Header: 'From',
-        accessor: 'from_address',
+        accessor: 'fromAddress',
       }, {
         Header: 'To',
-        accessor: 'to_address',
+        accessor: 'toAddress',
       }, {
         Header: 'Value (wei)',
-        accessor: 'value_wei',
+        accessor: 'valueWei',
       }
     ]
   }
