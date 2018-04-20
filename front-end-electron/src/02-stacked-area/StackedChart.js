@@ -50,7 +50,7 @@ class StackedChart extends Component {
         data
           .map((datum) => {
             datum.chartDate = formatDate(new Date(datum.block_timestamp * 1000));
-            datum.fnType = getFnType(datum.input_articulated[0]);
+            datum.fnType = getFnType(datum.articulated[0]);
             return datum;
           })
           .reduce((acc, cur) => {
