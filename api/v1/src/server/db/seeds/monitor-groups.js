@@ -10,6 +10,11 @@ const config = {
 }
 
 exports.seed = function(knex, Promise) {
+  return knex('monitor').del().then(() => {
+    return knex('monitor_group').del();
+  }).then(() => {
+    return knex('monitor_monitor_group').del()
+  }).then(() => {
     const readFlatFileAndParse = (filePath) => {
       return readFile(config.flatFilePath)
         .then((res) => {
@@ -27,6 +32,7 @@ exports.seed = function(knex, Promise) {
         });
       }
     return readFlatFileAndParse(config.flatFilePath)
+  })
       .then((res) => {
     // At this point, the res object looks like the following:
     /*
