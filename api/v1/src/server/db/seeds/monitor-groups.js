@@ -6,149 +6,109 @@ const csvParse = util.promisify(csv.parse);
 const readFile = util.promisify(fs.readFile);
 
 const config = {
-  flatFilePath: '../../monitors/etherTip_data_edited.txt',
-  // how many lines from our flat file should we seed?
-  // we want our tests to be fast, so let's only load 10 lines.
-  seedLength: {
-    development: 5000,
-    test: 10
-  }
+  flatFilePath: '../../data/monitors.json',
 }
 
 exports.seed = function(knex, Promise) {
-  return knex('transaction').del().then(() => {
-    // 1. Read in flat file and parse it.
     const readFlatFileAndParse = (filePath) => {
-      return readFile(config.flatFilePath).then((res) => {
-        return csvParse(res, {
-          delimiter: '\t',
-          relax: true,
-          columns: true
+      return readFile(config.flatFilePath)
+        .then((res) => {
+          return JSON.parse(res);
         })
-      }).then((rows) => {
-        rows = rows.slice(0, config.seedLength[process.env.NODE_ENV]);
-        let rowsWithParsedArticulation = rows.map((row) => {
-          return csvParse(row.articulated, {
-            delimiter: '|',
-            relax: true,
-            quote: false
-          });
+        .then((res) => {
+          // get addresses to lowercase
+          return res.map((group) => {
+            group.addresses = group.addresses.map((addressObj) => {
+              addressObj.address = addressObj.address.toLowerCase();
+              return addressObj;
+            });
+            return group;
+          })
         });
-        return Promise.all(rowsWithParsedArticulation).then((articulatedData) => {
-          return rows.map((row, index) => {
-            row.articulated = articulatedData[index][0];
-            return row;
-          });
-        });
-      });
-    };
-    return readFlatFileAndParse(config.flatFilePath);
-  }).then((res) => {
+      }
+    return readFlatFileAndParse(config.flatFilePath)
+      .then((res) => {
     // At this point, the res object looks like the following:
     /*
     [
       {
-        monitorAddress: '0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359',
-        blockNumber: '1079183',
-        transactionindex: '2',
-        traceid: '1',
-        from: '0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359',
-        to: '0x89205a3a3b2a69de6dbf7f01ed13b2108b2c43e7',
-        timeStamp: '1456769111',
-        value: '0',
-        gasused: '27463',
-        gasprice: '50000000000',
-        is_trace: '1',
-        is_error: '0',
-        encoding: '0x79c65068',
-        articulated: ['mintToken', '0x120a270bbc009644e35f0bb6ab13f95b8199c4ad', '1']
-      }, {
-        monitorAddress: '0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359',
-        blockNumber: '1097821',
-        transactionindex: '4',
-        traceid: '0',
-        from: '0xd1220a0cf47c7b9be7a2e6ba89f429762e7b9adb',
-        to: '0x15c817923774384362de9a3942287088087bf427',
-        ...
+        "name": "Address Handler",
+        "addresses": [
+          {
+            "address": "0x25D94b021b69D9C01931Ff40Bd265CfC3D920f72", //except lowercase now
+            "name": "Address Handle Service",
+            "firstBlock": 5319337,
+          },
+          {
+            "address": "0xFd495eeEd737b002Ea62Cf0534e7707a9656ba19", //except lowercase now
+            "name": "AHS Owner",
+            "firstBlock": 3719301,
+          }
+        ]
+      },
+      {
+        "name": "Augur",
+        "addresses": [
+          {
+            "address": "0x48c80F1f4D53D5951e5D5438B54Cba84f29F32a5", //except lowercase now
+            "name": "REP-Augur-Old",
+            "firstBlock": 2378196,
+          },
+          ...
+        ]
       }
+      ...
     ]
     */
     const seedDb = (res) => {
-      // 2. Make unique lists of block numbers.
-      let reduced = res.reduce((acc, cur) => {
-        acc.blockNumbers.push(cur.blockNumber);
-        acc.blockTimestamps[cur.blockNumber] = cur.timeStamp;
-        return acc;
-      }, {
-        blockNumbers: [],
-        blockTimestamps: []
-      });
-      // unique block numbers and addresses:
-      reduced.blockNumbers = [...new Set(reduced.blockNumbers)].filter(blockNum => blockNum > 0);
-
-      // 3. Wrangle the data into SQL insertion queries.
       let query = {
-        blockInsertions: undefined,
-        txInsertions: undefined,
-        monitorTxInsertions: undefined
+        monitorInsertions: undefined,
+        monitorGroupInsertions: undefined,
+        monitorMonitorGroupInsertions: undefined,
       };
 
-      const blockInsertions = reduced.blockNumbers.map((blockNo) => {
-        return `(${blockNo}, ${reduced.blockTimestamps[blockNo]})`;
+      const monitorInsertions = res.map((group) => {
+        return group.addresses.map((addressObj) => {
+          return `('${addressObj.address}', '${addressObj.name}', ${addressObj.firstBlock})`;
+        });
       }).join(',');
 
-      query.blockInsertions = knex.raw(`
-        INSERT INTO block (blockNumber, timeStamp)
-           VALUES ${blockInsertions}
-          ON DUPLICATE KEY UPDATE blockNumber=blockNumber;
+      query.monitorInsertions = knex.raw(`
+        INSERT INTO monitor (monitorAddress, nickname, firstBlock)
+           VALUES ${monitorInsertions}
+          ON DUPLICATE KEY UPDATE nickname=nickname;
           `);
 
-      const txInsertions = res.map((tx) => {
-        return `(
-          ${tx.blockNumber},
-          ${tx.transactionindex},
-          ${tx.traceid},
-          '${tx.to}',
-          '${tx.from}',
-          ${tx.value},
-          ${tx.gasused},
-          ${tx.gasprice},
-          ${tx.is_error},
-          '${tx.encoding}',
-          '${JSON.stringify(tx.articulated).replace(/\'/gi, '\\\'').replace(/\\"/gi, '\\\\\"')}'
-        )`
+      const monitorGroupInsertions = res.map((group, index) => {
+        return `(${index}, '${group.name}')`
       }).join(',');
 
-      query.txInsertions = knex.raw(`
-          INSERT INTO transaction (blockNumber, transID, traceID, fromAddress, toAddress, valueWei, gasUsed, gasPrice, isError, encoding, articulated)
-           VALUES ${txInsertions}
-           ON DUPLICATE KEY UPDATE blockNumber=blockNumber;
+      query.monitorGroupInsertions = knex.raw(`
+        INSERT INTO monitor_group (monitorGroupID, nickname)
+           VALUES ${monitorGroupInsertions}
+          ON DUPLICATE KEY UPDATE monitorGroupID=monitorGroupID;
         `);
 
-      const monitorTxInsertions = res.map((tx) => {
-        return `('${tx.monitorAddress}', ${tx.blockNumber}, ${tx.transactionindex}, ${tx.traceid})`;
-      });
+      const monitorMonitorGroupInsertions = res.map((group, index) => {
+        return group.addresses.map((addressObj) => {
+          return `(${index}, '${addressObj.address}')`
+        });
+      }).join(',');
 
-      query.monitorTxInsertions = knex.raw(`
-        INSERT INTO monitor_transaction (monitorAddress, blockNumber, transID, traceID)
-         VALUES ${monitorTxInsertions}
-         ON DUPLICATE KEY UPDATE blockNumber=blockNumber;
-      `);
+      query.monitorMonitorGroupInsertions = knex.raw(`
+        INSERT INTO monitor_monitor_group (monitorGroupID, monitorAddress)
+           VALUES ${monitorMonitorGroupInsertions}
+          ON DUPLICATE KEY UPDATE monitorGroupID=monitorGroupID;
+          `);
 
       // 4. Run the SQL.
-      return Promise.all([query.blockInsertions, query.txInsertions]).then((res) => {
+      return Promise.all([query.monitorInsertions, query.monitorGroupInsertions]).then((res) => {
         return Promise.all([// Do this later because it requires the presence of foreign key values introduced above.
-          query.monitorTxInsertions]);
+          query.monitorMonitorGroupInsertions]);
       });
     }
 
-    return seedDb(res).then(() => {
-      const fakeRes = res.slice(0, 400).map((tx) => {
-        tx.monitorAddress = '0x99ea4db9ee77acd40b119bd1dc4e33e1c070b80d';
-        return tx;
-      });
-      return seedDb(fakeRes);
-    });
+    return seedDb(res);
   }).catch(e => {
     return console.log(e)
   });

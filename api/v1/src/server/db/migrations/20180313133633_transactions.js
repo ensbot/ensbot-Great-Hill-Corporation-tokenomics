@@ -42,10 +42,10 @@ exports.up = (knex, Promise) => {
     table.string('monitorAddress', 42).primary().notNullable();
     table.string('nickname', 100);
     table.integer('firstBlock').unsigned();
-    table.boolean('monitorStatus');
+    table.boolean('monitorStatus').defaultTo(true);
 
   }).createTable('monitor_group', (table) => {
-    table.increments('monitorGroupID').unsigned().notNullable();
+    table.integer('monitorGroupID').primary().unsigned().notNullable();
     table.string('nickname', 100);
 
   }).createTable('monitor_monitor_group', (table) => {
