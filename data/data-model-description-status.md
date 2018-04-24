@@ -114,3 +114,12 @@
 | --- | --- | ---|
 | name | string(25) | |
 | nicename | string(25) |  |
+
+
+### Column limitations in MySQL
+
+unsigned int: 4294967295
+
+unsigned bigint: 18446744073709551615 (All arithmetic is done using signed BIGINT or DOUBLE values, so you should not use unsigned big integers larger than 9223372036854775807 (63 bits) except with bit functions!)
+
+decimal: The maximum number of digits (M) for DECIMAL is 65.

@@ -4,42 +4,22 @@ const writeFile = util.promisify(fs.writeFile);
 
 exports.up = (knex, Promise) => {
   let knexCreateTables = knex.schema
-  // .createTable('exchange', (table) => {
-  //   table.string('name', 25).notNullable();
-  //   table.string('nicename', 25).notNullable();
-  // })
     .createTable('price', (table) => {
     table.timestamp('timeStamp').notNullable();
-    // NOTE:
-    //  Purposely not cascading deletions of blockNumber price in this table.
-    // table.integer('blockNumber').unsigned().notNullable();
     table.string('currencyFrom', 10).notNullable();
     table.string('currencyTo', 10).notNullable();
     table.enum('exchangeName', ['coinbase', 'poloniex', 'bittrex']).notNullable();
-    // choosing arbitrary decimal precision
-    table.decimal('exchangeRate', 21, 18).unsigned().notNullable();
+    table.decimal('exchangeRate', 21, 18).unsigned().notNullable(); // arbitrary; research me
+
   }).createTable('block', (table) => {
-    table.integer('blockNumber').unsigned().primary().notNullable(); // max val: 4294967295
+    table.integer('blockNumber').unsigned().primary().notNullable();
     table.integer('timeStamp', 11).unsigned().notNullable();
     table.boolean('isFinalized').notNullable().defaultTo(false);
-  })
-.createTable('user', (table) => {
-    table.increments('userID');
-    table.string('userName', 40);
-  }).createTable('monitor_group', (table) => {
-    // `userID` nullable because some views might be shared between users
-    table.integer('userID').unsigned().references('userID').inTable('user')
-      // delete user's monitorGroup if the user is deleted.
-      .onDelete('CASCADE');
-    table.integer('monitorGroupID').unsigned().notNullable();
-    table.string('monitorAddress', 42);
-    table.string('nickname', 50);
-    table.primary(['userID', 'monitorAddress', 'monitorGroupID']);
+
   }).createTable('abi_spec', (table) => {
-    //table.integer('abiAddress').unsigned().references('id').inTable('address').notNullable()
-    //  .onDelete('RESTRICT'); // prevent address deletion if we have its ABI spec
     table.binary('encoding', 10).primary().notNullable();
     table.specificType('fnDefinition', 'JSON').notNullable();
+
   }).createTable('transaction', (table) => {
     table.charset('utf8mb4');
     table.collate('utf8mb4_bin');
@@ -57,6 +37,22 @@ exports.up = (knex, Promise) => {
       .notNullable();
     table.specificType('articulated', 'JSON');
     table.primary(['blockNumber', 'transID', 'traceID']);
+
+  }).createTable('monitor', (table) => {
+    table.string('monitorAddress', 42).primary().notNullable();
+    table.string('nickname', 100);
+    table.integer('firstBlock').unsigned();
+    table.boolean('monitorStatus');
+
+  }).createTable('monitor_group', (table) => {
+    table.increments('monitorGroupID').unsigned().notNullable();
+    table.string('nickname', 100);
+
+  }).createTable('monitor_monitor_group', (table) => {
+    table.integer('monitorGroupId').unsigned().notNullable().references('monitorGroupId').inTable('monitor_group').onDelete('CASCADE');
+    table.string('monitorAddress', 42).references('monitorAddress').inTable('monitor').notNullable().onDelete('CASCADE');
+    table.primary(['monitorGroupID', 'monitorAddress']);
+
   }).createTable('monitor_transaction', (table) => {
     table.string('monitorAddress', 42).notNullable();
     table.integer('blockNumber').unsigned().notNullable();
@@ -66,6 +62,7 @@ exports.up = (knex, Promise) => {
       // Delete the address-transaction mapping if the block or tx gets deleted.
       .onDelete('CASCADE');
     table.primary(['monitorAddress', 'blockNumber', 'transID', 'traceID']);
+
   });
   const createTableSqlCode = knexCreateTables.toSQL().map((knexCode) => {
     return knexCode.sql;
@@ -80,11 +77,12 @@ exports.up = (knex, Promise) => {
 
 exports.down = (knex, Promise) => {
   return knex.schema
+    .dropTable('monitor_monitor_group')
     .dropTable('monitor_transaction')
+    .dropTable('monitor')
+    .dropTable('monitor_group')
     .dropTable('transaction')
     .dropTable('abi_spec')
-    .dropTable('monitor_group')
     .dropTable('block')
-    .dropTable('user')
     .dropTable('price');
 };
