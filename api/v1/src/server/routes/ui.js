@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const knex = require('../db/connection');
+const _ = require('lodash');
 
 router.get('/monitor-groups', (req, res, next) => {
   knex('monitor_group AS mg')
     .select(['mg.nickname AS groupName', 'm.monitorAddress', 'm.nickname AS monitorName', 'm.firstBlock'])
     .join('monitor_monitor_group AS mmg', 'mg.monitorGroupID', 'mmg.monitorGroupID')
     .join('monitor AS m', 'mmg.monitorAddress', 'm.monitorAddress')
-  .then((monitorGroups) => {
+  .then((monitors) => {
+    let monitorGroups = _.groupBy(monitors, 'groupName');
     res.status(200).json({status: 'success', data: {
         monitorGroups: monitorGroups
       }});
