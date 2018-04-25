@@ -33,7 +33,10 @@ router.get('/monitor-groups', (req, res, next) => {
     .leftJoin('monitor_monitor_group AS mmg', 'm.monitorAddress', 'mmg.monitorAddress')
     .leftJoin('monitor_group AS mg', 'mg.monitorGroupID', 'mmg.monitorGroupID')
   .then((monitors) => {
-    let monitorGroups = _.groupBy(monitors, 'groupName');
+    let monitorGroups = _(monitors)
+      .groupBy(monitor => monitor.groupName)
+      .map((val, key) => ({groupName: key, addresses: val}))
+      .value();
     res.status(200).json({status: 'success', data: {
         monitorGroups: monitorGroups
       }});
