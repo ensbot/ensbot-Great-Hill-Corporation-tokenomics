@@ -8,6 +8,17 @@ const MonitorHeading = (props) => {
   )
 }
 
+const ViewList = () => {
+  return (
+    <ul className="menu-view-list">
+      <li>Monitor Overview</li>
+      <li>Monitor Activity</li>
+      <li>Monitor Contract Interaction</li>
+      <li>Monitor Settings</li>
+    </ul>
+  )
+}
+
 class MonitorView extends Component {
   constructor(props) {
     super(props);
@@ -55,6 +66,7 @@ class MonitorView extends Component {
     return (
       <div>
         <MonitorHeading address={this.props.match.params.monitorAddress}/>
+        <ViewList/>
       </div>
     );
   }

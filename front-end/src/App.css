@@ -82,3 +82,33 @@ nav .btn {
 .bar-rect:hover {
   fill: #dcbe00;
 }
+
+.menu-view-list {
+  list-style-type: none;
+  text-align: left;
+}
+
+.monitor-heading {
+  font-size: 1.5em;
+  font-style: italic;
+  text-align: left;
+  margin: 1em;
+  color: #333;
+}
+
+.menu-view-list li {
+  padding: 1em;
+  background-color: #EEE;
+  border: 1px solid #AAA;
+  border-radius: 5px;
+  text-align: left;
+  font-size: .8em;
+  color: #666;
+  margin: .1em 0;
+  width: 20em;
+}
+
+.menu-view-list li:hover {
+  cursor: pointer;
+  background-color: #DDD;
+}
