@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import {
-  Link
-} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 class MonitorSelector extends Component {
   constructor(props) {
@@ -44,7 +42,7 @@ class MonitorSelector extends Component {
     let groupName = monitorGroup.groupName === "null" ? "Other" : monitorGroup.groupName;
     let groupMemberList = monitorGroup.addresses.map((monitor, j) => {
       let monitorName = monitor.monitorName === null ? monitor.monitorAddress : monitor.monitorName;
-      return <DropdownItem className='group-member' key={i + '' + j} tag='a' href={'/monitor/' + monitor.monitorAddress}>{monitorName}</DropdownItem>
+      return <DropdownItem className='group-member' key={i + '' + j}><Link to={{pathname: `/monitor/${monitor.monitorAddress}`}}>{monitorName}</Link></DropdownItem>
     });
     return (
       <React.Fragment key={groupName}>
