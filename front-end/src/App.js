@@ -6,10 +6,7 @@ import {
 } from 'react-router-dom';
 
 import MonitorSelector from './MonitorSelector';
-//import ChartAndTable from './01-chart-and-table/ChartAndTable';
-//import ChartAndTable from './02-stacked-area/ChartAndTable';
-import ChartAndTable from './03-bar-chart/ChartAndTable';
-//import ChartAndTable from './04-credit-debit/ChartAndTable';
+import MonitorView from './MonitorView/MonitorView';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
@@ -32,7 +29,7 @@ class App extends Component {
           <div>
             <MonitorSelector />
             <Route exact path="/" />
-            <Route path="/monitor/:monitorAddress" component={ChartAndTable} />
+            <Route path="/monitor/:monitorAddress" component={MonitorView} />
             {/* <Route path="/tipjar" render={() => <ChartAndTable monitorAddress='0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359'/>} />
             <Route path="/tipjar2" render={() => <ChartAndTable2 monitorAddress='0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359'/>} />
             <Route path="/tipjar3" render={() => <ChartAndTableDataFiltersToo monitorAddress='0xfb6916095ca1df60bb79ce92ce3ea74c37c5d359'/>} /> */}
