@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 
-const MonitorHeading = (props) => {
+const MonitorViewHeading = (props) => {
   return (
     <div className="monitor-heading">
       {props.address}
@@ -8,14 +9,22 @@ const MonitorHeading = (props) => {
   )
 }
 
-const ViewList = () => {
+const MonitorViewMenu = ({match}) => {
   return (
     <ul className="menu-view-list">
-      <li>Monitor Overview</li>
-      <li>Monitor Activity</li>
-      <li>Monitor Contract Interaction</li>
-      <li>Monitor Settings</li>
+      <li><Link to={`${match.url}/overview`}>Monitor Overview</Link></li>
+      <li><Link to={`${match.url}/activity`}>Monitor Activity</Link></li>
+      <li><Link to={`${match.url}/contract-interaction`}>Monitor Contract Interaction</Link></li>
+      <li><Link to={`${match.url}/settings`}>Monitor Settings</Link></li>
     </ul>
+  )
+}
+
+const MonitorViewContainer = (props) => {
+  return (
+    <div>
+      {props.match.params.viewSelection}
+    </div>
   )
 }
 
@@ -63,10 +72,12 @@ class MonitorView extends Component {
   }
 
   render() {
+    console.log(this.props.match.url);
     return (
       <div>
-        <MonitorHeading address={this.props.match.params.monitorAddress}/>
-        <ViewList/>
+        <MonitorViewHeading address={this.props.match.params.monitorAddress}/>
+        <MonitorViewMenu match={this.props.match}/>
+        <Route path={`${this.props.match.url}/:viewSelection`} component={MonitorViewContainer} />
       </div>
     );
   }

@@ -38,7 +38,6 @@ class MonitorSelector extends Component {
   }
 
   makeMonitorGroupMenu = (monitorGroup, i) => {
-    console.log(monitorGroup.groupName);
     let groupName = monitorGroup.groupName === "null" ? "Other" : monitorGroup.groupName;
     let groupMemberList = monitorGroup.addresses.map((monitor, j) => {
       let monitorName = monitor.monitorName === null ? monitor.monitorAddress : monitor.monitorName;
