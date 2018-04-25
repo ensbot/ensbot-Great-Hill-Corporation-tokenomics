@@ -40,14 +40,15 @@ class MonitorSelector extends Component {
   }
 
   makeMonitorGroupMenu = (monitorGroup, i) => {
-    let groupName = monitorGroup.groupName === null ? "Other" : monitorGroup.groupName;
+    console.log(monitorGroup.groupName);
+    let groupName = monitorGroup.groupName === "null" ? "Other" : monitorGroup.groupName;
     let groupMemberList = monitorGroup.addresses.map((monitor, j) => {
       let monitorName = monitor.monitorName === null ? monitor.monitorAddress : monitor.monitorName;
       return <DropdownItem className='group-member' key={i + '' + j} tag='a' href={'/monitor/' + monitor.monitorAddress}>{monitorName}</DropdownItem>
     });
     return (
       <React.Fragment key={groupName}>
-        <DropdownItem tag="a" href={'/monitor-group/' + groupName}>{groupName}</DropdownItem>
+        <DropdownItem className='group-header' tag="a" href={'/monitor-group/' + groupName}>Group: {groupName}</DropdownItem>
         {groupMemberList}
       </React.Fragment>
     );

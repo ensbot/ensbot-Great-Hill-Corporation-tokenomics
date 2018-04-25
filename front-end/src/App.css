@@ -60,6 +60,15 @@ nav .btn {
   padding: 30px;
 }
 
+.dropdown-item.group-header {
+  font-weight: bold;
+}
+
+.dropdown-item.group-member {
+  padding-left: 3.2em;
+  font-size: .8em;
+}
+
 .tooltip {
   background-color: #EEE;
   border-radius: 5px;
