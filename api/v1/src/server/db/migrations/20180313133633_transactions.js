@@ -57,7 +57,7 @@ exports.up = (knex, Promise) => {
     table.primary(['monitorGroupID', 'monitorAddress']);
 
   }).createTable('monitor_transaction', (table) => {
-    table.string('monitorAddress', 42).notNullable();
+    table.string('monitorAddress', 42).notNullable().references('monitorAddress').inTable('monitor').onDelete('CASCADE');
     table.integer('blockNumber').unsigned().notNullable();
     table.integer('transID').unsigned().notNullable();
     table.integer('traceID').unsigned().notNullable();
