@@ -42,8 +42,9 @@ class Table extends Component {
         Header: 'Error',
         accessor: 'isError',
       }, {
+        id: 'articulated',
         Header: 'Articulated Input',
-        accessor: 'articulated'
+        accessor: row => JSON.stringify(row.articulated)
       }
     ];
   }

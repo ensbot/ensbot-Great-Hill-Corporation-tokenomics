@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import {Route, Link} from 'react-router-dom';
+import ChartAndTable from '../03-bar-chart/ChartAndTable';
+import Ct2 from '../02-stacked-area/ChartAndTable';
 
 const MonitorViewHeading = (props) => {
   return (
@@ -21,9 +23,22 @@ const MonitorViewMenu = ({match}) => {
 }
 
 const MonitorViewContainer = (props) => {
+  let component = ((urlParam) => {
+    switch(urlParam) {
+      case 'overview':
+      return <ChartAndTable myData={props.myData}/>;
+      case 'activity':
+      return <ChartAndTable myData={props.myData}/>;
+      case 'contract-interaction':
+      return <Ct2 myData={props.myData}/>;
+      default:
+      return <ChartAndTable myData={props.myData}/>;
+    }
+  })(props.match.params.viewSelection);
   return (
     <div>
       {props.match.params.viewSelection}
+      {component}
     </div>
   )
 }
@@ -72,12 +87,11 @@ class MonitorView extends Component {
   }
 
   render() {
-    console.log(this.props.match.url);
     return (
       <div>
         <MonitorViewHeading address={this.props.match.params.monitorAddress}/>
-        <MonitorViewMenu match={this.props.match}/>
-        <Route path={`${this.props.match.url}/:viewSelection`} component={MonitorViewContainer} />
+        <MonitorViewMenu match={this.props.match} monitorAddress={this.props.match.params.monitorAddress}/>
+        <Route path={`${this.props.match.url}/:viewSelection`} render={() => <MonitorViewContainer match={this.props.match} myData={this.state.myData}/>} />
       </div>
     );
   }

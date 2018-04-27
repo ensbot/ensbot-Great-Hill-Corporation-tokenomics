@@ -4,21 +4,24 @@ const writeFile = util.promisify(fs.writeFile);
 
 exports.up = (knex, Promise) => {
   let knexCreateTables = knex.schema
-    .createTable('price', (table) => {
-    table.timestamp('timeStamp').notNullable();
-    table.string('currencyFrom', 10).notNullable();
-    table.string('currencyTo', 10).notNullable();
-    table.enum('exchangeName', ['coinbase', 'poloniex', 'bittrex']).notNullable();
+    .createTable('eth_price_usd', (table) => {
+    table.timestamp('timeStamp').primary().notNullable();
     table.decimal('exchangeRate', 21, 18).unsigned().notNullable(); // arbitrary; research me
 
-  }).createTable('block', (table) => {
+  }).createTable('token_price_eth', (table) => {
+    table.timestamp('timeStamp').notNullable();
+    table.string('tokenAddress', 42).notNullable();
+    table.decimal('exchangeRate', 21, 18).unsigned().notNullable();
+    table.primary(['timeStamp', 'tokenAddress']);
+  })
+  .createTable('block', (table) => {
     table.integer('blockNumber').unsigned().primary().notNullable();
     table.integer('timeStamp', 11).unsigned().notNullable();
     table.boolean('isFinalized').notNullable().defaultTo(false);
 
   }).createTable('abi_spec', (table) => {
-    table.binary('encoding', 10).primary().notNullable();
-    table.specificType('fnDefinition', 'JSON').notNullable();
+    table.string('encoding', 10).primary().notNullable();
+    table.specificType('canonical', 'JSON').notNullable();
 
   }).createTable('transaction', (table) => {
     table.charset('utf8mb4');
@@ -40,16 +43,16 @@ exports.up = (knex, Promise) => {
 
   }).createTable('monitor', (table) => {
     table.string('monitorAddress', 42).primary().notNullable();
-    table.string('nickname', 100);
+    table.string('monitorName', 100);
     table.integer('firstBlock').unsigned();
     table.boolean('monitorStatus').defaultTo(true);
 
   }).createTable('monitor_group', (table) => {
     table.integer('monitorGroupID').primary().unsigned().notNullable();
-    table.string('nickname', 100);
+    table.string('monitorGroupName', 100);
 
   }).createTable('monitor_monitor_group', (table) => {
-    table.integer('monitorGroupId').unsigned().notNullable().references('monitorGroupId').inTable('monitor_group').onDelete('CASCADE');
+    table.integer('monitorGroupID').unsigned().notNullable().references('monitorGroupID').inTable('monitor_group').onDelete('CASCADE');
     table.string('monitorAddress', 42).references('monitorAddress').inTable('monitor').notNullable().onDelete('CASCADE');
     table.primary(['monitorGroupID', 'monitorAddress']);
 
@@ -84,5 +87,6 @@ exports.down = (knex, Promise) => {
     .dropTable('transaction')
     .dropTable('abi_spec')
     .dropTable('block')
-    .dropTable('price');
+    .dropTable('eth_price_usd')
+    .dropTable('token_price_eth');
 };

@@ -22,6 +22,7 @@ class StackedChart extends Component {
       console.log('addresses don\'t match... rerendering');
       shouldIt = true;
     } else {
+      console.log('shouldn\'t update');
       shouldIt = false;
     }
   }
@@ -77,7 +78,8 @@ class StackedChart extends Component {
       })
   }
 
-  componentDidUpdate = () => {
+  componentDidMount = () => {
+    console.log('hit here');
     if (this.props.myData.length) {
 
       let data = this.formatDataForChart(this.props.myData);
