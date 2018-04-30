@@ -64,7 +64,7 @@ class App extends Component {
     return (
       <div className="App">
         <Router>
-          <div>
+          <div className="app-container">
             <MonitorSelector monitorGroups={this.state.monitorGroups}
                              activeMonitor={this.state.activeMonitor}/>
             <Route exact path="/" />

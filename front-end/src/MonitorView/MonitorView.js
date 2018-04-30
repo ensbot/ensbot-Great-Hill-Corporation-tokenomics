@@ -13,12 +13,12 @@ const MonitorViewHeading = (props) => {
 
 const MonitorViewMenu = ({match}) => {
   return (
-    <ul className="menu-view-list">
-      <li><Link to={`${match.url}/overview`}>Monitor Overview</Link></li>
-      <li><Link to={`${match.url}/activity`}>Monitor Activity</Link></li>
-      <li><Link to={`${match.url}/contract-interaction`}>Monitor Contract Interaction</Link></li>
-      <li><Link to={`${match.url}/settings`}>Monitor Settings</Link></li>
-    </ul>
+    <div className="menu-view-list">
+      <div><Link to={`${match.url}/overview`}>Monitor Overview</Link></div>
+      <div><Link to={`${match.url}/activity`}>Monitor Activity</Link></div>
+      <div><Link to={`${match.url}/contract-interaction`}>Monitor Contract Interaction</Link></div>
+      <div><Link to={`${match.url}/settings`}>Monitor Settings</Link></div>
+    </div>
   )
 }
 
@@ -100,10 +100,11 @@ class MonitorView extends Component {
   render() {
     console.log(this.props);
     return (
-      <div>
-        <MonitorViewHeading address={this.props.match.params.monitorAddress}/>
+      <div className="monitor-view-container">
         <MonitorViewMenu match={this.props.match} monitorAddress={this.props.match.params.monitorAddress}/>
-        <Route path={`${this.props.match.url}/:viewSelection`} render={() => <MonitorViewContainer match={this.props.match} myData={this.state.myData}/>} />
+        <div className="monitor-body">
+          <Route path={`${this.props.match.url}/:viewSelection`} render={() => <ChartAndTable match={this.props.match} myData={this.state.myData}/>} />
+        </div>
       </div>
     );
   }

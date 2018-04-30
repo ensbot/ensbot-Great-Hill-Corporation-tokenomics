@@ -38,9 +38,9 @@ class MonitorSelector extends Component {
       <div className='monitor-selectors'>
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>
-            <div>
+            <div className='monitor-selector-headings'>
               <h5>{this.props.activeMonitor.groupName}</h5>
-              <h4>{this.props.activeMonitor.monitorName} {this.props.activeMonitor.monitorAddress ? `(${this.props.activeMonitor.monitorAddress})` : null}</h4>
+              <h4>{this.props.activeMonitor.monitorName} <span className="small">{this.props.activeMonitor.monitorAddress ? `(${this.props.activeMonitor.monitorAddress})` : null}</span></h4>
             </div>
         </DropdownToggle>
           <DropdownMenu>

@@ -1,5 +1,8 @@
-.App {
+html, body, .App, #root {
   text-align: center;
+  height: 100%;
+  background-color: #EEE;
+  display: flex;
 }
 
 .area:hover {
@@ -16,9 +19,28 @@ nav .btn {
   margin: 15px;
 }
 
-.monitor-selectors {
-  background: linear-gradient(#d48fc7, #6c8cd6);
+.app-container {
+  display: flex;
+  flex-flow: row wrap;
 }
+
+.app-container > * {
+  flex: 1 100%;
+}
+
+.monitor-view-container {
+  display: flex;
+}
+
+/* .monitor-selectors {
+  background: linear-gradient(#d48fc7, #6c8cd6);
+} */
+
+/*
+.monitor-selectors .dropdown {
+  text-align: left;
+  padding: 30px;
+} */
 
 .monitor-selectors li {
   list-style-type: none;
@@ -28,11 +50,6 @@ nav .btn {
   margin: .5em;
   border-radius: 3px;
   font-size: 11px;
-}
-
-.monitor-selectors .dropdown {
-  text-align: left;
-  padding: 30px;
 }
 
 .dropdown-item.group-header {
@@ -50,6 +67,82 @@ nav .btn {
   height: 100%;
 }
 
+.monitor-selectors {
+  text-align: left;
+  background-color: #FFF;
+  border-bottom: 1px solid #DDD;
+}
+
+.monitor-selector-headings {
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  text-align:left;
+  border-radius: 0px;
+  background-color: #FFF;
+  color: #000;
+  border: 0;
+  margin: .8em;
+}
+
+.dropdown-toggle:hover {
+  background-color: #EEE;
+  color: #000;
+}
+
+.dropdown-toggle .small {
+  font-size: .8em;
+}
+
+.dropdown-toggle h4,
+.dropdown-toggle h5 {
+  margin: 0;
+}
+
+.dropdown-toggle h5 {
+  font-size: 1em;
+  color: #999;
+  margin:.3em 0;
+}
+.dropdown-toggle h4 {
+  font-size: 1.2em;
+  margin-bottom: .3em;
+}
+
+.menu-view-list {
+  flex: 1 auto;
+  list-style-type: none;
+  text-align: left;
+  margin:0;
+  padding:0;
+  width: 200px;
+  border-right: 1px solid #DDD;
+  background-color: #FFF;
+}
+
+.menu-view-list div {
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px solid #DDD;
+  font-size: .8em;
+  color: #666;
+}
+
+.menu-view-list a {
+  padding:1em;
+  display:block;
+}
+
+.menu-view-list div:hover {
+  cursor: pointer;
+  background-color: #DDD;
+}
+
+.monitor-body {
+  flex: 20 0px;
+}
+
 .tooltip {
   background-color: #EEE;
   border-radius: 5px;
@@ -62,39 +155,4 @@ nav .btn {
 
 .bar-rect:hover {
   fill: #dcbe00;
-}
-
-.menu-view-list {
-  list-style-type: none;
-  text-align: left;
-}
-
-.monitor-heading {
-  font-size: 1.5em;
-  font-style: italic;
-  text-align: left;
-  margin: 1em;
-  color: #333;
-}
-
-.menu-view-list li {
-  padding: 1em;
-  background-color: #EEE;
-  border: 1px solid #AAA;
-  border-radius: 5px;
-  text-align: left;
-  font-size: .8em;
-  color: #666;
-  margin: .1em 0;
-  width: 20em;
-}
-
-.menu-view-list li:hover {
-  cursor: pointer;
-  background-color: #DDD;
-}
-
-.dropdown-toggle {
-  width:100%;
-  text-align:left;
 }
