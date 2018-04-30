@@ -6,9 +6,6 @@ class MonitorSelector extends Component {
     super(props);
 
     this.state = {
-      myData: [],
-      isLoaded: false,
-      error: null,
       dropdownOpen: false
     };
   }
@@ -18,25 +15,6 @@ class MonitorSelector extends Component {
         dropdownOpen: !this.state.dropdownOpen
       });
     }
-
-  componentDidMount = () => {
-    console.log('api fetch');
-    fetch(`/api/v1/ui/monitor-groups`)
-      .then(res => res.json())
-      .then(
-        (res) => {
-          console.log(res);
-          this.setState({
-            myData: res.data.monitorGroups,
-            isLoaded: true,
-        })},
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error,
-          })
-        });
-  }
 
   makeMonitorGroupMenu = (monitorGroup, i) => {
     let groupName = monitorGroup.groupName === "null" ? "Other" : monitorGroup.groupName;
@@ -60,7 +38,7 @@ class MonitorSelector extends Component {
           Monitors
         </DropdownToggle>
           <DropdownMenu>
-        {this.state.myData.map((monitorGroup, i) => {
+        {this.props.monitorGroups.map((monitorGroup, i) => {
           return this.makeMonitorGroupMenu(monitorGroup, i);
         })}
       </DropdownMenu>
