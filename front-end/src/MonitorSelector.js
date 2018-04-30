@@ -25,6 +25,7 @@ class MonitorSelector extends Component {
       .then(res => res.json())
       .then(
         (res) => {
+          console.log(res);
           this.setState({
             myData: res.data.monitorGroups,
             isLoaded: true,
@@ -44,8 +45,8 @@ class MonitorSelector extends Component {
       return <DropdownItem className='group-member' key={i + '' + j}><Link to={{pathname: `/monitor/${monitor.monitorAddress}`}}>{monitorName}</Link></DropdownItem>
     });
     return (
-      <React.Fragment key={groupName}>
-        <DropdownItem className='group-header' tag="a" href={'/monitor-group/' + groupName}>Group: {groupName}</DropdownItem>
+      <React.Fragment key={monitorGroup.monitorGroupID}>
+        <DropdownItem className='group-header' tag="a" href={'/monitor-group/' + monitorGroup.monitorGroupID}>Group: {groupName}</DropdownItem>
         {groupMemberList}
       </React.Fragment>
     );
