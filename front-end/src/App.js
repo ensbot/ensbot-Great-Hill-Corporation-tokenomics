@@ -12,7 +12,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      monitorGroups: [{addresses: []}],
+      monitorGroups: [],
+      activeMonitor: {groupName: 'None', monitorName: 'test', monitorAddress: '0xf030laf'},
       isLoaded: false,
       error: null,
     };
@@ -37,14 +38,28 @@ class App extends Component {
         });
     }
 
+  handleMonitorSelection = (groupInfo) => {
+    console.log(groupInfo.monitorGroupID);
+    console.log(this.state.monitorGroups);
+    let group = this.state.monitorGroups.find((group) => group.monitorGroupID == groupInfo.monitorGroupID);
+    this.setState({
+       activeMonitor: {
+         groupName: group.groupName,
+         monitorName: undefined,
+         monitorAddress: undefined
+       }
+    })
+  }
+
   render() {
     return (
       <div className="App">
         <Router>
           <div>
-            <MonitorSelector monitorGroups={this.state.monitorGroups}/>
+            <MonitorSelector monitorGroups={this.state.monitorGroups}
+                             activeMonitor={this.state.activeMonitor}/>
             <Route exact path="/" />
-            <Route path="/monitor/:monitorAddress" component={MonitorView} />
+            <Route path="/monitor/:monitorGroupID/:monitorAddress?" render={(props) => <MonitorView activeMonitor={this.state.activeMonitor} onMonitorSelection={this.handleMonitorSelection} {...props}/>} />
             </div>
         </Router>
 

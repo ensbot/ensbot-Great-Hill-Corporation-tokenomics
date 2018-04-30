@@ -56,7 +56,7 @@ class MonitorView extends Component {
 
 
   fetchMonitorTx = () => {
-    fetch(`/api/v1/transactions/monitor/${this.props.match.params.monitorAddress}`)
+    return fetch(`/api/v1/transactions/monitor-group/${this.props.match.params.monitorGroupID}`)
       .then(res => res.json())
       .then(
         (res) => {
@@ -67,26 +67,37 @@ class MonitorView extends Component {
           this.setState({
             myData: myData,
             isLoaded: true,
-        })},
+          });
+        },
         (error) => {
           this.setState({
             isLoaded: true,
             error,
           })
-        });
+      });
       };
 
   componentDidMount = () => {
-    this.fetchMonitorTx();
+    this.fetchMonitorTx().then(() => {
+      this.props.onMonitorSelection({
+        monitorGroupID: this.props.match.params.monitorGroupID,
+        monitorAddress: null
+      });
+    });
   }
 
   componentDidUpdate = (prevProps) => {
-    if(this.props.match.params.monitorAddress !== prevProps.match.params.monitorAddress) {
+    if(this.props.match.params.monitorGroupID !== prevProps.match.params.monitorGroupID) {
+      this.props.onMonitorSelection({
+        monitorGroupID: this.props.match.params.monitorGroupID,
+        monitorAddress: null
+      });
       this.fetchMonitorTx();
     }
   }
 
   render() {
+    console.log(this.props);
     return (
       <div>
         <MonitorViewHeading address={this.props.match.params.monitorAddress}/>

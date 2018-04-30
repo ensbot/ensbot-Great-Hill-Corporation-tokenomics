@@ -93,3 +93,8 @@ nav .btn {
   cursor: pointer;
   background-color: #DDD;
 }
+
+.dropdown-toggle {
+  width:100%;
+  text-align:left;
+}

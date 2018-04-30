@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
+
 class MonitorSelector extends Component {
   constructor(props) {
     super(props);
@@ -10,32 +11,37 @@ class MonitorSelector extends Component {
     };
   }
 
+  makeMonitorGroupMenu = (monitorGroup, i) => {
+    let groupName = monitorGroup.groupName === "null" ? "Other" : monitorGroup.groupName;
+    let monitorGroupID = monitorGroup.monitorGroupID === "null" ? "unsorted" : monitorGroup.monitorGroupID;
+    let groupMemberList = monitorGroup.addresses.map((monitor, j) => {
+      let monitorName = monitor.monitorName === null ? monitor.monitorAddress : monitor.monitorName;
+      return <DropdownItem className='group-member' key={i + '' + j}><Link to={{pathname: `/monitor/${monitor.monitorGroupID}/${monitor.monitorAddress}`}}>{monitorName}</Link></DropdownItem>
+    });
+    return (
+      <React.Fragment key={monitorGroup.monitorGroupID}>
+        <DropdownItem className='group-header'><Link to={{pathname: `/monitor/${monitorGroup.monitorGroupID}`}}>Group: {groupName}</Link></DropdownItem>
+        {groupMemberList}
+      </React.Fragment>
+    );
+  }
+
+
   toggle = () => {
       this.setState({
         dropdownOpen: !this.state.dropdownOpen
       });
     }
 
-  makeMonitorGroupMenu = (monitorGroup, i) => {
-    let groupName = monitorGroup.groupName === "null" ? "Other" : monitorGroup.groupName;
-    let groupMemberList = monitorGroup.addresses.map((monitor, j) => {
-      let monitorName = monitor.monitorName === null ? monitor.monitorAddress : monitor.monitorName;
-      return <DropdownItem className='group-member' key={i + '' + j}><Link to={{pathname: `/monitor/${monitor.monitorAddress}`}}>{monitorName}</Link></DropdownItem>
-    });
-    return (
-      <React.Fragment key={monitorGroup.monitorGroupID}>
-        <DropdownItem className='group-header' tag="a" href={'/monitor-group/' + monitorGroup.monitorGroupID}>Group: {groupName}</DropdownItem>
-        {groupMemberList}
-      </React.Fragment>
-    );
-  }
-
   render() {
     return (
       <div className='monitor-selectors'>
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>
-          Monitors
+            <div>
+              <h5>{this.props.activeMonitor.groupName}</h5>
+              <h4>{this.props.activeMonitor.monitorName} ({this.props.activeMonitor.monitorAddress})</h4>
+            </div>
         </DropdownToggle>
           <DropdownMenu>
         {this.props.monitorGroups.map((monitorGroup, i) => {
