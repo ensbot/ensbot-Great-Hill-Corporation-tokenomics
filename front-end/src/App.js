@@ -38,15 +38,24 @@ class App extends Component {
         });
     }
 
-  handleMonitorSelection = (groupInfo) => {
-    console.log(groupInfo.monitorGroupID);
-    console.log(this.state.monitorGroups);
-    let group = this.state.monitorGroups.find((group) => group.monitorGroupID == groupInfo.monitorGroupID);
+  handleMonitorSelection = (monitorSelection) => {
+    //console.log(groupInfo.monitorGroupID);
+    //console.log(this.state.monitorGroups);
+    let group = this.state.monitorGroups.find((group) => group.monitorGroupID == monitorSelection.monitorGroupID);
+    let monitor;
+    if(monitorSelection.monitorAddress === undefined) {
+      monitor = {
+        monitorName: `All Addresses (${group.addresses.length})`,
+        monitorAddress: null
+      };
+    } else {
+      monitor = group.addresses.find((monitor) => monitor.monitorAddress == monitorSelection.monitorAddress);
+    }
     this.setState({
        activeMonitor: {
          groupName: group.groupName,
-         monitorName: undefined,
-         monitorAddress: undefined
+         monitorName: monitor.monitorName,
+         monitorAddress: monitor.monitorAddress
        }
     })
   }

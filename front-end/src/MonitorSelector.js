@@ -40,7 +40,7 @@ class MonitorSelector extends Component {
           <DropdownToggle caret>
             <div>
               <h5>{this.props.activeMonitor.groupName}</h5>
-              <h4>{this.props.activeMonitor.monitorName} ({this.props.activeMonitor.monitorAddress})</h4>
+              <h4>{this.props.activeMonitor.monitorName} {this.props.activeMonitor.monitorAddress ? `(${this.props.activeMonitor.monitorAddress})` : null}</h4>
             </div>
         </DropdownToggle>
           <DropdownMenu>

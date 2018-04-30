@@ -81,16 +81,17 @@ class MonitorView extends Component {
     this.fetchMonitorTx().then(() => {
       this.props.onMonitorSelection({
         monitorGroupID: this.props.match.params.monitorGroupID,
-        monitorAddress: null
+        monitorAddress: this.props.match.params.monitorAddress
       });
     });
   }
 
   componentDidUpdate = (prevProps) => {
-    if(this.props.match.params.monitorGroupID !== prevProps.match.params.monitorGroupID) {
+    if(this.props.match.params.monitorGroupID !== prevProps.match.params.monitorGroupID |
+        this.props.match.params.monitorAddress !== prevProps.match.params.monitorAddress) {
       this.props.onMonitorSelection({
         monitorGroupID: this.props.match.params.monitorGroupID,
-        monitorAddress: null
+        monitorAddress: this.props.match.params.monitorAddress
       });
       this.fetchMonitorTx();
     }
