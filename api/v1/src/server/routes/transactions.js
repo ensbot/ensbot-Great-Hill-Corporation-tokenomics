@@ -34,15 +34,19 @@ router.get('/monitor/:monitorAddress', (req, res, next) => {
     });
 })
 
-router.get('/summaries/byWeek/:monitorAddress', (req, res, next) => {
-  knex('transaction AS t').select(selectCols)
-    .join('monitor_transaction AS mt', function() {
+router.get('/monitor-group/:monitorGroupID', (req, res, next) => {
+  knex('monitor_group AS mg')
+    .select(selectCols)
+    .leftJoin('monitor_monitor_group AS mmg', 'mg.monitorGroupID', 'mmg.monitorGroupID')
+    .leftJoin('monitor AS m', 'm.monitorAddress', 'mmg.monitorAddress')
+    .leftJoin('monitor_transaction AS mt', 'm.monitorAddress', 'mt.monitorAddress')
+    .join('transaction AS t', function() {
       this.on('t.blockNumber', '=', 'mt.blockNumber')
       .andOn('t.transID', '=', 'mt.transID')
       .andOn('t.traceID', '=', 'mt.traceID')
     })
     .join('block AS b', 't.blockNumber', 'b.blockNumber')
-    .whereRaw(`mt.monitorAddress = '${req.params.monitorAddress}'`)
+    .whereRaw(`mg.monitorGroupID = '${req.params.monitorGroupID}'`)
     .then((transactions) => {
       res.status(200).json({status: 'success', data: transactions});
     }).catch((err) => {
@@ -57,33 +61,5 @@ router.get('/', (req, res, next) => {
     res.status(500).json({status: 'error', data: err});
   });
 });
-
-// router.post('/',
-//   authHelpers.ensureAuthenticated,
-//   (req, res, next) => {
-//   return knex.transaction((t) => {
-//     const toInsert = req.body.map(obj => {
-//       return {
-//         dateTime: obj.dateTime,
-//         blockNumber: obj.blockNumber,
-//         transactionIndex: obj.transactionIndex,
-//         from: obj.from,
-//         to: obj.to,
-//         value: obj.value,
-//         gasCost: obj.gasCost,
-//         isError: obj.isError,
-//         isFinalized: obj.isFinalized,
-//         articulated: obj.articulated
-//       }
-//     });
-//     return Promise.all(toInsert.map((obj) => {
-//       return t.insert(obj).into('transactions');
-//     }));
-//   }).then((transactions) => {
-//     res.status(201).json({status: 'success', data: transactions});
-//   }).catch((err) => {
-//     res.status(500).json({status: 'error', data: err});
-//   });
-// });
 
 module.exports = router;
