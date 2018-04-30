@@ -2,31 +2,6 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 .area:hover {
   fill: steelblue;
 }
@@ -60,6 +35,21 @@ nav .btn {
   padding: 30px;
 }
 
+.dropdown-item.group-header {
+  font-weight: bold;
+}
+
+.dropdown-item.group-member {
+  padding-left: 3.2em;
+  font-size: .8em;
+}
+
+.dropdown-item a {
+  display:block;
+  width: 100%;
+  height: 100%;
+}
+
 .tooltip {
   background-color: #EEE;
   border-radius: 5px;
@@ -72,4 +62,34 @@ nav .btn {
 
 .bar-rect:hover {
   fill: #dcbe00;
+}
+
+.menu-view-list {
+  list-style-type: none;
+  text-align: left;
+}
+
+.monitor-heading {
+  font-size: 1.5em;
+  font-style: italic;
+  text-align: left;
+  margin: 1em;
+  color: #333;
+}
+
+.menu-view-list li {
+  padding: 1em;
+  background-color: #EEE;
+  border: 1px solid #AAA;
+  border-radius: 5px;
+  text-align: left;
+  font-size: .8em;
+  color: #666;
+  margin: .1em 0;
+  width: 20em;
+}
+
+.menu-view-list li:hover {
+  cursor: pointer;
+  background-color: #DDD;
 }

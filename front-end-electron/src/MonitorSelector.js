@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import {
-  Link
-} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 class MonitorSelector extends Component {
   constructor(props) {
@@ -22,12 +20,13 @@ class MonitorSelector extends Component {
     }
 
   componentDidMount = () => {
-    fetch(`/api/v1/ui`)
+    console.log('api fetch');
+    fetch(`/api/v1/ui/monitor-groups`)
       .then(res => res.json())
       .then(
         (res) => {
           this.setState({
-            myData: res.data.monitorAddresses,
+            myData: res.data.monitorGroups,
             isLoaded: true,
         })},
         (error) => {
@@ -38,16 +37,30 @@ class MonitorSelector extends Component {
         });
   }
 
+  makeMonitorGroupMenu = (monitorGroup, i) => {
+    let groupName = monitorGroup.groupName === "null" ? "Other" : monitorGroup.groupName;
+    let groupMemberList = monitorGroup.addresses.map((monitor, j) => {
+      let monitorName = monitor.monitorName === null ? monitor.monitorAddress : monitor.monitorName;
+      return <DropdownItem className='group-member' key={i + '' + j}><Link to={{pathname: `/monitor/${monitor.monitorAddress}`}}>{monitorName}</Link></DropdownItem>
+    });
+    return (
+      <React.Fragment key={groupName}>
+        <DropdownItem className='group-header' tag="a" href={'/monitor-group/' + groupName}>Group: {groupName}</DropdownItem>
+        {groupMemberList}
+      </React.Fragment>
+    );
+  }
+
   render() {
     return (
       <div className='monitor-selectors'>
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>
-          Monitored Addresses
+          Monitors
         </DropdownToggle>
           <DropdownMenu>
-        {this.state.myData.map((monitorAddress, i) => {
-          return <DropdownItem key={i} tag="a" href={'/monitor/' + monitorAddress}>{monitorAddress}</DropdownItem>
+        {this.state.myData.map((monitorGroup, i) => {
+          return this.makeMonitorGroupMenu(monitorGroup, i);
         })}
       </DropdownMenu>
       </Dropdown>
