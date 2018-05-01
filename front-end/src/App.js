@@ -68,7 +68,9 @@ class App extends Component {
             <MonitorSelector monitorGroups={this.state.monitorGroups}
                              activeMonitor={this.state.activeMonitor}/>
             <Route exact path="/" />
-            <Route path="/monitor/:monitorGroupID/:monitorAddress?" render={(props) => <MonitorView activeMonitor={this.state.activeMonitor} onMonitorSelection={this.handleMonitorSelection} {...props}/>} />
+            {this.state.isLoaded &&
+              <Route path="/monitor/:monitorGroupID/:monitorAddress?" render={(props) => <MonitorView activeMonitor={this.state.activeMonitor} onMonitorSelection={this.handleMonitorSelection} {...props}/>} />
+            }
             </div>
         </Router>
 

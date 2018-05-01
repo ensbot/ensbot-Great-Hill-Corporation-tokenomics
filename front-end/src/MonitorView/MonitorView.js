@@ -22,6 +22,7 @@ const MonitorViewMenu = ({match}) => {
 }
 
 const MonitorViewContainer = (props) => {
+  console.log(props.match.params.viewSelection);
   let component = ((urlParam) => {
     switch(urlParam) {
       case 'overview':
@@ -36,7 +37,6 @@ const MonitorViewContainer = (props) => {
   })(props.match.params.viewSelection);
   return (
     <div>
-      {props.match.params.viewSelection}
       {component}
     </div>
   )
@@ -102,7 +102,7 @@ class MonitorView extends Component {
       <div className="monitor-view-container">
         <MonitorViewMenu match={this.props.match} monitorAddress={this.props.match.params.monitorAddress}/>
         <div className="monitor-body">
-          <Route path={`${this.props.match.url}/:viewSelection`} render={() => <MonitorViewContainer match={this.props.match} myData={this.state.myData}/>} />
+          <Route path={`${this.props.match.url}/:viewSelection`} render={(props) => <MonitorViewContainer match={this.props.match} myData={this.state.myData} {...props}/>} />
         </div>
       </div>
     );
