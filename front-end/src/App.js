@@ -27,7 +27,6 @@ class App extends Component {
       .then(res => res.json())
       .then((res) => {
         return res.data.monitorGroups.map((group) => {
-          console.log(group);
           group.addresses = group.addresses.sort((a,b) => a.monitorName.localeCompare(b.monitorName));
           return group;
         }).sort((a,b) => a.groupName.localeCompare(b.groupName));

@@ -169,19 +169,42 @@ i.material-icons {
 
 .monitor-body {
   flex: 20 0px;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .tooltip {
-  background-color: #EEE;
-  border-radius: 5px;
-  padding: 4px;
+  background-color: #fff;
+  border-radius: 2px;
+  padding: 5px;
+  font-size: .7em;
+  cursor: default;
+  line-height: 1em;
 }
 
-.dashboard-element-white {
+.dashboard {
+  display: flex;
+}
+
+.dashboard-element {
   background-color: #FFF;
   padding: 1em;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.35);
-  margin:1em;
+  box-shadow: 3px 2px 10px 0 rgba(0, 0, 0, 0.1);
+  margin:.5em;
+  flex: 1 1;
+}
+
+.simple-dash-table {
+  font-size: .8em;
+}
+
+.simple-dash-table th {
+  padding-right: 3em;
+}
+
+.simple-dash-table td {
+  border-top: 1px solid #DDD;
+  padding-right: 1em;
 }
 
 .stat-box {
@@ -200,5 +223,5 @@ i.material-icons {
 }
 
 .bar-rect:hover {
-  fill: #dcbe00;
+  fill: #0056b3;
 }

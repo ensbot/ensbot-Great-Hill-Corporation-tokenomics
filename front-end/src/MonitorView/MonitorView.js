@@ -135,14 +135,11 @@ class MonitorView extends Component {
       <div className="monitor-view-container">
         <MonitorViewMenu match={this.props.match}/>
         <div className="monitor-body">
-
           <Route exact path={`${this.props.match.url}/`} render={() => (
             <Redirect to={`${this.props.match.url}/dashboard`}/>
           )}/>
-
           <Route path={`${this.props.match.url}/:viewSelection`} render={(props) => <MonitorViewContainer match={this.props.match} myData={this.state.filteredData} {...props}/>} />
-
-        </div>
+      </div>
       </div>
     );
   }
