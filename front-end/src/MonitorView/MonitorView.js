@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Route, NavLink, Redirect} from 'react-router-dom';
 import Dashboard from './Dashboard/Dashboard';
+import Settings from './Settings';
 
 const MonitorViewHeading = (props) => {
   return (
@@ -25,13 +26,11 @@ const MonitorViewContainer = (props) => {
   let component = ((urlParam) => {
     switch(urlParam) {
       case 'overview':
-      return <Dashboard myData={props.myData}/>;
-      // case 'activity':
-      // return <ChartAndTable myData={props.myData}/>;
-      // case 'contract-interaction':
-      // return <Ct2 myData={props.myData}/>;
+        return <Dashboard myData={props.myData}/>;
+      case 'settings':
+        return <Settings/>;
       default:
-      return <Dashboard myData={props.myData}/>;
+        return <Dashboard myData={props.myData}/>;
     }
   })(props.match.params.viewSelection);
   return (
