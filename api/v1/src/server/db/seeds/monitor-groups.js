@@ -90,7 +90,7 @@ exports.seed = function(knex, Promise) {
       }).join(',');
 
       query.monitorGroupInsertions = knex.raw(`
-        INSERT INTO monitor_group (monitorGroupID, nickname)
+        INSERT INTO monitor_group (monitorGroupID, monitorGroupName)
            VALUES ${monitorGroupInsertions}
           ON DUPLICATE KEY UPDATE monitorGroupID=monitorGroupID;
         `);
