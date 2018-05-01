@@ -32,7 +32,7 @@ class TxChart extends Component {
       .sort((a,b) => a.date - b.date);
   }
 
-  componentDidMount = () => {
+  renderChart = () => {
     if (this.props.data.length) {
       let data = this.formatDataForChart(this.props.data);
 
@@ -121,6 +121,14 @@ class TxChart extends Component {
       focus.append("g").attr("class", "axis axis--y").call(yAxis);
 
       }
+  }
+
+  componentDidMount = () => {
+    this.renderChart();
+  }
+
+  componentDidUpdate = () => {
+    this.renderChart();
   }
 
   // anim = () => {
