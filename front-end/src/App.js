@@ -81,6 +81,9 @@ class App extends Component {
               <Route path="/monitor/:monitorGroupID" render={(props) => <MonitorView activeMonitor={this.state.activeMonitor} onMonitorSelection={this.handleMonitorSelection} {...props}/>} />
             </Switch>
             }
+            <div className="footer">
+              Powered by <a href="https://quickblocks.io" target="_blank"><strong>QuickBlocks™</strong></a>
+            </div>
             </div>
         </Router>
 

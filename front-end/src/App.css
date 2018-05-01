@@ -20,27 +20,38 @@ nav .btn {
 
 .app-container {
   display: flex;
-  flex-flow: row wrap;
-  flex-direction: column;
+  flex-flow: column;
+  align-content: stretch;
+  height: 100%;
 }
 
 .app-container > * {
   flex: 1 100%;
 }
 
-.monitor-view-container {
-  display: flex;
+.monitor-selectors {
+  text-align: left;
+  background-color: #FFF;
+  border-bottom: 1px solid #DDD;
+  z-index:2;
+  flex: 0 0;
 }
 
-/* .monitor-selectors {
-  background: linear-gradient(#d48fc7, #6c8cd6);
-} */
+.monitor-view-container {
+  display: flex;
+  flex: 1 1 100%;
+}
 
-/*
-.monitor-selectors .dropdown {
-  text-align: left;
-  padding: 30px;
-} */
+.footer {
+  text-align: center;
+  color: #333;
+  flex: 0 0;
+  background-color: #FFF;
+  font-size: 0.7em;
+  padding: .5em;
+  z-index: 2;
+  border-top: 1px solid #DDD;
+}
 
 .monitor-selectors li {
   list-style-type: none;
@@ -70,13 +81,6 @@ nav .btn {
 .dropdown-item.group-member a {
   padding-left: 3.2em;
   font-size: .8em;
-}
-
-.monitor-selectors {
-  text-align: left;
-  background-color: #FFF;
-  border-bottom: 1px solid #DDD;
-  z-index:2;
 }
 
 .monitor-selector-headings {
