@@ -32,11 +32,11 @@ class TxChart extends Component {
       .sort((a,b) => a.date - b.date);
   }
 
-  componentDidUpdate = () => {
+  renderChart = () => {
     if (this.props.data.length) {
       let data = this.formatDataForChart(this.props.data);
 
-      console.log(data);
+      //console.log(data);
       let formatDate = d3.timeFormat("%Y %W");
       const svg = d3.select("svg"),
         margin = {
@@ -68,7 +68,7 @@ class TxChart extends Component {
       let ticks = tickFn('weeks');
       x.domain(ticks);
 
-      console.log(x.domain());
+      //console.log(x.domain());
       y.domain([
         0,
         d3.max(data, function(d) {
@@ -123,9 +123,17 @@ class TxChart extends Component {
       }
   }
 
+  componentDidMount = () => {
+    this.renderChart();
+  }
+
+  componentDidUpdate = () => {
+    this.renderChart();
+  }
+
   // anim = () => {
   //   let data = this.formatDataForChart(this.props.data);
-  //   console.log(data);
+  //   //console.log(data);
   //   d3.select("svg")
   //     .selectAll('*')
   // }
