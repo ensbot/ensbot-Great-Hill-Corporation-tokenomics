@@ -31,7 +31,7 @@ class TxStats extends Component {
         <h5>Tx/Month</h5>
 
         {this.props.data.length &&
-          (this.props.data.length / Math.abs(moment(this.props.data[0].blockTimeStamp*1000).diff(moment(this.props.data.slice(-1)[0].blockTimeStamp*1000).add(1, 'days'), "months"))).toFixed(1)}
+          (this.props.data.length / (Math.abs(moment(this.props.data[0].blockTimeStamp*1000).diff(moment(this.props.data.slice(-1)[0].blockTimeStamp*1000), "days"))*30 | 1)).toFixed(1)}
       </div>
     </div>
     );

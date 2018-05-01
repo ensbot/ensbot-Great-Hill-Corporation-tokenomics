@@ -32,7 +32,7 @@ class TxChart extends Component {
       .sort((a,b) => a.date - b.date);
   }
 
-  componentDidUpdate = () => {
+  componentDidMount = () => {
     if (this.props.data.length) {
       let data = this.formatDataForChart(this.props.data);
 

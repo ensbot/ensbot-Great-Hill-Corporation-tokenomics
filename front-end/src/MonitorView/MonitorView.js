@@ -78,7 +78,8 @@ class MonitorView extends Component {
       };
 
   filterTxByAddress = (data, address) => {
-    return data.filter((datum) => datum.monitorAddress == address);
+    return data.filter((datum) => datum.monitorAddress == address)
+      .sort((a,b) => a.blockTimeStamp - b.blockTimeStamp);
   }
 
   fetchOrFilter = () => {
