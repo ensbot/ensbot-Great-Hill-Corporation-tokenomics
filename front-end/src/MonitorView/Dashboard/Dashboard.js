@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Route, Link} from 'react-router-dom';
 import TxChart from './TxChart';
+import TxStats from './TxStats';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -23,7 +24,8 @@ class Dashboard extends Component {
     return (
       <div>
         <div className="dashboard-element-white">
-          <TxChart data={this.props.myData} width='300' height='300' />
+          <TxStats data={this.props.myData} />
+          <TxChart data={this.props.myData} width='400' height='400' />
         </div>
       </div>
     );

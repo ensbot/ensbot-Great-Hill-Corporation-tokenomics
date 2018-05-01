@@ -62,7 +62,7 @@ class MonitorView extends Component {
           let myData = res.data.map((datum) => {
             datum.articulated = JSON.parse(datum.articulated);
             return datum;
-          });
+          }).sort((a,b) => a.blockTimeStamp - b.blockTimeStamp);
           this.setState({
             myData: myData,
             isLoaded: true,

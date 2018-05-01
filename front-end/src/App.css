@@ -160,6 +160,17 @@ nav .btn {
   margin:1em;
 }
 
+.stat-box {
+  font-size: 1.2em;
+  display: inline-block;
+  width: 100px;
+  margin: 10px;
+}
+
+.stat-box h5 {
+  font-size: .6em;
+}
+
 .bar-rect {
   fill: #000;
 }

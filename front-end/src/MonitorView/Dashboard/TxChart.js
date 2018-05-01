@@ -1,33 +1,13 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
+import moment from 'moment';
 
 class TxChart extends Component {
   constructor(props) {
     super(props);
 
-    this.updateCycle = 0;
-
-    this.state = {
-    };
   }
 
-  // shouldComponentUpdate = (nextProps, nextState) => {
-  //   let shouldIt;
-  //   if(this.props.data[0] === undefined) {
-  //     console.log('first load');
-  //     this.updateCycle = 1;
-  //     shouldIt = true;
-  //   } else {
-  //   if(this.props.data[0].monitorAddress != nextProps.data[0].monitorAddress) {
-  //     console.log('addresses don\'t match... rerendering');
-  //     shouldIt = true;
-  //   } else {
-  //     shouldIt = false;
-  //   }
-  // }
-  // console.log(shouldIt);
-  // return shouldIt;
-  // }
 
   formatDataForChart = (data) => {
     console.log(data);
@@ -49,12 +29,12 @@ class TxChart extends Component {
           // price is count
           price: +datum[1]
         }
-      });
+      })
+      .sort((a,b) => a.date - b.date);
   }
 
   componentDidUpdate = () => {
     if (this.props.data.length) {
-
       let data = this.formatDataForChart(this.props.data);
 
       console.log(data);
@@ -77,11 +57,19 @@ class TxChart extends Component {
       svg.append("defs").append("clipPath").attr("id", "clip").append("rect").attr("width", width).attr("height", height);
 
       let focus = svg.append("g").attr("class", "focus").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-      let ticks = d3.timeWeek.range(data[0].date, data.slice(-1)[0].date).map((d)=> {
-        return new Date(d.setDate(d.getDate() + 1));
+
+      let tickFn = (by) => {
+        let startDate = moment(data[0].date);
+        let diff = Math.floor(Math.abs(startDate.diff(moment(data.slice(-1)[0].date), by))) + 1;
+        return [...Array(diff).keys()].map((n) => {
+          return moment(startDate).add(n, by).toDate();
         });
-      console.log(ticks);
+      };
+
+      let ticks = tickFn('weeks');
       x.domain(ticks);
+
+      console.log(x.domain());
       y.domain([
         0,
         d3.max(data, function(d) {
