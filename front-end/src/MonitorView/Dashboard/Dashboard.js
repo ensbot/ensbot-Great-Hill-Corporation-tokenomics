@@ -28,13 +28,8 @@ class Dashboard extends Component {
       return datum.fnType
     })
     .map((val, key) => ({fnName: key, tx: val}))
+    .sort((a,b) => a.tx - b.tx)
     .value();
-  }
-
-  countTable = (data) => {
-    return data.map((val, key) => {
-      return [key, val]
-    })
   }
 
   render() {

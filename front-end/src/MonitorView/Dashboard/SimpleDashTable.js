@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 const SimpleDashTable = (props) => {
-  console.log(props.data);
+  let sortedData = props.data.sort((a,b) => b.tx.length - a.tx.length);
   return(
     <div className="simple-dash-table">
       <table>
@@ -9,7 +9,7 @@ const SimpleDashTable = (props) => {
         <tr><th>Function Name</th><th>Count</th></tr>
         </thead>
         <tbody>
-        {props.data.map((row) => {
+        {sortedData.map((row) => {
           return <tr key={row.fnName}><td>{row.fnName}</td><td>{row.tx.length}</td></tr>
         })}
       </tbody>
