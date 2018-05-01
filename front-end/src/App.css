@@ -1,8 +1,7 @@
 html, body, .App, #root {
-  text-align: center;
+  width: 100%;
   height: 100%;
   background-color: #EEE;
-  display: flex;
 }
 
 .area:hover {
@@ -22,6 +21,7 @@ nav .btn {
 .app-container {
   display: flex;
   flex-flow: row wrap;
+  flex-direction: column;
 }
 
 .app-container > * {
@@ -71,6 +71,7 @@ nav .btn {
   text-align: left;
   background-color: #FFF;
   border-bottom: 1px solid #DDD;
+  z-index:2;
 }
 
 .monitor-selector-headings {
@@ -111,6 +112,7 @@ nav .btn {
 }
 
 .menu-view-list {
+  z-index: 1;
   flex: 1 auto;
   list-style-type: none;
   text-align: left;
@@ -119,6 +121,8 @@ nav .btn {
   width: 200px;
   border-right: 1px solid #DDD;
   background-color: #FFF;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.35);
+  overflow: hidden;
 }
 
 .menu-view-list div {
@@ -147,6 +151,13 @@ nav .btn {
   background-color: #EEE;
   border-radius: 5px;
   padding: 4px;
+}
+
+.dashboard-element-white {
+  background-color: #FFF;
+  padding: 1em;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.35);
+  margin:1em;
 }
 
 .bar-rect {
