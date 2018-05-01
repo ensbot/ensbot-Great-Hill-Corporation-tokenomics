@@ -24,10 +24,17 @@ class App extends Component {
     console.log('api: fetching monitor groups');
     fetch(`/api/v1/ui/monitor-groups`)
       .then(res => res.json())
+      .then((res) => {
+        return res.data.monitorGroups.map((group) => {
+          console.log(group);
+          group.addresses = group.addresses.sort((a,b) => a.monitorName.localeCompare(b.monitorName));
+          return group;
+        }).sort((a,b) => a.groupName.localeCompare(b.groupName));
+      })
       .then(
         (res) => {
           this.setState({
-            monitorGroups: res.data.monitorGroups,
+            monitorGroups: res,
             isLoaded: true,
         })},
         (error) => {
