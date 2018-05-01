@@ -26,7 +26,6 @@ class App extends Component {
       .then(res => res.json())
       .then(
         (res) => {
-          console.log(res);
           this.setState({
             monitorGroups: res.data.monitorGroups,
             isLoaded: true,
@@ -52,7 +51,6 @@ class App extends Component {
     } else {
       monitor = group.addresses.find((monitor) => monitor.monitorAddress == monitorSelection.monitorAddress);
     }
-    console.log(monitorSelection.monitorAddress);
     this.setState({
        activeMonitor: {
          groupName: group.groupName,

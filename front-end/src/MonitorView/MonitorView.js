@@ -48,13 +48,14 @@ class MonitorView extends Component {
 
     this.state = {
       myData: [],
+      filteredData: [],
       isLoaded: false,
       error: null
     };
   }
 
 
-  fetchMonitorTx = () => {
+  fetchMonitorGroupTx = () => {
     return fetch(`/api/v1/transactions/monitor-group/${this.props.match.params.monitorGroupID}`)
       .then(res => res.json())
       .then(
@@ -76,23 +77,56 @@ class MonitorView extends Component {
       });
       };
 
+  filterTxByAddress = (data, address) => {
+    return data.filter((datum) => datum.monitorAddress == address);
+  }
+
+  fetchOrFilter = () => {
+
+  }
+
   componentDidMount = () => {
-    this.fetchMonitorTx().then(() => {
+    console.log('componentDidMount');
+    this.fetchMonitorGroupTx().then(() => {
+      let activeGroupID = this.props.match.params.monitorGroupID,
+        activeMonitorAddress = this.props.match.params.monitorAddress;
       this.props.onMonitorSelection({
-        monitorGroupID: this.props.match.params.monitorGroupID,
-        monitorAddress: this.props.match.params.monitorAddress
+        monitorGroupID: activeGroupID,
+        monitorAddress: activeMonitorAddress // may be undefined
+      });
+      this.setState({filteredData:
+        activeMonitorAddress !== undefined ?
+          this.filterTxByAddress(this.state.myData, activeMonitorAddress) :
+          this.state.myData
       });
     });
   }
 
   componentDidUpdate = (prevProps) => {
-    if(this.props.match.params.monitorGroupID !== prevProps.match.params.monitorGroupID |
-        this.props.match.params.monitorAddress !== prevProps.match.params.monitorAddress) {
-      this.props.onMonitorSelection({
-        monitorGroupID: this.props.match.params.monitorGroupID,
-        monitorAddress: this.props.match.params.monitorAddress
+    console.log('componentDidUpdate');
+    let activeGroupID = this.props.match.params.monitorGroupID,
+      activeMonitorAddress = this.props.match.params.monitorAddress;
+    if(this.props.match.params.monitorGroupID !== prevProps.match.params.monitorGroupID) {
+      this.fetchMonitorGroupTx().then(() => {
+        this.setState({filteredData:
+          activeMonitorAddress !== undefined ?
+            this.filterTxByAddress(this.state.myData, activeMonitorAddress) :
+            this.state.myData
+        });
       });
-      this.fetchMonitorTx();
+      this.props.onMonitorSelection({
+        monitorGroupID: activeGroupID,
+        monitorAddress: activeMonitorAddress // may be undefined
+      });
+    }
+    else if(this.props.match.params.monitorAddress !== prevProps.match.params.monitorAddress) {
+      this.setState({filteredData: activeMonitorAddress !== undefined ?
+                this.filterTxByAddress(this.state.myData, activeMonitorAddress) :
+                this.state.myData})
+      this.props.onMonitorSelection({
+        monitorGroupID: activeGroupID,
+        monitorAddress: activeMonitorAddress // may be undefined
+      });
     }
   }
 
@@ -107,7 +141,7 @@ class MonitorView extends Component {
             <Redirect to={`${this.props.match.url}/dashboard`}/>
           )}/>
 
-          <Route path={`${this.props.match.url}/:viewSelection`} render={(props) => <MonitorViewContainer match={this.props.match} myData={this.state.myData} {...props}/>} />
+          <Route path={`${this.props.match.url}/:viewSelection`} render={(props) => <MonitorViewContainer match={this.props.match} myData={this.state.filteredData} {...props}/>} />
 
         </div>
       </div>

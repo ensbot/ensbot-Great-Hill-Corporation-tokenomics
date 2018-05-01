@@ -19,7 +19,7 @@ class TxStats extends Component {
 
 
   render() {
-    console.log(this.props.data);
+    //console.log(this.props.data);
     //console.log(this.props.data.length && [moment(this.props.data[0].blockTimeStamp*1000).format(), moment(this.props.data.slice(-1)[0].blockTimeStamp*1000).format()])
     return (
       <div>
