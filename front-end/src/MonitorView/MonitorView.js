@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Link, Redirect} from 'react-router-dom';
+import {Route, NavLink, Redirect} from 'react-router-dom';
 import Dashboard from './Dashboard/Dashboard';
 
 const MonitorViewHeading = (props) => {
@@ -13,10 +13,9 @@ const MonitorViewHeading = (props) => {
 const MonitorViewMenu = ({match}) => {
   return (
     <div className="menu-view-list">
-      <div><Link to={`${match.url}/dashboard`}>Overview Dashboard</Link></div>
-      <div><Link to={`${match.url}/activity`}>Monitor Activity</Link></div>
-      <div><Link to={`${match.url}/contract-interaction`}>Monitor Contract Interaction</Link></div>
-      <div><Link to={`${match.url}/settings`}>Monitor Settings</Link></div>
+      <div><NavLink to={`${match.url}/dashboard`} activeClassName="selected">Monitor Dashboard</NavLink></div>
+      <div><NavLink to={`${match.url}/activity`} activeClassName="selected">Tx Explorer</NavLink></div>
+      <div><NavLink to={`${match.url}/settings`} activeClassName="selected">Monitor Settings</NavLink></div>
     </div>
   )
 }

@@ -143,6 +143,10 @@ nav .btn {
   display:block;
 }
 
+.menu-view-list a.selected {
+  font-weight: bold;
+}
+
 .menu-view-list div:hover {
   cursor: pointer;
   background-color: #DDD;
