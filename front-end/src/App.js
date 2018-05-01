@@ -7,6 +7,7 @@ import MonitorSelector from './MonitorSelector';
 import MonitorView from './MonitorView/MonitorView';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
+import 'material-design-icons/iconfont/material-icons.css';
 
 class App extends Component {
   constructor(props) {

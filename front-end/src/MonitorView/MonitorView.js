@@ -13,9 +13,9 @@ const MonitorViewHeading = (props) => {
 const MonitorViewMenu = ({match}) => {
   return (
     <div className="menu-view-list">
-      <div><NavLink to={`${match.url}/dashboard`} activeClassName="selected">Monitor Dashboard</NavLink></div>
-      <div><NavLink to={`${match.url}/activity`} activeClassName="selected">Tx Explorer</NavLink></div>
-      <div><NavLink to={`${match.url}/settings`} activeClassName="selected">Monitor Settings</NavLink></div>
+      <div><NavLink to={`${match.url}/dashboard`} activeClassName="selected"><i className="material-icons">dashboard</i>Monitor Dashboard</NavLink></div>
+      <div><NavLink to={`${match.url}/activity`} activeClassName="selected"><i className="material-icons">query_builder</i>Tx Explorer</NavLink></div>
+      <div><NavLink to={`${match.url}/settings`} activeClassName="selected"><i className="material-icons">settings</i>Monitor Settings</NavLink></div>
     </div>
   )
 }

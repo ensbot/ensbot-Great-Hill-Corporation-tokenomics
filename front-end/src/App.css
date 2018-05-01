@@ -142,6 +142,13 @@ nav .btn {
   color: #666;
 }
 
+i.material-icons {
+  display: inline-flex;
+  vertical-align: middle;
+  font-size: 19px;
+  margin-right: .6em;
+}
+
 .menu-view-list a {
   padding:1em;
   display:block;
@@ -149,6 +156,10 @@ nav .btn {
 
 .menu-view-list a.selected {
   font-weight: bold;
+}
+
+.menu-view-list a:hover {
+  text-decoration: none;
 }
 
 .menu-view-list div:hover {
