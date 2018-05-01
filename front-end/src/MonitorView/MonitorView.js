@@ -13,7 +13,7 @@ const MonitorViewHeading = (props) => {
 const MonitorViewMenu = ({match}) => {
   return (
     <div className="menu-view-list">
-      <div><Link to={`${match.url}/overview`}>Monitor Overview</Link></div>
+      <div><Link to={`${match.url}/dashboard`}>Overview Dashboard</Link></div>
       <div><Link to={`${match.url}/activity`}>Monitor Activity</Link></div>
       <div><Link to={`${match.url}/contract-interaction`}>Monitor Contract Interaction</Link></div>
       <div><Link to={`${match.url}/settings`}>Monitor Settings</Link></div>
@@ -100,12 +100,15 @@ class MonitorView extends Component {
     console.log(this.props);
     return (
       <div className="monitor-view-container">
-        <MonitorViewMenu match={this.props.match} monitorAddress={this.props.match.params.monitorAddress}/>
+        <MonitorViewMenu match={this.props.match}/>
         <div className="monitor-body">
+
           <Route exact path={`${this.props.match.url}/`} render={() => (
             <Redirect to={`${this.props.match.url}/dashboard`}/>
           )}/>
+
           <Route path={`${this.props.match.url}/:viewSelection`} render={(props) => <MonitorViewContainer match={this.props.match} myData={this.state.myData} {...props}/>} />
+
         </div>
       </div>
     );

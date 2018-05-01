@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
-  Route} from 'react-router-dom';
+  Route,
+  Switch} from 'react-router-dom';
 import MonitorSelector from './MonitorSelector';
 import MonitorView from './MonitorView/MonitorView';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -70,10 +71,10 @@ class App extends Component {
                              activeMonitor={this.state.activeMonitor}/>
             <Route exact path="/" />
             {this.state.isLoaded &&
-              <React.Fragment>
-              <Route path="/monitor/:monitorGroupID/address/:monitorAddress?" render={(props) => <MonitorView activeMonitor={this.state.activeMonitor} onMonitorSelection={this.handleMonitorSelection} {...props}/>} />
+              <Switch>
+              <Route path="/monitor/:monitorGroupID/address/:monitorAddress" render={(props) => <MonitorView activeMonitor={this.state.activeMonitor} onMonitorSelection={this.handleMonitorSelection} {...props}/>} />
               <Route path="/monitor/:monitorGroupID" render={(props) => <MonitorView activeMonitor={this.state.activeMonitor} onMonitorSelection={this.handleMonitorSelection} {...props}/>} />
-              </React.Fragment>
+            </Switch>
             }
             </div>
         </Router>
