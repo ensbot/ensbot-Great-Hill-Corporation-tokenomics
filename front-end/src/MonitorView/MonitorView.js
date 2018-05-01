@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Link} from 'react-router-dom';
+import {Route, Link, Redirect} from 'react-router-dom';
 import Dashboard from './Dashboard/Dashboard';
 
 const MonitorViewHeading = (props) => {
@@ -102,6 +102,9 @@ class MonitorView extends Component {
       <div className="monitor-view-container">
         <MonitorViewMenu match={this.props.match} monitorAddress={this.props.match.params.monitorAddress}/>
         <div className="monitor-body">
+          <Route exact path={`${this.props.match.url}/`} render={() => (
+            <Redirect to={`${this.props.match.url}/dashboard`}/>
+          )}/>
           <Route path={`${this.props.match.url}/:viewSelection`} render={(props) => <MonitorViewContainer match={this.props.match} myData={this.state.myData} {...props}/>} />
         </div>
       </div>

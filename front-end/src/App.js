@@ -51,6 +51,7 @@ class App extends Component {
     } else {
       monitor = group.addresses.find((monitor) => monitor.monitorAddress == monitorSelection.monitorAddress);
     }
+    console.log(monitorSelection.monitorAddress);
     this.setState({
        activeMonitor: {
          groupName: group.groupName,
@@ -69,7 +70,10 @@ class App extends Component {
                              activeMonitor={this.state.activeMonitor}/>
             <Route exact path="/" />
             {this.state.isLoaded &&
-              <Route path="/monitor/:monitorGroupID/:monitorAddress?" render={(props) => <MonitorView activeMonitor={this.state.activeMonitor} onMonitorSelection={this.handleMonitorSelection} {...props}/>} />
+              <React.Fragment>
+              <Route path="/monitor/:monitorGroupID/address/:monitorAddress?" render={(props) => <MonitorView activeMonitor={this.state.activeMonitor} onMonitorSelection={this.handleMonitorSelection} {...props}/>} />
+              <Route path="/monitor/:monitorGroupID" render={(props) => <MonitorView activeMonitor={this.state.activeMonitor} onMonitorSelection={this.handleMonitorSelection} {...props}/>} />
+              </React.Fragment>
             }
             </div>
         </Router>
