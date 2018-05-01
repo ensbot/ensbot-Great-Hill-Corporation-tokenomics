@@ -10,7 +10,6 @@ class TxChart extends Component {
 
 
   formatDataForChart = (data) => {
-    console.log(data);
     const parseDate = d3.timeParse("%Y %W"),
     formatDate = d3.timeFormat("%Y %W");
     return Object.entries(
@@ -78,7 +77,7 @@ class TxChart extends Component {
       ]);
 
       const xAxis = d3.axisBottom(x)
-        .tickFormat(d3.timeFormat("%Y-%W"))
+        .tickFormat(d3.timeFormat("%Y-%m-%d"))
         .tickValues(ticks.filter((tick, i) => {return i % 4 === 0}))
         ,
         yAxis = d3.axisLeft(y);
