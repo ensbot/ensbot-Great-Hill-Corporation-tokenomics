@@ -22,8 +22,6 @@ class Dashboard extends Component {
   render() {
     return (
       <div className={`dashboard ${!this.props.isLoaded ? 'flex-center' : null}`}>
-      {this.props.isLoaded ? (
-        <React.Fragment>
         <div className="dashboard-element">
           <TxStats data={this.props.myData} />
           <TxChart data={this.props.myData} width='400' height='400' />
@@ -34,14 +32,7 @@ class Dashboard extends Component {
           <SimpleDashTable data={this.getFnData(this.props.myData)}/>
         </div>
         }
-        </React.Fragment>
-      ) : (
-        <span className="loading">
-        Now loading...
-      </span>
-      )}
       </div>
-
     );
   }
 }

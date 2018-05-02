@@ -39,7 +39,7 @@ class TxExplorerChart extends Component {
 
       let data = this.formatDataForChart(this.props.myData);
 
-      console.log(data);
+      if(data.length === 1) return null;
 
       const svg = d3.select("svg"),
         margin = {
@@ -164,13 +164,6 @@ class TxExplorerChart extends Component {
   componentDidUpdate = () => {
     this.renderChart();
   }
-
-  // anim = () => {
-  //   let data = this.formatDataForChart(this.props.myData);
-  //   console.log(data);
-  //   d3.select("svg")
-  //     .selectAll('*')
-  // }
 
   render() {
     return (

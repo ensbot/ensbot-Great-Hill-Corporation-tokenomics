@@ -37,9 +37,15 @@ const MonitorViewContainer = (props) => {
   })(props.match.params.viewSelection);
   return (
     <React.Fragment>
+    {props.isLoaded ? (
+    <React.Fragment>
       {component}
     </React.Fragment>
+  ) : (
+    <span className="loading">Now Loading...</span>
   )
+  }
+</React.Fragment>)
 }
 
 class MonitorView extends Component {
@@ -146,7 +152,7 @@ class MonitorView extends Component {
     return (
       <div className="monitor-view-container">
         <MonitorViewMenu match={this.props.match}/>
-        <div className="monitor-body">
+        <div className={`monitor-body${!this.state.isLoaded ? ' flex-center' : ''}`}>
           <Route exact path={`${this.props.match.url}/`} render={() => (
             <Redirect to={`${this.props.match.url}/dashboard`}/>
           )}/>

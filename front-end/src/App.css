@@ -213,7 +213,7 @@ i.material-icons {
   align-items: flex-start;
 }
 
-.dashboard.flex-center {
+.flex-center {
   justify-content: center;
   align-items: center;
 }
