@@ -24,18 +24,18 @@ const MonitorViewMenu = ({match}) => {
 const MonitorViewContainer = (props) => {
   let component = ((urlParam) => {
     switch(urlParam) {
-      case 'overview':
-        return <Dashboard myData={props.myData}/>;
+      case 'dashboard':
+        return <Dashboard myData={props.myData} isLoaded={props.isLoaded}/>;
       case 'settings':
         return <Settings/>;
       default:
-        return <Dashboard myData={props.myData}/>;
+        return <Dashboard myData={props.myData} isLoaded={props.isLoaded}/>;
     }
   })(props.match.params.viewSelection);
   return (
-    <div>
+    <React.Fragment>
       {component}
-    </div>
+    </React.Fragment>
   )
 }
 
@@ -51,6 +51,15 @@ class MonitorView extends Component {
     };
   }
 
+  deriveFnType = (string) => {
+    if(string.trim() === '0x') {
+      return 'none';
+    } else if (string.trim().slice(0,2) === '0x') {
+      return 'unknown';
+    } else {
+      return string;
+    }
+  }
 
   fetchMonitorGroupTx = () => {
     return fetch(`/api/v1/transactions/monitor-group/${this.props.match.params.monitorGroupID}`)
@@ -59,6 +68,7 @@ class MonitorView extends Component {
         (res) => {
           let myData = res.data.map((datum) => {
             datum.articulated = JSON.parse(datum.articulated);
+            datum.fnType = this.deriveFnType(datum.articulated[0]);
             return datum;
           }).sort((a,b) => a.blockTimeStamp - b.blockTimeStamp);
           this.setState({
@@ -85,13 +95,13 @@ class MonitorView extends Component {
 
   componentDidMount = () => {
     console.log('componentDidMount');
+    let activeGroupID = this.props.match.params.monitorGroupID,
+      activeMonitorAddress = this.props.match.params.monitorAddress;
+    this.props.onMonitorSelection({
+      monitorGroupID: activeGroupID,
+      monitorAddress: activeMonitorAddress // may be undefined
+    });
     this.fetchMonitorGroupTx().then(() => {
-      let activeGroupID = this.props.match.params.monitorGroupID,
-        activeMonitorAddress = this.props.match.params.monitorAddress;
-      this.props.onMonitorSelection({
-        monitorGroupID: activeGroupID,
-        monitorAddress: activeMonitorAddress // may be undefined
-      });
       this.setState({filteredData:
         activeMonitorAddress !== undefined ?
           this.filterTxByAddress(this.state.myData, activeMonitorAddress) :
@@ -137,7 +147,7 @@ class MonitorView extends Component {
           <Route exact path={`${this.props.match.url}/`} render={() => (
             <Redirect to={`${this.props.match.url}/dashboard`}/>
           )}/>
-          <Route path={`${this.props.match.url}/:viewSelection`} render={(props) => <MonitorViewContainer match={this.props.match} myData={this.state.filteredData} {...props}/>} />
+          <Route path={`${this.props.match.url}/:viewSelection`} render={(props) => <MonitorViewContainer isLoaded={this.state.isLoaded} match={this.props.match} myData={this.state.filteredData} {...props}/>} />
       </div>
       </div>
     );

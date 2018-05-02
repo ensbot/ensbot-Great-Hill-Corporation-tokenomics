@@ -10,21 +10,8 @@ class Dashboard extends Component {
     super(props);
   }
 
-  getFnType = (string) => {
-    if(string.trim() === '0x') {
-      return 'none';
-    } else if (string.trim().slice(0,2) === '0x') {
-      return 'unknown';
-    } else {
-      return string;
-    }
-  }
-
   getFnData = (data) => {
-    return _(data).map((datum) => {
-        datum.fnType = this.getFnType(datum.articulated[0]);
-        return datum;
-    }).groupBy((datum) => {
+    return _(data).groupBy((datum) => {
       return datum.fnType
     })
     .map((val, key) => ({fnName: key, tx: val}))
@@ -34,7 +21,9 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div className="dashboard">
+      <div className={`dashboard ${!this.props.isLoaded ? 'flex-center' : null}`}>
+      {this.props.isLoaded ? (
+        <React.Fragment>
         <div className="dashboard-element">
           <TxStats data={this.props.myData} />
           <TxChart data={this.props.myData} width='400' height='400' />
@@ -45,7 +34,14 @@ class Dashboard extends Component {
           <SimpleDashTable data={this.getFnData(this.props.myData)}/>
         </div>
         }
+        </React.Fragment>
+      ) : (
+        <span className="loading">
+        Now loading...
+      </span>
+      )}
       </div>
+
     );
   }
 }

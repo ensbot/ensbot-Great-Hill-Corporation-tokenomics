@@ -209,6 +209,13 @@ i.material-icons {
 
 .dashboard {
   display: flex;
+  width:100%;
+  align-items: flex-start;
+}
+
+.dashboard.flex-center {
+  justify-content: center;
+  align-items: center;
 }
 
 .dashboard-element {
@@ -216,11 +223,12 @@ i.material-icons {
   padding: 1em;
   box-shadow: 3px 2px 10px 0 rgba(0, 0, 0, 0.1);
   margin:.5em;
-  flex: 1 1;
+  flex: 0 1;
 }
 
 .simple-dash-table {
   font-size: .8em;
+  min-width: 230px;
 }
 
 .simple-dash-table th {
