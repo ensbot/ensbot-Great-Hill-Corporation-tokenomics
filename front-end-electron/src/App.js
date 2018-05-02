@@ -15,7 +15,7 @@ class App extends Component {
 
     this.state = {
       monitorGroups: [],
-      activeMonitor: {groupName: 'None', monitorName: 'test', monitorAddress: '0xf030laf'},
+      activeMonitor: {groupName: 'Select', monitorName: 'select a monitor', monitorAddress: ''},
       isLoaded: false,
       error: null,
     };
