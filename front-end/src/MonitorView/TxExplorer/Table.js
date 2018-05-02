@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactTable from 'react-table';
+import moment from 'moment';
 import 'react-table/react-table.css';
 import './my-table.css';
 
@@ -18,14 +19,14 @@ class Table extends Component {
         accessor: 'monitorAddress'
       },
       {
-        Header: 'Block Number',
-        accessor: 'blockNumber'
-      }, {
-        Header: 'Transaction Index',
-        accessor: 'transID'
-      }, {
-        Header: 'Trace ID',
-        accessor: 'traceID'
+        id: 'timestamp',
+        Header: 'Timestamp',
+        accessor: d => moment(d.blockTimeStamp*1000).format()
+      },
+      {
+        id: 'compound',
+        Header: 'Block No. / Tx Index / Trace ID',
+        accessor: d => `${d.blockNumber} / ${d.transID} / ${d.traceID}`
       }, {
         Header: 'From',
         accessor: 'fromAddress',
