@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Route, NavLink, Redirect} from 'react-router-dom';
 import Dashboard from './Dashboard/Dashboard';
+import TxExplorer from './TxExplorer/TxExplorer';
 import Settings from './Settings';
 
 const MonitorViewHeading = (props) => {
@@ -26,6 +27,8 @@ const MonitorViewContainer = (props) => {
     switch(urlParam) {
       case 'dashboard':
         return <Dashboard myData={props.myData} isLoaded={props.isLoaded}/>;
+      case 'activity':
+        return <TxExplorer myData={props.myData} isLoaded={props.isLoaded}/>;
       case 'settings':
         return <Settings/>;
       default:
