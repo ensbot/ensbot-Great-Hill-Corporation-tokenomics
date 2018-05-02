@@ -4,6 +4,7 @@ import {
   Route,
   Switch} from 'react-router-dom';
 import MonitorSelector from './MonitorSelector';
+import Splash from './Splash';
 import MonitorView from './MonitorView/MonitorView';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
@@ -74,7 +75,7 @@ class App extends Component {
           <div className="app-container">
             <MonitorSelector monitorGroups={this.state.monitorGroups}
                              activeMonitor={this.state.activeMonitor}/>
-            <Route exact path="/" />
+            <Route exact path="/" render={() => <Splash/>} />
             {this.state.isLoaded &&
               <Switch>
               <Route path="/monitor/:monitorGroupID/address/:monitorAddress" render={(props) => <MonitorView activeMonitor={this.state.activeMonitor} onMonitorSelection={this.handleMonitorSelection} {...props}/>} />
