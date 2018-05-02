@@ -11,24 +11,6 @@ class TxExplorerChart extends Component {
     };
   }
 
-  shouldComponentUpdate = (nextProps, nextState) => {
-    let shouldIt;
-    if(this.props.myData[0] === undefined) {
-      console.log('first load');
-      this.updateCycle = 1;
-      shouldIt = true;
-    } else {
-    if(this.props.myData[0].monitorAddress != nextProps.myData[0].monitorAddress) {
-      console.log('addresses don\'t match... rerendering');
-      shouldIt = true;
-    } else {
-      shouldIt = false;
-    }
-  }
-  console.log(shouldIt);
-  return shouldIt;
-  }
-
   formatDataForChart = (data) => {
     console.log(data);
     const parseDate = d3.timeParse("%Y %W"),
@@ -52,8 +34,8 @@ class TxExplorerChart extends Component {
       });
   }
 
-  componentDidUpdate = () => {
-    if (this.props.myData.length) {
+  renderChart = () => {
+    if (this.props.data && !this.props.data.length) return null;
 
       let data = this.formatDataForChart(this.props.myData);
 
@@ -174,6 +156,13 @@ class TxExplorerChart extends Component {
 
       svg.append("rect").attr("class", "zoom").attr("width", width).attr("height", height).attr("transform", "translate(" + margin.left + "," + margin.top + ")").call(zoom);
     }
+
+  componentDidMount = () => {
+    this.renderChart();
+  }
+
+  componentDidUpdate = () => {
+    this.renderChart();
   }
 
   // anim = () => {

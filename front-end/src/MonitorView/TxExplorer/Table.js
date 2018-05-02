@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import './my-table.css';
 
 class Table extends Component {
   constructor(props) {
@@ -35,39 +36,14 @@ class Table extends Component {
         Header: 'Value (wei)',
         accessor: 'valueWei',
       }, {
-        id: 'gasCost',
-        Header: 'Gas Cost (wei)',
-        accessor: row => row.gasPrice * row.gasUsed,
-      }, {
         Header: 'Error',
         accessor: 'isError',
       }, {
+        id: 'articulated',
         Header: 'Articulated Input',
-        accessor: 'articulated'
+        accessor: d => JSON.stringify(d.articulated)
       }
     ];
-
-    this.columnsSlim = [
-      {
-        id: 'block_timestamp',
-        Header: 'Block Timestamp',
-        accessor: d => new Date(d.block_timestamp*1000).toLocaleString('en-US', {timeZone:'UTC'})
-      }, {
-        Header: 'From',
-        accessor: 'fromAddress',
-      }, {
-        Header: 'To',
-        accessor: 'toAddress',
-      }, {
-        Header: 'Value (wei)',
-        accessor: 'valueWei',
-      }
-    ]
-  }
-
-
-  componentDidMount = () => {
-
   }
 
   render() {

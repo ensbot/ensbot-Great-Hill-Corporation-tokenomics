@@ -13,7 +13,7 @@ class TxExplorer extends Component {
 
   render() {
     return (
-      <div>
+      <div className="tx-explorer">
         <TxExplorerChart myData={this.props.myData} onZoomChange={() => {return false}}/>
         <Table myData={this.props.myData}/>
       </div>
