@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import ReactTable from 'react-table';
+import moment from 'moment';
 import 'react-table/react-table.css';
+import './my-table.css';
 
 class Table extends Component {
   constructor(props) {
@@ -17,14 +19,14 @@ class Table extends Component {
         accessor: 'monitorAddress'
       },
       {
-        Header: 'Block Number',
-        accessor: 'blockNumber'
-      }, {
-        Header: 'Transaction Index',
-        accessor: 'transID'
-      }, {
-        Header: 'Trace ID',
-        accessor: 'traceID'
+        id: 'timestamp',
+        Header: 'Timestamp',
+        accessor: d => moment(d.blockTimeStamp*1000).format()
+      },
+      {
+        id: 'compound',
+        Header: 'Block No. / Tx Index / Trace ID',
+        accessor: d => `${d.blockNumber} / ${d.transID} / ${d.traceID}`
       }, {
         Header: 'From',
         accessor: 'fromAddress',
@@ -34,40 +36,15 @@ class Table extends Component {
       }, {
         Header: 'Value (wei)',
         accessor: 'valueWei',
-      }, {
-        id: 'gasCost',
-        Header: 'Gas Cost (wei)',
-        accessor: row => row.gasPrice * row.gasUsed,
       }, {
         Header: 'Error',
         accessor: 'isError',
       }, {
+        id: 'articulated',
         Header: 'Articulated Input',
-        accessor: 'articulated'
+        accessor: d => JSON.stringify(d.articulated)
       }
     ];
-
-    this.columnsSlim = [
-      {
-        id: 'block_timestamp',
-        Header: 'Block Timestamp',
-        accessor: d => new Date(d.block_timestamp*1000).toLocaleString('en-US', {timeZone:'UTC'})
-      }, {
-        Header: 'From',
-        accessor: 'fromAddress',
-      }, {
-        Header: 'To',
-        accessor: 'toAddress',
-      }, {
-        Header: 'Value (wei)',
-        accessor: 'valueWei',
-      }
-    ]
-  }
-
-
-  componentDidMount = () => {
-
   }
 
   render() {

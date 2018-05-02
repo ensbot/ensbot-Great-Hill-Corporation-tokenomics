@@ -16,7 +16,7 @@ class MonitorSelector extends Component {
     let monitorGroupID = monitorGroup.monitorGroupID === "null" ? "unsorted" : monitorGroup.monitorGroupID;
     let groupMemberList = monitorGroup.addresses.map((monitor, j) => {
       let monitorName = monitor.monitorName === null ? monitor.monitorAddress : monitor.monitorName;
-      return <DropdownItem className='group-member' key={i + '' + j}><Link to={{pathname: `/monitor/${monitor.monitorGroupID}/${monitor.monitorAddress}`}}>{monitorName}</Link></DropdownItem>
+      return <DropdownItem className='group-member' key={i + '' + j}><Link to={{pathname: `/monitor/${monitor.monitorGroupID}/address/${monitor.monitorAddress}`}}>{monitorName}</Link></DropdownItem>
     });
     return (
       <React.Fragment key={monitorGroup.monitorGroupID}>

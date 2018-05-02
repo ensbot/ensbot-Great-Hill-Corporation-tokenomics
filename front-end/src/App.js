@@ -81,8 +81,11 @@ class App extends Component {
               <Route path="/monitor/:monitorGroupID" render={(props) => <MonitorView activeMonitor={this.state.activeMonitor} onMonitorSelection={this.handleMonitorSelection} {...props}/>} />
             </Switch>
             }
+            <div className="App-logo">
+              <a href="https://quickblocks.io" target="_blank"><img src="https://quickblocks.io/wp-content/uploads/2017/10/logo-white-website-95px.png"/></a>
+            </div>
             <div className="footer">
-              Powered by <a href="https://quickblocks.io" target="_blank"><strong>QuickBlocks™</strong></a>
+              Powered by <a href="https://quickblocks.io" target="_blank"><strong>QuickBlocks</strong></a>
             </div>
             </div>
         </Router>
