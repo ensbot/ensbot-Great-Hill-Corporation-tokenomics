@@ -301,3 +301,18 @@ i.material-icons {
 .bar-rect:hover {
   fill: #0056b3;
 }
+
+#splash {
+  display: flex;
+  justify-content: center;
+  /* width: 100%; */
+  /* text-align: center; */
+  align-items: center;
+}
+
+#splash svg text {
+  text-transform: uppercase;
+  fill: #666;
+  font-weight: bold;
+  font-size: 25px;
+}
