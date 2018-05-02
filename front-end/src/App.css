@@ -63,6 +63,27 @@ nav .btn {
   font-size: 11px;
 }
 
+.dropdown-menu.show {
+  display: block;
+  height: 400px;
+  width: 330px;
+  overflow-y: scroll;
+  background-color: rgba(255,255,255,.97);
+  border-radius: 3px;
+}
+
+.dropdown-menu.show::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+  background: #FFF;
+}
+
+.dropdown-menu.show::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0,0,0,.5);
+  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
 .dropdown-item {
   padding: 0;
 }
@@ -147,6 +168,10 @@ i.material-icons {
   vertical-align: middle;
   font-size: 19px;
   margin-right: .6em;
+}
+
+.menu-view-list span {
+  vertical-align: middle;
 }
 
 .menu-view-list a {

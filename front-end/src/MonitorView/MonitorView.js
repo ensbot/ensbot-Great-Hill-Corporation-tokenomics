@@ -14,15 +14,14 @@ const MonitorViewHeading = (props) => {
 const MonitorViewMenu = ({match}) => {
   return (
     <div className="menu-view-list">
-      <div><NavLink to={`${match.url}/dashboard`} activeClassName="selected"><i className="material-icons">dashboard</i>Monitor Dashboard</NavLink></div>
-      <div><NavLink to={`${match.url}/activity`} activeClassName="selected"><i className="material-icons">query_builder</i>Tx Explorer</NavLink></div>
-      <div><NavLink to={`${match.url}/settings`} activeClassName="selected"><i className="material-icons">settings</i>Monitor Settings</NavLink></div>
+      <div><NavLink to={`${match.url}/dashboard`} activeClassName="selected"><i className="material-icons">dashboard</i><span>Monitor Dashboard</span></NavLink></div>
+      <div><NavLink to={`${match.url}/activity`} activeClassName="selected"><i className="material-icons">query_builder</i><span>Tx Explorer</span></NavLink></div>
+      <div><NavLink to={`${match.url}/settings`} activeClassName="selected"><i className="material-icons">settings</i><span>Monitor Settings</span></NavLink></div>
     </div>
   )
 }
 
 const MonitorViewContainer = (props) => {
-  console.log(props.match.params.viewSelection);
   let component = ((urlParam) => {
     switch(urlParam) {
       case 'overview':

@@ -39,11 +39,12 @@ class Dashboard extends Component {
           <TxStats data={this.props.myData} />
           <TxChart data={this.props.myData} width='400' height='400' />
         </div>
+        {this.props.myData.length &&
         <div className="dashboard-element">
-          {this.props.myData.length &&
+
           <SimpleDashTable data={this.getFnData(this.props.myData)}/>
-        }
         </div>
+        }
       </div>
     );
   }
