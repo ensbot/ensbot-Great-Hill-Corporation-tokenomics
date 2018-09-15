@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 
 const Settings = () => {
   return(
-    <div>
-    Stuff
+    <div className="settings">
+      <div className="panel">
+        
+      </div>
   </div>
 )
 }
