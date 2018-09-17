@@ -1,4 +1,6 @@
+require(tidyverse)
 require(shiny)
+# require(magrittr)
 
 jsonfiles <- list.files(path = "../jsondata")
 
@@ -17,7 +19,7 @@ ui <- fluidPage(
       
       # Input: Slider for the number of bins ----
       sliderInput(inputId = "bins",
-                  label = "Number of bins:",
+                  label = "Days per bin:",
                   min = 1,
                   max = 50,
                   value = 30),
@@ -32,42 +34,33 @@ ui <- fluidPage(
     mainPanel(
       
       # Output: Histogram ----
-      plotOutput(outputId = "distPlot"),
-      textOutput("filePath")
+      plotOutput(outputId = "distPlot")
+      # textOutput("filePath")
       
       
     )
   )
 )
 
-# Define server logic required to draw a histogram ----
+# Define server logic
 server <- function(input, output) {
-  output$filePath <- renderText({paste0('../jsondata/',input$dropdown)})
+  # output$filePath <- renderText({paste0('../jsondata/',input$dropdown)})
+  data.r <- reactive(
+    {read_json(path = paste0('../jsondata/',input$dropdown), simplifyVector=T, simplifyDataFrame=T) %>%
+    jsonlite::flatten() %>%
+    as_data_frame() %>%
+    mutate(price = as.double(price)) %>%
+    mutate(fn.name = map_chr(articulatedTx, 'name', .default = NA)) %>%
+    mutate(date = as.POSIXct(timestamp, origin = '1970-01-01') %>% as.Date()) }
+    )
   
-  # Histogram of the Old Faithful Geyser Data ----
-  # with requested number of bins
-  # This expression that generates a histogram is wrapped in a call
-  # to renderPlot to indicate that:
-  #
-  # 1. It is "reactive" and therefore should be automatically
-  #    re-executed when inputs (input$bins) change
-  # 2. Its output type is a plot
   output$distPlot <- renderPlot({
-    
-    # x    <- faithful$waiting
-    # bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    # 
-    # hist(x, breaks = bins, col = "#75AADB", border = "white",
-    #      xlab = "Waiting time to next eruption (in mins)",
-    #      main = "Histogram of waiting times")
-
-    read_json(path = paste0('../jsondata/',input$dropdown), simplifyVector=T, simplifyDataFrame=T) %>%
-      flatten() %>%
-      as_data_frame() %>%
-      mutate(price = as.double(price)) %>%
-      ggplot(aes(x=timestamp, y=price)) +
-      geom_point()
-  })
+    data <- data.r()
+    data %>%
+      ggplot(aes(x=date, fill=fn.name)) +
+      geom_histogram(binwidth = input$bins) +
+      facet_wrap(facets = 'fn.name')
+  }, execOnResize = TRUE)
   
 }
 

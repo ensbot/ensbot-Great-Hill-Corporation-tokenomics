@@ -7,3 +7,7 @@
 *jay*
 /clients/
 /old_monitors_data/
+/R/**/*.txt
+/R/**/*.xls
+/R/**/*.xlsx
+/R/**/*.json

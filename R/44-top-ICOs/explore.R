@@ -1,10 +1,7 @@
-require(jsonlite)
-require(dplyr)
-require(ggplot2)
+
+require(tidyverse)
 require(shiny)
 require(magrittr)
-
-# runExample("01_hello")
 
 list.files(path = "./jsondata", pattern = NULL, all.files = FALSE,
            full.names = FALSE, recursive = FALSE,
@@ -15,32 +12,41 @@ jsonInput <- list(
 )
 
 data <- read_json(path = jsonInput$newbium, simplifyVector=T, simplifyDataFrame=T) %>%
-  flatten() %>%
+  jsonlite::flatten() %>%
   as_data_frame() %>%
-  mutate(price = as.double(price))
+  mutate(price = as.double(price)) %>%
+  mutate(fn.name = map_chr(articulatedTx, 'name', .default = NA)) %>%
+  mutate(date = as.POSIXct(timestamp, origin = '1970-01-01') %>% as.Date()) 
 
 data %>%
-  rowwise() %>%
-  mutate(fn.call = articulatedTx[['name']]) %>%
-  select(fn.call)
+  ggplot(aes(x=date, fill=fn.name)) +
+  geom_histogram() +
+  facet_wrap(facets = 'fn.name')
 
 
+data %>% 
+  mutate(date = as.POSIXct(timestamp, origin = '1970-01-01') %>% as.Date()) %>%
+  mutate(datebin = ntile(timestamp, 10)) %>%
+  group_by(datebin) %>%
+  summarize(sumEth = sum(ether)) %>%
+  ggplot(aes(x=datebin,y=sumEth)) +
+  geom_bar(stat="identity")
+
+data %>% 
+  mutate(date = as.POSIXct(timestamp, origin = '1970-01-01') %>% as.Date()) %>%
+  group_by(date) %>%
+  summarize(sumEth = sum(ether)) %>%
+  View()
+
+data %>% mutate(fn.name = map_chr(articulatedTx, 'name', .default = NA)) %>%
+  select(fn.name)
+
+data %>% mutate(fn.args = map(articulatedTx, c(2, 1, 1))) %>% select(fn.args)
+data %>% mutate(fn.args = map(articulatedTx, list('inputs', 1, 'name'))) %>% select(fn.args)
 data %>%
-  ggplot(aes(x=timestamp, y=price)) +
-  geom_point()
-
-data[3,c(14,18,22:25)]
-
-data[5:10,c(14,15)]
-
-data[[8,14]][['name']]
-data[[8,14]] %$% inputs %>% purrr::flatten_dfc()
-
-data
-
-data %>% select(price) %>% arrange()
-
-data %>% View()
+  mutate(fn.args = map(articulatedTx, list('inputs', 1))) %>%
+  mutate() %>%
+  select(fn.args) %>% View()
 
 
 
