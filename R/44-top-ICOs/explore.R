@@ -25,6 +25,8 @@ jsonInput <- list(
   newbium = "jsondata/00_newbium-0x814964b1bceaf24e26296d031eadf134a2ca4105.json"
 )
 
+# We'll ultimately add more config such as latestBlock (6218382) to be more descriptive in the resulting filename.
+
 # A lot of data operations going on below to transform the json into the structures we require.
 
 data <- read_json(path = jsonInput$newbium, simplifyVector=T, simplifyDataFrame=T) %>%
@@ -33,8 +35,8 @@ data <- read_json(path = jsonInput$newbium, simplifyVector=T, simplifyDataFrame=
   mutate(fn.name = map_chr(articulatedTx, 'name', .default = NA)) %>%
   mutate(date = as.POSIXct(timestamp, origin = '1970-01-01') %>% as.Date()) 
 
-# To see the object generated, execute the following line:
-data
+  # To see the object generated, execute the following line:
+  data
 
 in.out <- data %>% filter(fn.name == 'transfer', !isError) %>%
   mutate(transfer.values = map(articulatedTx, list('inputs',1, 'value'), .default = NA)) %>%
@@ -43,8 +45,8 @@ in.out <- data %>% filter(fn.name == 'transfer', !isError) %>%
   select(timestamp, from, transfer.to, transfer.amount) %>%
   ungroup()
 
-# To see the object generated, execute the following line:
-in.out
+  # To see the object generated, execute the following line:
+  in.out
 
 in.out.cum <- in.out %>% 
   gather(key = 'address.type', value = 'address', 2:3) %>%
@@ -54,13 +56,21 @@ in.out.cum <- in.out %>%
   mutate(cumBalance = cumsum(transfer.amount)) %>%
   ungroup()
 
-# To see the object generated, execute the following line:
-in.out.cum
+  # To see the object generated, execute the following line:
+  in.out.cum
 
+# Take the cross product of timestamps and addresses.
+# We do this because we want each address to have a record for each timestamp, even when nothing occurs.
 timestamps <- in.out.cum %>% distinct(timestamp)
 addresses <- in.out.cum %>% distinct(address)
 address.timestamp <- crossing(addresses, timestamps) %>% arrange(address, timestamp)
 
+  # To see the object generated, execute the following line:
+  address.timestamp
+
+
+# Contract was instantiated with an Initial Supply that went entirely to the msg.sender.
+# We add this manually.
 addInitialSupplyBalance = function(data) {
   data %>%
     rbind(data.frame(
@@ -72,6 +82,8 @@ addInitialSupplyBalance = function(data) {
     return()
 }
 
+# Here's the final data structure with debits and credits per address per each timestamp.
+# From this, you can calculate the ownership table at any time.
 in.out.cum.with.zeroes <- in.out %>%
   gather(key = 'address.type', value = 'address', 2:3) %>%
   addInitialSupplyBalance() %>%
@@ -86,20 +98,41 @@ in.out.cum.with.zeroes <- in.out %>%
   mutate(cumBalance = cumsum(transfer.amount)) %>%
   ungroup()
 
-top.10 <- in.out.cum %>%
+  # To see the object generated, execute the following line:
+  in.out.cum.with.zeroes
+
+# This is all you need for your table, so let's export it to csv.
+in.out.cum.with.zeroes %>% write_csv('newbium-ownership-table-per-timestamp-01a.csv')
+
+
+# Meanwhile, let's do some visualization.
+
+# First we extract the top 10 addresses with highest balance at any point in time.
+top.10 <- in.out.cum.with.zeroes %>%
   group_by(address) %>%
   top_n(1, cumBalance) %>%
+  distinct(address, .keep_all = T) %>%
   ungroup() %>%
   top_n(10, cumBalance) %>%
   select(address)
 
+# This is a plot of their percent ownership relative to each other.
 in.out.cum.with.zeroes %>%
   filter(address %in% top.10$address) %>%
   ggplot(aes(x = timestamp, y = cumBalance, fill=address)) +
   geom_area(position='fill')
 
+# This is a plot of their ownership relative to everyone else.
 in.out.cum.with.zeroes %>%
-  # filter(timestamp <= 1499459125 + 300000) %>%
+  mutate(is.top.10 = ifelse(address %in% top.10$address, TRUE, FALSE)) %>%
+  group_by(is.top.10, timestamp) %>%
+  summarize(cumBalance = sum(cumBalance)) %>%
+  ggplot(aes(x = timestamp, y = cumBalance, group=is.top.10, fill=is.top.10)) +
+  geom_area(position='fill')
+
+# This is a combination of both plots above.
+in.out.cum.with.zeroes %>%
+  # filter(timestamp <= 1499459125 + 100000) %>%
   mutate(address = ifelse(address %in% top.10$address, address, 'other')) %>%
   group_by(address, timestamp) %>%
   arrange(address, timestamp) %>%
@@ -107,9 +140,4 @@ in.out.cum.with.zeroes %>%
   ggplot(aes(x = timestamp, y = cumBalance, fill=address)) +
   geom_area(position='fill')
 
- in.out.cum.with.zeroes %>%
-  mutate(is.top.10 = ifelse(address %in% top.10$address, TRUE, FALSE)) %>%
-  group_by(is.top.10, timestamp) %>%
-  summarize(cumBalance = sum(cumBalance)) %>%
-  ggplot(aes(x = timestamp, y = cumBalance, group=is.top.10, fill=is.top.10)) +
-  geom_area(position='fill')
+# Thanks. Hope this helps! Improvements coming soon.
