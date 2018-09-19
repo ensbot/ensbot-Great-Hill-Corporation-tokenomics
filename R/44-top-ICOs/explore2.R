@@ -31,13 +31,14 @@ initialSupply <- list(
 
 jsonfiles <- list.files(path = "./jsondata")
 
-tokenName = 'newbium'
+tokenName = 'mith'
+tokenAddr = '0x3893b9422cd5d70a81edeffe3d5a1c6a978310bb'
 
 # We'll ultimately add more config such as latestBlock (6218382) to be more descriptive in the resulting filename.
 
 # A lot of data operations going on below to transform the json into the structures we require.
 
-data <- read_json(path = paste0('jsondata/',jsonfiles[1]), simplifyVector=T, simplifyDataFrame=T) %>%
+data <- read_json(path = paste0('jsondata/',jsonfiles[3]), simplifyVector=T, simplifyDataFrame=T) %>%
   jsonlite::flatten() %>%
   as_data_frame() %>%
   mutate(fn.name = map_chr(articulatedTx, 'name', .default = NA)) %>%
@@ -49,7 +50,7 @@ data <- read_json(path = paste0('jsondata/',jsonfiles[1]), simplifyVector=T, sim
 in.out <- data %>% filter(fn.name == 'transfer', !isError) %>%
   mutate(transfer.values = map(articulatedTx, list('inputs',1, 'value'), .default = NA)) %>%
   mutate(transfer.to = map_chr(transfer.values, 1)) %>%
-  mutate(transfer.amount = map_chr(transfer.values, 2) %>% as.integer()) %>%
+  mutate(transfer.amount = map_chr(transfer.values, 2) %>% as.double()) %>%
   select(timestamp, from, transfer.to, transfer.amount) %>%
   ungroup()
 
@@ -105,7 +106,7 @@ in.out.cum.with.zeroes <- in.out %>%
   in.out.cum.with.zeroes
 
 # This is all you need for your table, so let's export it to csv.
-in.out.cum.with.zeroes %>% write_csv('newbium-ownership-table-per-timestamp-01a.csv')
+in.out.cum.with.zeroes %>% write_csv(paste0(tokenName, '-ownership-table-per-timestamp-01a.csv')
 
 
 # Meanwhile, let's do some visualization.
@@ -117,7 +118,6 @@ top.10 <- in.out.cum.with.zeroes %>%
   distinct(address, .keep_all = T) %>%
   ungroup() %>%
   top_n(10, cumBalance) %>%
-  arrange(desc(cumBalance)) %>%
   select(address)
 
 # This is a plot of their percent ownership relative to each other.
