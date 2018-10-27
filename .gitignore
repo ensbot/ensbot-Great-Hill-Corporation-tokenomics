@@ -13,3 +13,4 @@
 /R/**/*.xlsx
 /R/**/*.json
 *.csv
+*.gz
