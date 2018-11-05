@@ -4,6 +4,7 @@ hashrate <- read_csv('average-hashrate-of-the-ethereum-network.csv',
                      col_names = c('date', 'hashrate'),
                      col_types = '??',
                      skip = 1) 
+<<<<<<< HEAD
 difficulty <- read_csv('difficulty-generated-1a.csv') %>% filter(block.number > 6500000)
 difficulty <-
   mutate(period = floor(difficulty["block.number"] / 100000)
@@ -18,6 +19,10 @@ e.per.25000 <- period %>%
 
 #%>%
 #  filter(block.number > 3000000);
+=======
+
+difficulty <- read_csv('difficulty-generated-1a.csv')
+>>>>>>> c283aaaf4405675c324ac1369dcc2613df2e03d4
 
 bomb <- as_tibble(data.frame(block.number = c(0:7000000))) %>%
   mutate(bomb = ifelse(block.number >= 4375000, 2^(abs((block.number - 3000000 + 1)/100000)-2), 2^(abs((block.number + 1)/100000)-2)))
