@@ -4,12 +4,20 @@ hashrate <- read_csv('average-hashrate-of-the-ethereum-network.csv',
                      col_names = c('date', 'hashrate'),
                      col_types = '??',
                      skip = 1) 
-difficulty <- read_csv('difficulty.csv', col_names=FALSE) %>% bind_rows(
-                         read_csv('difficulty2.csv', col_names=FALSE)
-                       ) %>%
-  rename(block.number = X1, timestamp = X2, difficulty = X3) %>%
-  distinct(block.number, .keep_all=TRUE) %>%
-  arrange(block.number)
+difficulty <- read_csv('difficulty-generated-1a.csv') %>% filter(block.number > 6500000)
+difficulty <-
+  mutate(period = floor(difficulty["block.number"] / 100000)
+         
+         %>%
+  mutate(e = 2 ^ period)
+                    
+
+e.per.25000 <- period %>%
+  mutate(e = power(2,period)) %>%
+  group_by(e)
+
+#%>%
+#  filter(block.number > 3000000);
 
 bomb <- as_tibble(data.frame(block.number = c(0:7000000))) %>%
   mutate(bomb = ifelse(block.number >= 4375000, 2^(abs((block.number - 3000000 + 1)/100000)-2), 2^(abs((block.number + 1)/100000)-2)))
@@ -57,7 +65,7 @@ difficulty %>%
   ggplot(aes(x=block.bin, y=sum.difficulty.change)) +
   geom_line()
 
-
+period <- difficulty %>% floor( block.number / 100000 )
 
 difficulty %>%
   mutate(lag.timestamp = lag(timestamp)) %>%
@@ -68,7 +76,14 @@ difficulty %>%
   ggplot(aes(x=block.bin, y=mean.block.time.elapsed)) +
   geom_line()
   
-
+difficulty %>%
+  mutate(lag.timestamp = lag(timestamp)) %>%
+  mutate(block.time.elapsed = timestamp - lag.timestamp) %>%
+  mutate(block.bin = floor(block.number / 25000) * 25000) %>%
+  group_by(block.bin) %>%
+  summarize(mean.block.time.elapsed = median(block.time.elapsed)) %>%
+  ggplot(aes(x=block.bin, y=mean.block.time.elapsed)) +
+  geom_line()
 
 difficulty %>%
   mutate(lag.difficulty = lag(difficulty)) %>%
@@ -79,7 +94,6 @@ difficulty %>%
   mutate(block.bin = floor(block.number/25000)*25000) %>%
   group_by(block.bin) %>%
   summarize(sum.difficulty.change = sum(difficulty.change), mean.block.time.elapsed = mean(block.time.elapsed)) %>%
-  
   ggplot(aes(x=sum.difficulty.change, y=mean.block.time.elapsed)) +
   geom_line()
 
@@ -97,3 +111,20 @@ difficulty %>%
   ggplot(aes(x=block.bin, y = val)) +
   geom_line() +
   facet_wrap(facets = 'vars', scales = 'free', ncol = 1)
+
+difficulty %>%
+  mutate(lag.difficulty = lag(difficulty)) %>%
+  mutate(difficulty.change = difficulty-lag.difficulty) %>%
+  mutate(lag.timestamp = lag(timestamp)) %>%
+  mutate(block.time.elapsed = timestamp - lag.timestamp) %>%
+  mutate(block.time.elapsed = timestamp - lag.timestamp) %>%
+  mutate(block.bin = floor(block.number/5000)*5000) %>%
+  group_by(block.bin) %>%
+  summarize(sum.difficulty = sum(difficulty), sum.difficulty.change = sum(difficulty.change, na.rm=T), mean.block.time.elapsed = mean(block.time.elapsed, na.rm=T)) %>%
+  mutate(percent.change = sum.difficulty.change / sum.difficulty) %>%
+  gather(key = vars, value = val, -block.bin) %>%
+  ggplot(aes(x=block.bin, y = val)) +
+  geom_line() +
+  facet_wrap(facets = 'vars', scales = 'free', ncol = 2)
+
+
