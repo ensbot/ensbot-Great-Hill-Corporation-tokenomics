@@ -1,4 +1,5 @@
 require(tidyverse)
+require(scales)
 
 hashrate <- read_csv('average-hashrate-of-the-ethereum-network.csv',
                      col_names = c('date', 'hashrate'),
@@ -121,3 +122,28 @@ block.time.stats <- difficulty %>%
   summarize(mean = mean(span),
             median = median(span),
             sd = sd(span))
+
+block.time.stats
+
+## predicting from 6.5m to 7.5m
+
+difficulty %>%
+  mutate(span = (timestamp - lag(timestamp))) %>%
+  filter(!is.na(span)) %>%
+  mutate(block.bin = floor(block.number / 100000) * 100000) %>%
+  group_by(block.bin) %>%
+  summarize(mean = mean(span),
+            median = median(span),
+            sd = sd(span)) %>%
+  ggplot(aes(x=block.bin, y=sd)) +
+  geom_line()
+
+
+difficulty %>%
+  mutate(time.delta = (timestamp - lag(timestamp))) %>%
+  mutate(difficulty.delta = (difficulty - lag(difficulty))) %>%
+  filter(!is.na(time.delta)) %>%
+  sample_n(10000) %>%
+  ggplot(aes(y=difficulty.delta, x = time.delta, color = block.number)) +
+  geom_point() +
+  scale_color_gradientn(colours = rainbow(10), labels = comma)
