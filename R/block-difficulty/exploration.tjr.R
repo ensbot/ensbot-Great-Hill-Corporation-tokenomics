@@ -31,6 +31,20 @@ difficulty <- read_csv('difficulty-generated-1a.csv') %>%
 current.block <- difficulty$block.number %>% tail(1)
 current.bomb <- max(difficulty$bomb)
 
+vitalik_pre_byzantium = read_csv('vitalik_pre_byzantium.csv')
+vitalik_pre_byzantium %>%
+  ggplot(aes(x=block.number)) +
+  geom_line(aes(y=block_time))
+
+compare <- left_join(difficulty, vitalik_pre_byzantium, by = 'block.number')
+compare %>%
+  filter( block.number <= max(vitalik_pre_byzantium$block.number) ) %>%
+  filter( block.number >= min(vitalik_pre_byzantium$block.number) ) %>%
+  filter( mod(block.number, 10000) == 0) %>%
+  ggplot(aes(x=block.number)) +
+  geom_line(aes(y=block_time)) +
+  geom_line(aes(y=ts.delta))
+  
 debug = 1
 if (debug) {
   difficulty %>%
@@ -95,3 +109,4 @@ difficulty %>%
   scale_colour_gradient2(low = "red", mid = "green", high = "blue", midpoint = byzantium.block, space = "Lab", na.value = "grey50", guide = "colourbar") +
   geom_point(size = point_size) + 
   geom_vline(xintercept = 35)
+
