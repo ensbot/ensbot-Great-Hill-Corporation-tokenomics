@@ -5,7 +5,7 @@ const _ = require('lodash');
 
 router.get('/monitor-groups', (req, res, next) => {
   knex('monitor AS m')
-    .select(['mg.monitorGroupName AS groupName', 'mg.monitorGroupID', 'm.monitorAddress', 'm.nickname AS monitorName', 'm.firstBlock'])
+    .select(['mg.nickname AS groupName', 'mg.monitorGroupID', 'm.monitorAddress', 'm.nickname AS monitorName', 'm.firstBlock'])
     .leftJoin('monitor_monitor_group AS mmg', 'm.monitorAddress', 'mmg.monitorAddress')
     .leftJoin('monitor_group AS mg', 'mg.monitorGroupID', 'mmg.monitorGroupID')
   .then((monitors) => {
